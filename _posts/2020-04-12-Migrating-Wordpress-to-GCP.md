@@ -1,9 +1,14 @@
 ---
 layout:     post
 title:      Migrating Wordpress to GCP
-date:       2020-04-12
-summary:    Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
-categories: jekyll pixyll
+--date:     2020-04-12
+--summary:  Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
+permalink: /migrating-wordpress-to-gcp/
+tags:
+  - wordpress
+  - gcp
+  - apache
+  - linux
 ---
 
 I recently migrated my shared hosting WordPress platform from a dedicated server I was administering in the basement of my home (my personal on prem server farm) to Google Cloud Platform (GCP). Why GCP? I have several years of experience in Amazon Web Services (AWS) and could have easily replicated the process using their specialized services, but my decision to align with GCP was driven by my interest in exploring other cloud platforms as a means to broaden my experience. The<a href="https://cloud.google.com/free/#always-free" target="_blank" rel="noopener"> $<span style="text-decoration: underline;">300 account credit</span></a> also contributed in the decision making process! Thanks Google!

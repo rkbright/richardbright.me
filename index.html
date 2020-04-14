@@ -17,7 +17,10 @@ layout: default
 	  </p>
           <a href="{{ post.url | relative_url }}" class="post-link"><h3 class="h1 post-title">{{ post.title }}</h3></a>
           <span class="post-summary">
-            {% if post.summary %}
+            {% if site.show_tags %}
+            {% include post_tags.html %}
+            {% endif %}
+	    {% if post.summary %}
               {{ post.summary }}
             {% else %}
               {{ post.excerpt }}

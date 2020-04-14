@@ -1,9 +1,11 @@
 ---
 layout:     post
-title:      What is Linux anyway? A quick overview of distributions.
+title:      What is Linux anyway? A quick overview of distributions
 date:       2020-04-01
 summary:    This is a broad overview of various Linux distributions available for running workloads for major Fortune 500 companies, embedded systems and devices, to our own personal media servers running in the cloud or under your basement steps. Enjoy!    
-categories: jekyll pixyll
+permalink: /what-is-linux-anyway-a-quick-overview-of-distributions/
+tags:
+  - linux
 ---
 
 <span style="color: #000000;">So, what exactly is Linux anyway? <span style="color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://medium.freecodecamp.org/i-switched-from-windows-to-linux-here-are-the-lessons-i-learned-along-the-way-434da84ab63f" target="_blank" rel="noopener">Is it a desktop environment</a></span>?<span style="text-decoration: underline; color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://blog.heroix.com/blog/linux-vs-windows-a-cost-comparison" target="_blank" rel="noopener"> Is it used to manage applications in many of the companies for which we work</a></span>? <span style="text-decoration: underline; color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://www.zdnet.com/article/linux-foundation-finds-enterprise-linux-growing-at-windows-expense/" target="_blank" rel="noopener">Does it serve up web pages on the internet</a></span>?<span style="text-decoration: underline;"><span style="color: #003366; text-decoration: underline;"> <a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://www.autoblog.com/2014/04/12/tesla-model-s-owners-hack-their-cars-find-ubuntu/" target="_blank" rel="noopener">How are self driving cars able to, well, "drive"?</a></span></span> <span style="text-decoration: underline; color: #003366;">W<a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://mybroadband.co.za/news/software/243342-most-popular-operating-systems-for-pcs-and-smartphones.html" target="_blank" rel="noopener">here does Android come in</a>, </span><a style="color: #000000;" href="https://www.unixmen.com/15-weirdsurprising-devices-amp-systems-that-run-on-linux/" target="_blank" rel="noopener"><span style="text-decoration: underline; color: #003366;">and what does my home appliances have to do with Linux</span>?</a> </span>

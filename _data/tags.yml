@@ -1,0 +1,10 @@
+wordpress:
+  name: Wordpress
+jekyll:
+  name: Jekyll
+linux:
+  name: Linux
+gcp:
+  name: Google Cloud Platform
+apache:
+  name: Apache

@@ -3,19 +3,23 @@ layout: post
 title: Exploring Jekyll for Static Sites
 date: 2020-04-13 23:28
 summary: How to host multiple static websites using Jekyll and Apache. 
-categories: jekyll pixyll
+permalink: /exploring-jekyll-for-static-sites/
+tags:
+  - wordpress
+  - jekyll
+  - linux
 ---
 
-I have several years of experience hosting multiple [Wordpress](https://wordpress.org/) websites on a personal [LAMP](https://stackoverflow.com/questions/10060285/what-is-a-lamp-stack) stack server I administer from my home (I recenlty migrated this workload to GCP, see blog post [Migrating Wordpress to GCP](https://richardbright.me/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/)). For readers unfamiliar with Wordpress, it is a great option for hosting [dynamic websites](https://en.wikipedia.org/wiki/Dynamic_web_page) for a business, a personal blog, or an enterprise content manageemnt system. Wordpress is an open source platform and widley popular for it's quick and easy setup, easy administration, and abundance of functional options (plug-ins). Figures posted by [W3Tech](https://w3techs.com/technologies/details/cm-wordpress) show Wordpress powering over 35% of all websites on the internet. 
+I have several years of experience hosting multiple [Wordpress](https://wordpress.org/){:target="_blank"} websites on a personal [LAMP](https://stackoverflow.com/questions/10060285/what-is-a-lamp-stack){:target="_blank"} stack server I administer from my home (I recently migrated this workload to GCP, see blog post [Migrating Wordpress to GCP](https://richardbright.me/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/){:target="_blank"}). For readers unfamiliar with Wordpress, it is a great option for hosting [dynamic websites](https://en.wikipedia.org/wiki/Dynamic_web_page){:target="_blank"} for a business, a personal blog, or an enterprise content management system. Wordpress is an open source platform and widely popular for it's quick and easy setup, easy administration, and abundance of functional options (plug-ins). Figures posted by [W3Tech](https://w3techs.com/technologies/details/cm-wordpress){:target="_blank"} show Wordpress powering over 35% of all websites on the internet. 
 
 <strong>Static vs. Dynamic Website Architecture</strong>
 ![Static vs. Dynamic Website Architecture](https://richardbright.me/images/staticdynamic.png){:class="img-responsive"}
 
-The figure above from [ApacheBooster](https://www.apachebooster.com/) visualizes the difference between a static and dynamic website architecture, Scheme A shows how web calls are served back to the requestor directly whereas Scheme B shows the additional layers/dependencies when a web call is made to a dynaminc site. Each of those layers does result in additional latency, which is the time it takes before you receive a responce back from the server. 
+The figure above from [ApacheBooster](https://www.apachebooster.com/){:target="_blank"} visualizes the difference between a static and dynamic website architecture, Scheme A shows how web calls are served back to the requestor directly whereas Scheme B shows the additional layers/dependencies when a web call is made to a dynamic site. Each of those layers does result in additional latency, which is the time it takes before you receive a response back from the server. 
 
-So why [Jekyll](https://jekyllrb.com/), I was looking to move some of the content I host using Wordpress to a more lightweight platform that is responsive and easy to install and post updates. Additionally, unlike Wordpress, there is no need to update themes, plug-ins, and databases - so idelally less risk of your site getting compromised, and if it does, it's easy enough to regenerate your blog and/or site and redeploy the build files to your hosting server. It's pretty simple.
+So why [Jekyll](https://jekyllrb.com/){:target="_blank"}, I was looking to move some of the content I host using Wordpress to a more lightweight platform that is responsive and easy to install and post updates. Additionally, unlike Wordpress, there is no need to update themes, plug-ins, and databases - so ideally less risk of your site getting compromised, and if it does, it's easy enough to regenerate your blog and/or site and redeploy the build files to your hosting server. It's pretty simple.
 
-I'm not advocating for static sites over dynamic sites or vise versa, both have use cases where one would be more desiarable over the other. For the remainder of this article I will walk you though how to setup a virtual hosting server where you can host one or many sites concurrenlty. 
+I'm not advocating for static sites over dynamic sites or vise versa, both have use cases where one would be more desirable over the other. For the remainder of this article I will walk you through how to setup a virtual hosting server where you can host one or many sites concurrently. 
 
 <span style="color: #000000;"><strong>Server Specs:</strong> small box I have tucked away in my closet</span>
 <ul>
@@ -37,7 +41,7 @@ I'm not advocating for static sites over dynamic sites or vise versa, both have 
 ~]$ sudo yum install ruby -y
 </pre>
 
-<strong>Step 3:</strong> now you will need to install Jekyll using [gem](https://jekyllrb.com/docs/ruby-101/#gems). You do not need to run this with  sudo provliges 
+<strong>Step 3:</strong> now you will need to install Jekyll using [gem](https://jekyllrb.com/docs/ruby-101/#gems){:target="_blank"}. You do not need to run this with sudo privileges
 <pre>
 ~]$ gem install jekyll 
 </pre>
@@ -48,12 +52,12 @@ I'm not advocating for static sites over dynamic sites or vise versa, both have 
 ~]$ jekyll -v
 </pre>
 
-<strong>Step 5:</strong> use gem to install the Ruby [Bundler](https://rubygems.org/gems/bundler)
+<strong>Step 5:</strong> use gem to install the Ruby [Bundler](https://rubygems.org/gems/bundler){:target="_blank"}
 <pre>
 ~]$ gem install bundler
 </pre>
 
-Before we generate a Jekyll package we first need to discuss where it should be created. Do you install it locally on your Linux machine and/or MacBook Pro, or how about a remote server in your house or in the cloud? Honestly, either is fine, but there is implications for how to preview the site. The less confusing strategy is to install Jekyll locally on your machine so you can view the site using http://localhost:4000/ and/or http://127.0.0.1:4000/. Jekyll has a <code>serve</code> feature that will instantiate an ephemoral version of the site using port 4000.  
+Before we generate a Jekyll package we first need to discuss where it should be created. Do you install it locally on your Linux machine and/or MacBook Pro, or how about a remote server in your house or in the cloud? Honestly, either is fine, but there are implications for how to preview the site. The less confusing strategy is to install Jekyll locally on your machine so you can view the site using http://localhost:4000/ and/or http://127.0.0.1:4000/. Jekyll has a <code>serve</code> feature that will instantiate an ephemeral version of the site using port 4000.  
 
 If you install the Jekyll source code on a remote server, which is not running a graphical user interface (GUI), then you will have to use the <code>--host</code> flag. The flag will allow you to view your site using a class 3 IP address (beginning with 192.168.6.73). Simply type-in the IP address followed by the port number in your browser. Please note I installed the source code on a personal remote server. 
 
@@ -65,9 +69,9 @@ Okay, let's keep going.
 mysite]$ jekyll new myblog
 </pre> 
 
-You will need to check your firewall setting if you're running on a remote server - Jekyll will render the ephemeral site on port 4000. You can use the following commands to check and update your local firewall, if you're runing CentOS. 
+You will need to check your firewall setting if you're running on a remote server - Jekyll will render the ephemeral site on port 4000. You can use the following commands to check and update your local firewall, if you're running CentOS. 
 <pre>
-~]$ sudo systemctl status firewalld ##determine if the firewwall is enabled
+~]$ sudo systemctl status firewalld ##determine if the firewall is enabled
 ~]$ sudo firewall-cmd --list-ports ##list ports 
 Output: 10000/tcp
 ~]$ sudo firewall-cmd --permanent --add-port=4000/tcp ##open port 4000
@@ -205,7 +209,7 @@ Donating to EFF: https://eff.org/donate-le
 
 Congrats, now your site is running over TLS encryption! 
 
-Now you should initiate <code>git</code> in the new root directory to ensure you have adequate version control for your source code. You'll want to log into your [github](https://github.com/) account and create a public or private repo. Ensure your ssh key is added so you can push your code from the terminal. 
+Now you should initiate <code>git</code> in the new root directory to ensure you have adequate version control for your source code. You'll want to log into your [github](https://github.com/){:target="_blank"} account and create a public or private repo. Ensure your ssh key is added so you can push your code from the terminal. 
 <pre>
 myblog]$ git config --global user.name "name"  
 myblog]$ git config --global user.email "email address"
@@ -218,12 +222,12 @@ myblog]$ git push -u origin master
 
 Now toggle back to your github account, you should see the source code for your site. 
 
-That should do it, I hope you found this post informative and helpful to you on your journey. 
+That should do it, I hope you found this post informative and helpful to you on your journey to host your own website, whether using Wordpress or Jekyll.  
 
 
 ---
  
-References:
+<strong>References:</strong>
 <ul>
         <li><a href="https://wordpress.org/">https://wordpress.org/</a></li>
 	<li><a href="https://stackoverflow.com/questions/10060285/what-is-a-lamp-stack">https://stackoverflow.com/questions/10060285/what-is-a-lamp-stack</a></li>
