@@ -8,3 +8,8 @@ gcp:
   name: Google Cloud Platform
 apache:
   name: Apache
+management:
+  name: Management
+remote:
+  name: Remote Work
+

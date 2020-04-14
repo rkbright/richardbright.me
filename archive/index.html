@@ -1,0 +1,15 @@
+---
+title: Archive
+summary: archive page containing posts grouped by month and year
+permalink: /archive/
+layout: page
+sitemap: false
+---
+
+{% if site.posts.size == 0 %}
+<p>
+  Sorry, no posts. :(
+</p>
+{% else %}
+  {% include archive.html %}
+{% endif %}

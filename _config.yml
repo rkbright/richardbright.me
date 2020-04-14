@@ -10,6 +10,7 @@ header_pages:
  - pages/about.md
  - pages/contact.html
  - tags/index.html
+ - archive/index.html
 
 # Google services
 google_verification:

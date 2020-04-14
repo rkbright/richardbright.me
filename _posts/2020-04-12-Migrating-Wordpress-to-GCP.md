@@ -1,8 +1,8 @@
 ---
 layout:     post
 title:      Migrating Wordpress to GCP
---date:     2020-04-12
---summary:  Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
+date:     2020-04-12
+summary:  Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
 permalink: /migrating-wordpress-to-gcp/
 tags:
   - wordpress
