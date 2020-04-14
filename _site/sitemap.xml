@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/tech/linux/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</loc>
+<loc>http://localhost:4000/jekyll/pixyll/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</loc>
 <lastmod>2020-04-01T00:00:00-04:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/tech/wordpress/gcp/2020/04/12/Migrating-Wordpress-to-GCP/</loc>
+<loc>http://localhost:4000/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/</loc>
 <lastmod>2020-04-12T00:00:00-04:00</lastmod>
 </url>
 <url>

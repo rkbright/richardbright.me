@@ -279,8 +279,8 @@ certbot renew &amp;gt; /home/user/crojobs/sslUpdateLog/sslUpdateLog_$today.txt&l
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 12 Apr 2020 00:00:00 -0400</pubDate>
-        <link>http://localhost:4000/tech/wordpress/gcp/2020/04/12/Migrating-Wordpress-to-GCP/</link>
-        <guid isPermaLink="true">http://localhost:4000/tech/wordpress/gcp/2020/04/12/Migrating-Wordpress-to-GCP/</guid>
+        <link>http://localhost:4000/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/</guid>
       </item>
     
       <item>
@@ -366,8 +366,8 @@ certbot renew &amp;gt; /home/user/crojobs/sslUpdateLog/sslUpdateLog_$today.txt&l
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 01 Apr 2020 00:00:00 -0400</pubDate>
-        <link>http://localhost:4000/tech/linux/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</link>
-        <guid isPermaLink="true">http://localhost:4000/tech/linux/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</guid>
+        <link>http://localhost:4000/jekyll/pixyll/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/pixyll/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</guid>
       </item>
     
   </channel>

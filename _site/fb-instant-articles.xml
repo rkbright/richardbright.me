@@ -29,7 +29,7 @@
         
             <item>
                 <title>Migrating Wordpress to GCP</title>
-                <link>http://localhost:4000/tech/wordpress/gcp/2020/04/12/Migrating-Wordpress-to-GCP/</link>
+                <link>http://localhost:4000/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>I recently migrated my shared hosting WordPress platform from a dedicated server I was administering in the basement of my home (my personal on prem server farm) to Google Cloud Platform (GCP). Why GCP? I have several years of experience in Amazon Web Services (AWS) and could have easily replicated the process using their specialized services, but my decision to align with GCP was driven by my interest in exploring other cloud platforms as a means to broaden my experience. The<a href="https://cloud.google.com/free/#always-free" target="_blank" rel="noopener"> $<span style="text-decoration: underline;">300 account credit</span></a> also contributed in the decision making process! Thanks Google!</p>
@@ -295,7 +295,7 @@ certbot renew &gt; /home/user/crojobs/sslUpdateLog/sslUpdateLog_$today.txt</pre>
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/tech/wordpress/gcp/2020/04/12/Migrating-Wordpress-to-GCP/</guid>
+                <guid isPermaLink="false">/jekyll/pixyll/2020/04/12/Migrating-Wordpress-to-GCP/</guid>
                 <description>
                     
                     Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone!
@@ -309,7 +309,7 @@ certbot renew &gt; /home/user/crojobs/sslUpdateLog/sslUpdateLog_$today.txt</pre>
         
             <item>
                 <title>What is Linux anyway? A quick overview of distributions.</title>
-                <link>http://localhost:4000/tech/linux/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</link>
+                <link>http://localhost:4000/jekyll/pixyll/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</link>
                 <content:encoded>
                     <![CDATA[
                     <p><span style="color: #000000;">So, what exactly is Linux anyway? <span style="color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://medium.freecodecamp.org/i-switched-from-windows-to-linux-here-are-the-lessons-i-learned-along-the-way-434da84ab63f" target="_blank" rel="noopener">Is it a desktop environment</a></span>?<span style="text-decoration: underline; color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://blog.heroix.com/blog/linux-vs-windows-a-cost-comparison" target="_blank" rel="noopener"> Is it used to manage applications in many of the companies for which we work</a></span>? <span style="text-decoration: underline; color: #003366;"><a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://www.zdnet.com/article/linux-foundation-finds-enterprise-linux-growing-at-windows-expense/" target="_blank" rel="noopener">Does it serve up web pages on the internet</a></span>?<span style="text-decoration: underline;"><span style="color: #003366; text-decoration: underline;"> <a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://www.autoblog.com/2014/04/12/tesla-model-s-owners-hack-their-cars-find-ubuntu/" target="_blank" rel="noopener">How are self driving cars able to, well, “drive”?</a></span></span> <span style="text-decoration: underline; color: #003366;">W<a style="background-color: #ffffff; color: #003366; text-decoration: underline;" href="https://mybroadband.co.za/news/software/243342-most-popular-operating-systems-for-pcs-and-smartphones.html" target="_blank" rel="noopener">here does Android come in</a>, </span><a style="color: #000000;" href="https://www.unixmen.com/15-weirdsurprising-devices-amp-systems-that-run-on-linux/" target="_blank" rel="noopener"><span style="text-decoration: underline; color: #003366;">and what does my home appliances have to do with Linux</span>?</a> </span></p>
@@ -394,10 +394,10 @@ certbot renew &gt; /home/user/crojobs/sslUpdateLog/sslUpdateLog_$today.txt</pre>
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/tech/linux/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</guid>
+                <guid isPermaLink="false">/jekyll/pixyll/2020/04/01/What-is-linux-anyway-A-quick-overview-of-distributios/</guid>
                 <description>
                     
-                    This is a broad overview of various Linux distributions available for running workloads for major fortune 500 companies, embedded systems and devices, to our own personal media servers running in the cloud or under your basement steps. Enjoy!
+                    This is a broad overview of various Linux distributions available for running workloads for major Fortune 500 companies, embedded systems and devices, to our own personal media servers running in the cloud or under your basement steps. Enjoy!
                     
                 </description>
                 <pubDate>Wed, 01 Apr 2020 00:00:00 -0400</pubDate>

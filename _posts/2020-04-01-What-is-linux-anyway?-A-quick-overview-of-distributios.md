@@ -2,7 +2,7 @@
 layout:     post
 title:      What is Linux anyway? A quick overview of distributions.
 date:       2020-04-01
-summary:    This is a broad overview of various Linux distributions available for running workloads for major fortune 500 companies, embedded systems and devices, to our own personal media servers running in the cloud or under your basement steps. Enjoy!    
+summary:    This is a broad overview of various Linux distributions available for running workloads for major Fortune 500 companies, embedded systems and devices, to our own personal media servers running in the cloud or under your basement steps. Enjoy!    
 categories: jekyll pixyll
 ---
 
