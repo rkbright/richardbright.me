@@ -10,6 +10,7 @@ install:
 
 script:
 - node ./_scripts/main.js
+- jekyll build --destination /var/www/html/richardbright.me
 
 notifications:
   email:
