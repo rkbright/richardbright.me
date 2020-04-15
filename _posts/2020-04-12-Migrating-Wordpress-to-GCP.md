@@ -2,7 +2,7 @@
 layout:     post
 title:      Migrating Wordpress to GCP
 date:     2020-04-12
-summary:  Summary of how to move your Wordpress workload to a GCP virtial machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
+summary:  Summary of how to move your Wordpress workload to a GCP virtual machine. The article does not show you how to set up an instance in GCP but it does walk you through the process of installing a LAMP stack, how it sync your files, and how to install SSL certs using LetsEncrypt. Happy reading everyone! 
 permalink: /migrating-wordpress-to-gcp/
 tags:
   - wordpress
@@ -39,7 +39,7 @@ You will need to create a GCP account to take advantage of the $300 credit. If y
 ##
 #Set root password? [Y/n] Y
 #New password: <strong>Enter your password here</strong>
-#Re-enter new password: <strong>repeat your passwor</strong>d
+#Re-enter new password: <strong>repeat your password</strong>d
 #Remove anonymous users? [Y/n] Y
 #Disallow root login remotely? [Y/n] Y
 #Remove test database and access to it? [Y/n] Y
