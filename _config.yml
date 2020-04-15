@@ -8,9 +8,9 @@ url:
 date_format: "%b %-d, %Y"
 header_pages:
  - pages/about.md
- - pages/contact.html
  - tags/index.html
  - archive/index.html
+ - pages/contact.html
 
 # Google services
 google_verification:
