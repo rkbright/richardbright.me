@@ -238,3 +238,5 @@ That should do it, I hope you found this post informative and helpful to you on 
 	<li><a href="https://apachebooster.com/blog/cache-static-and-dynamic-content-for-website/staticdynamic/">https://apachebooster.com/blog/cache-static-and-dynamic-content-for-website/staticdynamic/</a></li> 
 	<li><a href="https://jekyllrb.com/docs/ruby-101/#gems">https://jekyllrb.com/docs/ruby-101/#gems</a></li>
 </ul>
+
+---
