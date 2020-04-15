@@ -1,16 +1,17 @@
-language: ruby
-cache: bundler
-rvm:
- - 2.3
- - 2.4
- - 2.5
- - 2.6
+language: node_js
+
+branches:
+  only: master
+
+install:
+- cd _scripts/
+- npm install
+- cd ..
+
 script:
- - bundle exec jekyll build
- - rake 'draft[Hello\, world]'
- - rake undraft[hello-world.md]
- - grep johnotander/pixyll _site/index.html
- - grep post-title         _site/index.html
- - grep pagination-item    _site/index.html
- - grep johnotander/pixyll _site/css/pixyll.css
- - grep 404                _site/404.html
+- node ./_scripts/main.js
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
