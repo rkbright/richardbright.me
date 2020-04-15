@@ -32,9 +32,9 @@
     function CommentsController($scope, $http, $filter){
         $scope.isLoading = true;
         $scope.comments = [];
-        $scope.issueLink = "https://github.com/zpbappi/zpbappi.github.io/issues/{{issue_number}}";
+        $scope.issueLink = "https://github.com/rkbright/richardbright/issues/{{issue_number}}";
         
-        var apiLink = "https://api.github.com/repos/zpbappi/zpbappi.github.io/issues/{{issue_number}}/comments";
+        var apiLink = "https://api.github.com/repos/rkbright/richardbright/issues/{{issue_number}}/comments";
         
         $scope.dateTitle = function(date){
             return $filter("date")(date, "MMMM dd, yyyy '('hh:mm a 'GMT'Z')'")
