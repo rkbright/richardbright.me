@@ -1,4 +1,4 @@
-#### Personal site for blogging about technology and anything else that comes to mind. Please feel free to clone the site and start your own blog. Good luck! 
+Personal site for blogging about technology and anything else that comes to mind. Please feel free to clone the site and start your own blog. Good luck! 
 
 **Components:**
 
