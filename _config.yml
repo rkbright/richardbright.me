@@ -10,6 +10,7 @@ header_pages:
  - pages/about.md
  - tags/index.html
  - archive/index.html
+ - pages/rss.html
  - pages/contact.html
 
 # Google services
