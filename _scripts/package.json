@@ -1,5 +1,5 @@
 {
-  "author": "Zp Bappi (http://richardbright.me)",
+  "author": "Richard Bright (http://richardbright.me)",
   "name": "richardbright.me",
   "description": "Build script to generate tags and archive pages for Jekyll site hosted in GitHub Pages",
   "homepage": "http://richardbright.me",
@@ -7,9 +7,7 @@
     "type": "git",
     "url": "https://github.com/rkbright/richardbright"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "js-yaml": "^3.4.3",
     "q": "^1.4.1",
