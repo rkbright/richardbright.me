@@ -1,0 +1,25 @@
+<body   onload="newQuote()">
+<div id="quoteDisplay">
+  </div>
+</body>
+
+<script type="text/javascript">
+var quotes = [
+'“It does not matter how slowly you go as long as you do not stop.” --Confucius',
+'“The secret of getting ahead is getting started.” --Mark Twain',
+'“Attitude is a little thing that makes a big difference.” --Winston Churchill',
+'“Opportunities don’t happen, you create them.” --Chris Grosser',
+'“We are what we repeatedly do. Excellence, then, is not an act, but a habit.” -- Aristotle',
+'“Start where you are. Use what you have. Do what you can.” --Arthur Ashe',
+'“You don’t “find” time to do what is important. You MAKE TIME. GO.” --Jocko Willink',
+'“Discipline is the root of all good qualities. Discipline Equals Freedom.” --Jocko Willink',
+'“If you allow the status quo to persist, you can’t expect to improve performance, and you can’t expect to win.” --Jocko Willink',
+'“A blank page is no empty space. It is brimming with potential... It is a masterpiece in waiting -- yours.” --AA Patawaran',
+'“Nothing will work unless you do.” --Maya Angelou'
+]
+
+function newQuote() {
+	var randomNumber = Math.floor(Math.random() * (quotes.length));
+	document.getElementById('quoteDisplay').innerHTML = quotes[randomNumber];
+}
+</script>
