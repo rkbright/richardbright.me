@@ -11,7 +11,7 @@ I am a solutions engineer with 9+ years professional experience working for the 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
-* Bachelors Of Science, Labor & Employee Relations, Penn State University
+* Bachelors Of Science (BS), Penn State University
 
 ***Certifications:***
 * Certified Linux Administrator (LPIC-1) - Credential ID: LPI000371264/43zwd9mtbn
