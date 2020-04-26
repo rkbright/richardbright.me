@@ -5,7 +5,7 @@
   "homepage": "https://richardbright.me",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rkbright/richardbright.me.git"
+    "url": "http://github.com/rkbright/richardbright.me.git"
   },
   "dependencies": {},
   "devDependencies": {

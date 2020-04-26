@@ -16,7 +16,7 @@ var github = new GitHubApi({
 
 const dataFilePath = __dirname + '/../_data/commentrefs.yml';
 const POSTS_DIR = __dirname + '/../_posts/';
-const siteRoot = "https://richardbright.me";
+const siteRoot = "http://richardbright.me";
 
 function getExistingCommentLinks(){
     return fs.read(dataFilePath, {'charset': 'utf8', 'flags': 'r'})
