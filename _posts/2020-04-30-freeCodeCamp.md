@@ -2,18 +2,26 @@
 layout:     post
 title:      freeCodeCamp
 date:       2020-04-30
-summary:    freeCodecamp - feedback and progress
+summary:    freeCodecamp - feedback and progress, Updated 5/17/2020
 permalink: /freeCodeCamp/
 header: /images/freeCodeCamp.png
 tags:
   - fcc
 ---
 
-<style type="text/css">
-	body,a {
-		font-family: "courier new";
-	}
-</style>
+**Update: 5/17/2020**
+
+Although I think <a href="https://www.freecodecamp.org/learn" class="a" target="_blank">freeCodeCamp</a> is an awesome resource for learning front-end web development, I recently started working through the following books to help supplement my understanding a learning. In the end, sometimes their is no better way of learning than going through a book from cover to cover. 
+
+Supplemental Reading in addition to completing the 
+**freeCodeCamp Responsive Web Design Certification**:
+
+* <a href="/assets/books/duckett.pdf" class="a" target="_blank">HTML & CSS: Design and Build Websites</a>
+* <a href="/assets/books/JavaScript_Up_and_Going.pdf" class="a" target="_blank">You Don't Know JS -- Series</a>
+
+Enoy and happy reading! 
+
+---
 
 I recently started the <a href="https://www.freecodecamp.org/learn" class="a" target="_blank">freeCodeCamp</a> <strong class="a">Responsive Web Design Certification</strong> curriculum and wanted to provide some feedback of my initial thoughts. 
 
