@@ -17,13 +17,14 @@ Supplemental Reading in addition to completing the
 **freeCodeCamp Responsive Web Design Certification**:
 
 * <a href="/assets/books/duckett.pdf" class="a" target="_blank">HTML & CSS: Design and Build Websites</a>
+* <a href="/assets/books/JavaScript and JQuery Interactive Front.pdf" class="a" target="_blank">JavaScript and JQuery Interactive Front</a>
 * <a href="/assets/books/JavaScript_Up_and_Going.pdf" class="a" target="_blank">You Don't Know JS -- Series</a>
 
-Enoy and happy reading! 
+Enjoy and happy reading! 
 
 ---
 
-I recently started the <a href="https://www.freecodecamp.org/learn" class="a" target="_blank">freeCodeCamp</a> <strong class="a">Responsive Web Design Certification</strong> curriculum and wanted to provide some feedback of my initial thoughts. 
+I recently started the <a href="https://www.freecodecamp.org/learn" class="a" target="_blank">freeCodeCamp</a> <b class="a">Responsive Web Design Certification</b> curriculum and wanted to provide some feedback of my initial thoughts. 
 
 First, I thought the curriculum was well thought out and introduced concepts in small enough chunks that it would not overwhelm beginners. All the important topic areas are covered; from HTML5 structure, to CSS Flexbox and Grid, to a focus on accessibility, which is important for millions of users. 
 
