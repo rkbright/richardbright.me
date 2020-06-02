@@ -18,7 +18,6 @@ I am a solutions engineer with 9+ years professional experience working for the 
 * CompTIA Linux+ - Credential ID: COMP001020946206
 * SAS Certified Platform Administrator for SAS 9 - Credential ID: PA001601v9
 * GCP Associate Cloud Engineer - Summer 2020
-* ITIL 4 Foundation Level - Late Summer, Early Fall 2020  
 
 
 
