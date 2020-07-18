@@ -7,7 +7,7 @@ tags: about
 
 I am a solutions engineer with 9+ years professional experience working for the federal government in the areas of information technology (project management, cloud computing and agency-wide IT modernization) and data architecture and analysis (data engineering, data warehousing, statistical software administration, and data analysis). I currently support the [General Services Administration (GSA)](https://tech.gsa.gov/team/richard-bright/){:target="_blank"} leading the Infrastructure Capabilities Division. This office is charged with piloting emerging technology and assessing fit and value for GSA IT.  
 
-***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
+***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currenlty learning GoLang! 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
