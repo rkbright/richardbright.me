@@ -21,6 +21,8 @@ I am a solutions engineer with 9+ years professional experience working for the 
 
 **Languages & Scripting**
 * Bash - Intermediate 
+* SAS - Intermediate/Advanced 
+* SQL - Advanced
 * GoLang - Beginner 
 
 
