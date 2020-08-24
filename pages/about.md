@@ -19,6 +19,10 @@ I am a solutions engineer with 9+ years professional experience working for the 
 * SAS Certified Platform Administrator for SAS 9 - Credential ID: PA001601v9
 * GCP Associate Cloud Engineer - Summer/Fall 2020
 
+**Languages & Scripting**
+* Bash - Intermediate 
+* GoLang - Beginner 
+
 
 
 ***Public engagements:***
