@@ -12,4 +12,6 @@ management:
   name: Management
 remote:
   name: Remote Work
+fcc:
+  name: freeCodeCamp
 
