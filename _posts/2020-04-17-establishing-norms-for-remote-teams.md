@@ -1,5 +1,5 @@
 ---
-layout:     post-no-comment
+layout:     post
 title:      Establishing Norms for Remote Teams
 date:       2020-04-17
 summary:    Why establishing team norms for collaboration are key to successful remote work. 
