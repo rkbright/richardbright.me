@@ -32,7 +32,7 @@ I am a solutions engineer with 9+ years professional experience working for the 
 * ***FedScoop:*** [Open source platforms give agency workforce a boost in modernization efforts](https://www.fedscoop.com/radio/open-source-government-agency-workforce/){:target="_blank"}
 * ***MeriTalk:*** [GSA Official Lays Out Benefits of Agency’s Cloud Adoption](https://www.meritalk.com/articles/gsa-official-lays-out-benefits-of-agencys-cloud-adoption/){:target="_blank"}
 * ***Alfresco:*** [Get Cloud Smart](https://alfresco.wistia.com/medias/xk24uv0mpv){:target="_blank"}
-* ***FedScoop50 Nomination:*** [Nominated under the Tech Champion of the Year category](https://www.fedscoop.com/fedscoop50/vote/){:target="_blank"}
+* ***2020 FedScoop50 Nomination:*** [Nominated under the Tech Champion of the Year category](https://www.fedscoop.com/fedscoop50/vote/){:target="_blank"}
 
 ***Attribution:***
 
