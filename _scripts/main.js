@@ -1,7 +1,7 @@
 var fs = require("q-io/fs"),
     q = require("q"),
     git = require("gift-wrapper"),
-    generate = require("./generate.js"),
+    generate = require("./generate.js"), 
     ghi_create = require("./create_gh_issues.js"),
     exec = require('child_process').exec;
 

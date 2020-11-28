@@ -59,6 +59,10 @@
    padding-bottom: 56.25%;
    padding-top: 30px; height: 0; overflow: hidden;
 }
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 21fa2ad8a4c19dc3a1aabf4110b9f2728ec598d7
 .video-container iframe,
 .video-container object,
 
@@ -72,8 +76,12 @@
 .rss-container {
    position: relative;
    padding-bottom: 56.25%;
+<<<<<<< HEAD
    padding-top: 30px; height: 0; overflow: hidden;
 }
 
 
 
+=======
+}   
+>>>>>>> 21fa2ad8a4c19dc3a1aabf4110b9f2728ec598d7
