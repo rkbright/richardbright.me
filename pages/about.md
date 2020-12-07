@@ -5,7 +5,7 @@ permalink: /about/
 tags: about
 ---
 
-I am a solutions engineer with 9+ years professional experience working for the federal government in the areas of information technology (project management, cloud computing and agency-wide IT modernization) and data architecture and analysis (data engineering, data warehousing, statistical software administration, and data analysis). I currently support the [General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies (IDT). This office is charged with piloting emerging technology and assessing fit and value for GSA IT.  
+I am a solutions engineer with 9+ years professional experience working for the federal government in the areas of information technology (project management, cloud computing and agency-wide IT modernization) and data architecture and analysis (data engineering, data warehousing, statistical software administration, and data analysis). I currently support the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies (IDT). This office is charged with piloting emerging technology and assessing fit and value for GSA IT.  
 
 ***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currenlty learning GoLang! 
 
