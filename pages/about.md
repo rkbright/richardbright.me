@@ -19,12 +19,8 @@ I am a solutions engineer with 9+ years professional experience working for the 
 * SAS Certified Platform Administrator for SAS 9 - Credential ID: PA001601v9
 * GCP Associate Cloud Engineer - Summer/Fall 2020
 
-**Languages & Scripting**
-* Bash - Intermediate 
-* SAS - Intermediate/Advanced 
-* SQL - Advanced
-* GoLang - Beginner
-
+***GitHub Repos***
+* [Jekyll Server Build](https://github.com/rkbright/jekyll-server-build) - is a Go package that automates the build process to support Jekyll-based static websites.
 
 
 ***Public engagements:***
