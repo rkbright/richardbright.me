@@ -21,6 +21,7 @@ I am a solutions engineer with 9+ years professional experience working for the 
 
 ***GitHub Repos:***
 * [Jekyll Server Build](https://github.com/rkbright/jekyll-server-build){:target="_blank"} - is a Go package that automates the build process to support Jekyll-based static websites.
+* [Tech Resources](https://github.com/rkbright/tech/tree/master/docs/books){:target="_blank"} - technical books covering cloud, devsecops, golang, data science, and more.
 
 
 ***Public engagements:***
