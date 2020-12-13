@@ -7,7 +7,7 @@ tags: about
 
 I am a solutions engineer with 9+ years professional experience working for the federal government in the areas of information technology (project management, cloud computing and agency-wide IT modernization) and data architecture and analysis (data engineering, data warehousing, statistical software administration, and data analysis). I currently support the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies (IDT). This office is charged with piloting emerging technology and assessing fit and value for GSA IT.  
 
-***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currenlty learning GoLang! 
+***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
@@ -17,7 +17,7 @@ I am a solutions engineer with 9+ years professional experience working for the 
 * Certified Linux Administrator (LPIC-1) - Credential ID: LPI000371264/43zwd9mtbn
 * CompTIA Linux+ - Credential ID: COMP001020946206
 * SAS Certified Platform Administrator for SAS 9 - Credential ID: PA001601v9
-* GCP Associate Cloud Engineer - Summer/Fall 2020
+* GCP Associate Cloud Engineer - Summer/Fall 2021
 
 ***GitHub Repos:***
 * [Jekyll Server Build](https://github.com/rkbright/jekyll-server-build){:target="_blank"} - is a Go package that automates the build process to support Jekyll-based static websites.
