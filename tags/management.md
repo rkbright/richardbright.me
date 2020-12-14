@@ -2,7 +2,7 @@
 layout: tag
 title: Posts with tag Management
 summary: posts with tag Management
-tag: template
+tag: management
 permalink: /tags/management/
 sitemap: false
 ---
