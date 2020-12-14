@@ -21,11 +21,13 @@ If ego is an anti-pattern, then the <strong> first positive pattern</strong> are
 Is our understanding of OCM driven by people's unwillingness to evolve or is the unwillingness actually a lack of inclusion? As with the ego anti-pattern, inclusion and empowerment go hand-in-hand. Thus the <strong>second positive pattern</strong>, trust your team and empower them to perform. Pull your staff into the conversation and pull in other staff as well. You want to make it clear that your staff know they have a place in the new organization and that their contributions are invaluable and relevant to the end goal and future success. Give your team time to adapt to new processes, learn new technology, and build rapport with new team members. With enough time and momentum the team will be performing without the need of your influence at each step. 
 
 <strong>In summary</strong>,
-    <li>be transparent, 
-    <li>trust and empower your team, 
-    <li>give people the opportunity to contribute to the new direction, and 
-    <li>give people time to embrace the changes we are asking of them.</li>
+<ul>
+    <li>be transparent,</li> 
+    <li>trust and empower your team,</li>  
+    <li>give people the opportunity to contribute to the new direction, and </li> 
+    <li>give people time to embrace the changes we are asking of them.</li></ul>
     
+
 Just as you will encounter speed bumps along the way, you will also be surprised to see whom on your team emerges from the smoke and helps to pull others out as well. One by one, as these leaders begin to emerge and people are given time to figure out their new surroundings, you will find yourself pivoting from focusing on OCM to focusing on mission and customer challenges. 
 
 
@@ -35,6 +37,4 @@ Just as you will encounter speed bumps along the way, you will also be surprised
 	<li><a href="https://en.wikipedia.org/wiki/Change_management">Wikipedia - Change Management</a>
 	<li>Conversations with <a href="mailto:npekular@gmail.com">Nick Pekular</a> and <a href="mailto:npekular@gmail.com">John Arundel</a></li>
 	<li><a href="https://en.wikipedia.org/wiki/Servant_leadership" target="_blank">Subservient Leadership Wiki</a>
-	</li>
-
-</ul>
+	</li></ul>
