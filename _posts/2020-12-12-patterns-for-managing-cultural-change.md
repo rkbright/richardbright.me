@@ -34,7 +34,7 @@ Just as you will encounter speed bumps along the way, you will also be surprised
 
 <strong>References:</strong>
 <ul>
-	<li><a href="https://en.wikipedia.org/wiki/Change_management">Wikipedia - Change Management</a>
+	<li><a href="https://en.wikipedia.org/wiki/Change_management">Wikipedia - Change Management</a></li>
 	<li>Conversations with <a href="mailto:npekular@gmail.com">Nick Pekular</a> and <a href="mailto:npekular@gmail.com">John Arundel</a></li>
 	<li><a href="https://en.wikipedia.org/wiki/Servant_leadership" target="_blank">Subservient Leadership Wiki</a>
 	</li></ul>
