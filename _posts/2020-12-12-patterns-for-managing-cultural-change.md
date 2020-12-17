@@ -8,6 +8,8 @@ tags:
   - management
 ---
 
+![Picture by Aga Putra @agaputrantara](https://richardbright.me/images/aga-putra-7MBgGXQ2Rqg-unsplash.jpg){:class="img-responsive"}
+
 Wikipedia defines organizational change management (OCM) as, <a href="https://en.wikipedia.org/wiki/Change_management" target="_blank">..."<i>a collective term for all approaches to prepare, support, and help individuals, teams, and organizations in making organizational change</i>."</a>
 
 Such a simplistic way to define an activity that requires such considerable foresight and attention. I decided to write this so that I could share some of my experiences with OCM and offer a few insights that I found helpful and conversely those that I did not find so helpful. I'll try to keep this entry short and to the point, basically the tl;dr (too long; didn't read) version. I'll continue to add updates as my understanding and experience evolves. First I'll cover a couple of anti-patterns that should be avoided, then I'll cover a couple of positive patterns that, if followed and you are persistently promoting and supporting, should yield positive organizational results with enough time and support. 
@@ -37,4 +39,5 @@ Just as you will encounter speed bumps along the way, you will also be surprised
 	<li><a href="https://en.wikipedia.org/wiki/Change_management">Wikipedia - Change Management</a></li>
 	<li>Conversations with <a href="mailto:npekular@gmail.com">Nick Pekular</a> and <a href="https://bitfieldconsulting.com" target="_blank">John Arundel</a></li>
 	<li><a href="https://en.wikipedia.org/wiki/Servant_leadership" target="_blank">Subservient Leadership Wiki</a>
-	</li></ul>
+	</li>
+  <li>Picture by Aga Putra @agaputrantara</li></ul>
