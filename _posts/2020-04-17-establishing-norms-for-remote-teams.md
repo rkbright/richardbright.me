@@ -8,6 +8,8 @@ tags:
   - remote
 ---
 
+![Picture by Mitchell Luo @mitchel3uo](https://richardbright.me/images/mitchell-luo-H3htK85wwnU-unsplash.jpg){:class="img-responsive"}
+
 Remote work, the topic de jure of the month - wait, make that the topic de jure of the <strong>YEAR</strong>. 
 
 There are numerous articles available online that contrast the pros and cons of remote work. Some articles offer advise for how to be productive while others focus on the tools of the trade. Although those are all important factors for being successful at working remotely, this article will focus on the importance of establishing a shared set of principles and norms amongst your team for communication and collaboration. 
