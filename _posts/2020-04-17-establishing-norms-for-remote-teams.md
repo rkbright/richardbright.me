@@ -69,5 +69,6 @@ I hope you found this article helpful and informative for how to help remove com
 <ul>
 	<li><a href="https://liberationist.org/google-research-reveals-7-secrets-of-successful-remote-teams/">Google Research Reveals 7 Secrets of Successful Remote Team</a>
 	</li>
+	<li>Picture by Mitchell Luo @mitchel3uo</li>
 
 </ul>
