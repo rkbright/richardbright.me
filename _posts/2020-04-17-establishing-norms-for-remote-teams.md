@@ -6,6 +6,7 @@ summary:    Why establishing team norms for collaboration are key to successful 
 permalink: /establishing-norms-for-remote-teams/
 tags:
   - remote
+  - management
 ---
 
 ![Picture by Mitchell Luo @mitchel3uo](https://richardbright.me/images/mitchell-luo-H3htK85wwnU-unsplash.jpg){:class="img-responsive"}
