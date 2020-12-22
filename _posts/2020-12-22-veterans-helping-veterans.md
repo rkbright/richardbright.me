@@ -18,5 +18,5 @@ You may be thinking, searching for a federal job is no different than searching 
 
 Whether you are nearing separation or already a veteran, please feel free to send me a note through my <a href="https://richardbright.me/contact/" target="_blank">contact page</a>. 
 
-I look forward to hearing fom you! 
+I look forward to hearing from you! 
 
