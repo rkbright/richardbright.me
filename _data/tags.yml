@@ -14,4 +14,6 @@ remote:
   name: Remote Work
 fcc:
   name: freeCodeCamp
+veterans:
+  name: Veterans
 
