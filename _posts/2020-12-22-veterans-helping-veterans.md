@@ -1,6 +1,6 @@
 ---
 layout:     post-no-comment
-title:      Paying it forward`:` Veterans helping Veterans
+title:      Paying it forward, Veterans helping Veterans
 date:       2020-12-22
 summary:    Helping U.S military veterans break into the federal sector. 
 permalink: /veterans-helping-veterans/
@@ -8,7 +8,7 @@ tags:
   - veterans
 ---
 
-![Proud Veteran Picture](https://richardbright.me/images/veterans.jpg){:class="img-responsive"}
+![Proud Veteran Picture](https://richardbright.me/images/veteran.jpg){:class="img-responsive"}
 
 Are you a U.S military veteran trying to land a <a href="https://www.opm.gov/policy-data-oversight/classification-qualifications/reference-materials/itmanagement.pdf" target="_blank">tech job</a> (or any job) in the federal government? 
 
