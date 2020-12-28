@@ -11,6 +11,8 @@ tags:
   - linux
 ---
 
+![Picture by Fikret tozak @tozakfikret](https://richardbright.me/images/wordpress-cover-pic.jpg){:class="img-responsive"}
+
 I recently migrated my shared hosting WordPress platform from a dedicated server I was administering in the basement of my home (my personal on prem server farm) to Google Cloud Platform (GCP). Why GCP? I have several years of experience in Amazon Web Services (AWS) and could have easily replicated the process using their specialized services, but my decision to align with GCP was driven by my interest in exploring other cloud platforms as a means to broaden my experience. The<a href="https://cloud.google.com/free/#always-free" target="_blank" rel="noopener"> $<span style="text-decoration: underline;">300 account credit</span></a> also contributed in the decision making process! Thanks Google!
 
 With infrastructure, storage and networking out of the way, I then focused on the migration strategy. I researched several blogs and professional service companies to determine the best strategy (hmm, I really mean the easiest strategy). I mostly found solutions needing plug ins, and, in many cases, a subscription for premium services. Not that there is anything wrong with premium services, I think it's great that open source software is helping drive innovation, collaboration and prosperity, but for my use case, I was looking for a cheap (meaning free) and easy way to migrate my shared hosting platform to GCP.
@@ -270,6 +272,7 @@ Okay, all your websites should be pointed to your new hosting platform in GCP (o
  	<li><a href="https://cloud.google.com/gcp/getting-started/" target="_blank" rel="noopener">https://cloud.google.com/gcp/getting-started/</a></li>
  	<li><a href="https://wpengine.com/solution-center/php-compatibility-checker/" target="_blank" rel="noopener">https://wpengine.com/solution-center/php-compatibility-checker/</a></li>
  	<li><a href="https://letsencrypt.org/" target="_blank" rel="noopener">https://letsencrypt.org/</a></li>
+	 <li>Picture by Fikret tozak @tozakfikret</li>
 </ul>
 
 ---
