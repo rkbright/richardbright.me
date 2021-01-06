@@ -22,7 +22,7 @@ I currently support the General Services Administration (GSA) leading the Infras
 * GCP Associate Cloud Engineer - Summer/Fall 2021
 
 ***GitHub Repos:***
-* [Jekyll Server Build](https://github.com/rkbright/jekyll-server-build){:target="_blank"} - is a Go package that automates the build process to support Jekyll-based static websites.
+* [server](https://github.com/rkbright/server){:target="_blank"} - is a Go package that automates the build process to support Jekyll-based static websites.
 * [Tech Resources](https://github.com/rkbright/tech/tree/master/docs/books){:target="_blank"} - technical books covering cloud, devsecops, golang, data science, and more.
 
 
