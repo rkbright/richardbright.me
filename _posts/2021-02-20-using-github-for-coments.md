@@ -4,7 +4,6 @@ title:      Using GitHub for Jekyll Comments
 date:       2021-02-20
 summary:    GitHub issues, an alternative to using disqus
 permalink: /using-github-for-comments/
-toc: true
 tags:
   - jekyll
   - github
@@ -38,7 +37,7 @@ I have a `_data` folder in my directory tree and is where I placed the mapping f
 
 ### **Adding a comments page**
 
-Include this in your `_includes` folder so that you can add it to your `post.html` page. 
+Now you need a way to render your comments. Add the following to your `_includes` folder, this will allow you to add a comments section to your `post.html` page.
 
 `comments.html`
 
