@@ -28,12 +28,10 @@ You'll need to implement 4 things:
   
   `commentsrefs.yml`   
 
-  > `
-  /post-1-permalink/: 1 \s\s
-/post-2-permalink//: 2 \s\s
-/post-3-permalink//: 3 \s\s
-/post-13-permalink//: 13 
-`
+        /post-1-permalink/: 1
+        /post-2-permalink//: 2
+        /post-3-permalink//: 3
+        /post-13-permalink//: 13 
 
 ### **Adding a comments page**
 
@@ -347,4 +345,4 @@ That's it, now you should see the following render on your post.
 
 And once someone makes a comment...
 
-![comments-test](https://richardbright.me/images/comments-test.png){:class="img-responsive"}
+![comment-test](https://richardbright.me/images/comment-test.png){:class="img-responsive"}
