@@ -14,22 +14,22 @@ tags:
 
 Tired of paying for a commenting service? If you're using Jekyll, this article is a quick walk through to show one way you can add comments to your blog using GitHub issues. 
 
-You'll need to implement 4 things:
+You'll need to **implement 4 things**:
   
   1) add a file that maps your post permalink to the GitHub issue
 
   2) add a `comment.html` file to your `_includes` folder that will call the GitHub API and render comments
 
   3) add a script that will generate and update comments 
-  
+
   4) add a `comments.css` file to format how comments are rendered
 
 
-  ### **Mapping your post to a GitHub**
+### **Mapping your post to a GitHub**
 
-  I have a `_data` folder in my directory tree and is where I placed the mapping file. Please note that the permalink in this file should match the permalink in your post front matter. Also do not forget to update the `issueLink` and `apiLink` variables below to match your GitHub account and repo.
-  
-  `commentsrefs.yml`   
+I have a `_data` folder in my directory tree and is where I placed the mapping file. Please note that the permalink in this file should match the permalink in your post front matter. Also do not forget to update the `issueLink` and `apiLink` variables below to match your GitHub account and repo.
+
+`commentsrefs.yml`   
 
         /post-1-permalink/: 1
         /post-2-permalink//: 2
