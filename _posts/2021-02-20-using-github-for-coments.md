@@ -17,8 +17,11 @@ Tired of paying for a commenting service? If you're using Jekyll, this article i
 You'll need to implement 4 things:
   
   1) add a file that maps your post permalink to the GitHub issue
+
   2) add a `comment.html` file to your `_includes` folder that will call the GitHub API and render comments
+
   3) add a script that will generate and update comments 
+  
   4) add a `comments.css` file to format how comments are rendered
 
 
