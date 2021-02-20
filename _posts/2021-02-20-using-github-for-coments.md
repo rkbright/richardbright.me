@@ -2,7 +2,7 @@
 layout:     post
 title:      Using GitHub for Jekyll Comments
 date:       2021-02-20
-summary:    GitHub issues, an alternative to using disqus.
+summary:    GitHub issues, an alternative to using disqus
 permalink: /using-github-for-comments/
 toc: true
 tags:
