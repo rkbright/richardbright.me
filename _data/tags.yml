@@ -16,4 +16,6 @@ fcc:
   name: freeCodeCamp
 veterans:
   name: Veterans
+github:
+  name: GitHub
 
