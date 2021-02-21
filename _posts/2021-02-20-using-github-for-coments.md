@@ -31,9 +31,9 @@ I have a `_data` folder in my directory tree and is where I placed the mapping f
 `commentsrefs.yml`   
 
         /post-1-permalink/: 1
-        /post-2-permalink//: 2
-        /post-3-permalink//: 3
-        /post-13-permalink//: 13 
+        /post-2-permalink/: 2
+        /post-3-permalink/: 3
+        /post-13-permalink/: 13 
 
 ### **Adding a comments page**
 
@@ -339,7 +339,7 @@ I have a `css` folder in my directory where I consolidate my styling files. Add 
 
 The last thing you need to do is add the `include` function to your `post.html` file. I created a `post-no-comment.html` file as well for posts that do not need a comments section. 
 
-``{% include comments.html %}``
+        {% include comments.html %}
 
 That's it, now you should see the following render on your post.
 
