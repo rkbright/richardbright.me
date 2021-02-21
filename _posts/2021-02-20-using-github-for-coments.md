@@ -339,7 +339,7 @@ I have a `css` folder in my directory where I consolidate my styling files. Add 
 
 The last thing you need to do is add the `include` function to your `post.html` file. I created a `post-no-comment.html` file as well for posts that do not need a comments section. 
 
-        {% include comments.html %}
+![include](https://richardbright.me/images/include.png){:class="img-responsive"}
 
 That's it, now you should see the following render on your post.
 
