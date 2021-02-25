@@ -18,4 +18,6 @@ veterans:
   name: Veterans
 github:
   name: GitHub
+rl:
+  name: Reading List
 
