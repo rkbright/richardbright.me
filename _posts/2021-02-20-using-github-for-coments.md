@@ -24,11 +24,7 @@ You'll need to **implement 4 things**:
   4) add a `comments.css` file to format how comments are rendered
 
 
-<<<<<<< HEAD
 ### **Mapping your post to a GitHub issue**
-=======
-### **Mapping your post to a GitHub**
->>>>>>> 81760ac9ad841fabb975a6b283e4b2c3396c392d
 
 I have a `_data` folder in my directory tree and is where I placed the mapping file. Please note that the permalink in this file should match the permalink in your post front matter. Also do not forget to update the `issueLink` and `apiLink` variables below to match your GitHub account and repo.
 
