@@ -9,7 +9,11 @@ I am a solutions engineer with 10+ years professional experience working for the
 
 I currently support the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
 
+<<<<<<< HEAD
 Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}
+=======
+Link to my [resume](https://drive.google.com/file/d/1PGKSqEKZweqFljHq7wZi3pdvsz-7evTb/view?usp=sharing){:target="_blank"}
+>>>>>>> 81760ac9ad841fabb975a6b283e4b2c3396c392d
 
 ***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
 
