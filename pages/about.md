@@ -9,7 +9,7 @@ I am a solutions engineer with 10+ years professional experience working for the
 
 I currently support the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
 
-Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}
+<!--Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}-->
 
 ***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
 
@@ -21,7 +21,6 @@ Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKob
 * Certified Linux Administrator (LPIC-1) - Credential ID: LPI000371264/43zwd9mtbn
 * CompTIA Linux+ - Credential ID: COMP001020946206
 * SAS Certified Platform Administrator for SAS 9 - Credential ID: PA001601v9
-* GCP Associate Cloud Engineer - Summer/Fall 2021
 
 ***GitHub Repos:***
 * [server](https://github.com/rkbright/server){:target="_blank"} - is a Go package that automates the build process to support Jekyll-based static websites.
