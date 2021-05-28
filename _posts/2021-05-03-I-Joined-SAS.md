@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      I Joined to SAS! 
+title:      I Joined SAS Institute! 
 date:       2021-05-28
-summary:    Leaving government service
+summary:    Leaving government service after 10 years
 permalink: /i-joined-sas/
 toc: true
 tags:
