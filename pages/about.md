@@ -11,7 +11,7 @@ I currently support the General Services Administration (GSA) leading the Infras
 
 <!--Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}-->
 
-***Interests:*** DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
+***Interests:*** SAS, Data Analytics/Engineering, ML & AI, DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
