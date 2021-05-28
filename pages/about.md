@@ -5,13 +5,13 @@ permalink: /about/
 tags: about
 ---
 
-I am a solutions engineer with 10+ years professional experience working for the federal government in the areas of information technology (project management, cloud computing and agency-wide IT modernization) and data architecture and analysis (data engineering, data warehousing, statistical software administration, and data analysis). 
+I am a Sr. Solutions Architect with the [SAS Institute](https://www.sas.com/en_us/home.html) supporting the [Justice and Public Safety](https://www.sas.com/en_us/industry/government/sas-for/public-safety-criminal-justice.html) portfolio. I am passionate about helping public safety and law enforcement organizations leverage data, analytics, and ML/AI in order to better serve citizens and the community. 
 
-I currently support the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
+Prior to my current role I supported the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
 
 <!--Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}-->
 
-***Interests:*** SAS, Data Analytics/Engineering, ML & AI, DevSecOps, Linux, GCP, AWS, and front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. Currently learning GoLang! 
+***Interests:*** SAS Programming, TypeScript, Angular, Data Analytics/Engineering, ML & AI, DevSecOps, Linux, Cloud, and general front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
