@@ -22,4 +22,5 @@ rl:
   name: Reading List
 sas:
   name: SAS Institute
-
+rhcsa:
+  name: Red Hat Certified System Administrator
