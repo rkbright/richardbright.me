@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      RHCSA Study Guide 
-date:       2021-11-25
+date:       2021-12-5
 summary:    Based on Red Hat Certified System Administrator (RHCSA), 3/e By Sander van Vugt
 permalink: /rhcsa-study-guide/
 toc: true
@@ -9,15 +9,17 @@ tags:
   - rhcsa
 ---
 
-![RHCSA](https://richardbright.me/images/images/rhcsa.jpeg)
+>I decided to take the RHCSA within a few months and decided to prep using Sander's video and books that are available via an [O'Reilly Subscription](https://www.oreilly.com/). I'll provide more details as I go, and how I did on the exam. 
 
+
+![RHCSA](https://richardbright.me/images/rhcsa.jpeg)
 
 # Red Hat Certified System Administrator (RHCSA), 3/e
  by: Sander Van Vugt
  year: 2020
 
 
-## Module 1: Performing Basic System Managment Tasks 
+## Module 1: Performing Basic System Management Tasks 
 
 ### Lesson 1: Installing RHEL Server
 
@@ -143,7 +145,7 @@ create new `alias h=history`, but this is limited to the current runtime, you wi
 
 **2.3 Understanding I/O redirection and piping**
 
-![input output](https://richardbright.me/images/images/2.3-1.png)
+![input output](https://richardbright.me/images/2.3-1.png)
 
 `stdin` information coming in, keyboard, mouse 
 
@@ -602,7 +604,7 @@ It can be used to search for text, and perform an operation on matching text
 >options
 >* `-i` will write directly to the file 
 >* `-n` number 
->* `-e` passinf an edit command to set, `2d`, line two, delete 
+>* `-e` passing an edit command to set, `2d`, line two, delete 
 
 
 
@@ -625,7 +627,7 @@ It can be used to search for text, and perform an operation on matching text
 
 ![image](https://richardbright.me/images/5.1-1.png)
 
-`root` users have unlimited access to the hardware, it's an unrestricted account, different than an admin on a windoes machine
+`root` users have unlimited access to the hardware, it's an unrestricted account, different than an admin on a windows machine
 
 user space, above the lines, where users run processes and make system calls 
 
@@ -953,7 +955,7 @@ Sticky bit - prevents a user with rwx from deleting a file rwxrwx---T
 
 `chmod 1770 dir`
 
-`chmod =t dir` 
+`chmod +t dir` 
 
 **7.8 Understanding ACLs**
 
