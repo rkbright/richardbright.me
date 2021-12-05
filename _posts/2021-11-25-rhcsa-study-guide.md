@@ -9,7 +9,7 @@ tags:
   - rhcsa
 ---
 
-![RHCSA](https://richardbright.mehttps://richardbright.me/rhcsa.jpeg)
+![RHCSA](https://richardbright.me/images/images/rhcsa.jpeg)
 
 
 # Red Hat Certified System Administrator (RHCSA), 3/e
@@ -143,7 +143,7 @@ create new `alias h=history`, but this is limited to the current runtime, you wi
 
 **2.3 Understanding I/O redirection and piping**
 
-![input output](https://richardbright.me/2.3-1.png)
+![input output](https://richardbright.me/images/images/2.3-1.png)
 
 `stdin` information coming in, keyboard, mouse 
 
@@ -151,7 +151,7 @@ create new `alias h=history`, but this is limited to the current runtime, you wi
 
 `stderr` where the command will send any error messages 
 
-![input output](https://richardbright.me/2.3-2.png)
+![input output](https://richardbright.me/images/2.3-2.png)
 
 **2.4 Using I/O redirection and piping**
 
@@ -168,7 +168,7 @@ FHS is maintained by the Linux Foundation
 
 `/` is the starting point in any FHS
 
-![image](https://richardbright.me/2.5-1.png)
+![image](https://richardbright.me/images/2.5-1.png)
 
 `cd` change directory
 
@@ -180,7 +180,7 @@ most important directories
 
 image below shows the content of `/boot`, the highlighted file is the linux kernel 
 
-![image](https://richardbright.me/2.5-2.png)
+![image](https://richardbright.me/images/2.5-2.png)
 
 `/dev` devices are interface files that allow you to connect hardware devices 
 
@@ -198,31 +198,31 @@ image below shows the content of `/boot`, the highlighted file is the linux kern
 
 `man hier` will open the FHS man page of the full Linux FHS - see below
 
-![image](https://richardbright.me/2.5-3.png)
+![image](https://richardbright.me/images/2.5-3.png)
 
-![image](https://richardbright.me/2.5-4.png)
+![image](https://richardbright.me/images/2.5-4.png)
 
-![image](https://richardbright.me/2.5-5.png)
+![image](https://richardbright.me/images/2.5-5.png)
 
-![image](https://richardbright.me/2.5-6.png)
+![image](https://richardbright.me/images/2.5-6.png)
 
-![image](https://richardbright.me/2.5-7.png)
+![image](https://richardbright.me/images/2.5-7.png)
 
-![image](https://richardbright.me/2.5-8.png)
+![image](https://richardbright.me/images/2.5-8.png)
 
-![image](https://richardbright.me/2.5-9.png)
+![image](https://richardbright.me/images/2.5-9.png)
 
-![image](https://richardbright.me/2.5-10.png)
+![image](https://richardbright.me/images/2.5-10.png)
 
-![image](https://richardbright.me/2.5-11.png)
+![image](https://richardbright.me/images/2.5-11.png)
 
-![image](https://richardbright.me/2.5-12.png)
+![image](https://richardbright.me/images/2.5-12.png)
 
-![image](https://richardbright.me/2.5-13.png)
+![image](https://richardbright.me/images/2.5-13.png)
 
-![image](https://richardbright.me/2.5-14.png)
+![image](https://richardbright.me/images/2.5-14.png)
 
-![image](https://richardbright.me/2.5-15.png)
+![image](https://richardbright.me/images/2.5-15.png)
 
 **2.6 Using man**
 
@@ -271,7 +271,7 @@ Built through a `cron` scheduled task - if nothing shows you need to trigger a m
 
 `vim` is the enhanced version of `vi`
 
-![image](https://richardbright.me/2.8-1.png)
+![image](https://richardbright.me/images/2.8-1.png)
 
 
 **2.9 Using vim**
@@ -431,7 +431,7 @@ a symbolic link links to a hard link and not the `inode`
 
 a symbolic link can lunk across devices and directories, hard links cannot 
 
-![image](https://richardbright.me/3.4-1.png)
+![image](https://richardbright.me/images/3.4-1.png)
 
 
 **3.5 Working with Links** 
@@ -623,7 +623,7 @@ It can be used to search for text, and perform an operation on matching text
 **5.1 Understanding the root user**
 
 
-![image](https://richardbright.me/5.1-1.png)
+![image](https://richardbright.me/images/5.1-1.png)
 
 `root` users have unlimited access to the hardware, it's an unrestricted account, different than an admin on a windoes machine
 
@@ -646,7 +646,7 @@ no notes
 
 terminals were connected to `/dev/tty*`
 
-![image](https://richardbright.me/5.4-1.png)
+![image](https://richardbright.me/images/5.4-1.png)
 
 **5.5 Switching Between Virtual Terminals**
 
@@ -899,7 +899,7 @@ Linux first checks user permissions, then group permissions, then defaults to ug
 
 **7.3 Understanding basic permissions**
 
-![image](https://richardbright.me/7.3-1.png)
+![image](https://richardbright.me/images/7.3-1.png)
 
 
 **7.4 Managing Basic Permissions**
@@ -929,7 +929,7 @@ can also directly edit `~/.bash_profile`
 
 **7.6 Understanding Special Permissions**
 
-![image](https://richardbright.me/7.6-1.png)
+![image](https://richardbright.me/images/7.6-1.png)
 
 
 **7.7 Managing special permissions**
