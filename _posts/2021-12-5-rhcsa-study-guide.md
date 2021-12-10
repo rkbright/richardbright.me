@@ -18,10 +18,29 @@ tags:
  by: Sander Van Vugt
  year: 2020
 
+# Module Table of Contents 
+1. [Module 1: Performing Basic System Management Tasks](#module1)
 
-## Module 1: Performing Basic System Management Tasks 
+## Module1
 
-### Lesson 1: Installing RHEL Server
+### Performing Basic System Management Tasks 
+
+# Lesson Table of Contents 
+1. [Lesson 1: Installing RHEL Server](#lesson1)
+2. [Lesson 2: Using Essential Tools](#lesson2)
+3. [Lesson 3: Essential File Management Tools](#lesson3)
+4. [Lesson 4: Working with text files](#lesson4)
+5. [Lesson 5: Connecting to a rhel server](#lesson5)
+6. [Lesson 6: Managing users and groups](#lesson6)
+7. [Lesson 7: Managing permissions](#lesson7)
+8. [Lesson 8: Configuring networks](#lesson8)
+9. [Lesson 9: Managing Processes](#lesson9)
+10. [Lesson 10: Managing Software](#lesson10)
+11. [Lesson 9: Working with systemd](#lesson11)
+
+## Lesson1 
+
+### Installing RHEL Server
 
 #### Learning Objectives
 
@@ -61,8 +80,9 @@ Requirements depend on the type of installation
   * `su -` ensures all the environment variables are loaded with the shell prompt 
   * `exit` will close out the current shell session 
 
+## Lesson2
 
-### Lesson 2: Using Essential Tools 
+### Using Essential Tools
 
 #### Learning Objectives 
 
@@ -256,11 +276,11 @@ Synopsis is the summary of how to use the `man` page
 
 `man` pages are indexed in the `mandb` 
 
-use `man -k` or `apropos` to search the mandb based on keywords
+use `man -k` or `apropos` to search the `mandb` based on keywords
 
 Built through a `cron` scheduled task - if nothing shows you need to trigger a manual rebuild 
 
-`nothing appropriate` typically means you need to rebuild mandb
+`nothing appropriate` typically means you need to rebuild `mandb`
 
 * Must be `root`
 * see `man mandb`
@@ -354,7 +374,9 @@ not to be confused with regular expressions
 go to https://hostname:9090 to access the UI
 
 
-### Lesson 3: Essential File Management Tools
+## Lesson3 
+
+### Essential File Management Tools
 
 #### Learning objectives
 
@@ -471,7 +493,9 @@ to add compression use `-z -j -J`
 
 `xz` 
 
-### Lesson 4: Working with text files
+## Lesson4
+
+### Working with text files
 
 #### Learning objectives
 
@@ -608,7 +632,9 @@ It can be used to search for text, and perform an operation on matching text
 
 
 
-### Lesson 5: Connecting to a rhel server
+## Lesson5 
+
+### Connecting to a rhel server
 
 #### Learning objectives
 
@@ -699,7 +725,9 @@ after initial connection, host key is stored in `~/.ssh/known_hosts`
 
 `ssh -X or ssh -Y` to display graphical screen locally
 
-### Lesson 6: Managing users and groups
+## Lesson6 
+
+### Managing users and groups
 
 #### Learning objectives
 
@@ -867,7 +895,9 @@ look for the pam_tally2 module
 
 `chage` writes to the `/etc/shadows` file
 
-### Lesson 7: Managing permissions
+## Lesson7 
+
+### Managing permissions
 
 #### Learning objectives
 
@@ -980,5 +1010,647 @@ write permission at the directory level will allow you to delete files within th
 
 `vim` will delete and create a new file when you open a file that you are not the owner or in the group but have directory permissions 
 
+## Lesson8 
+
+### Configuring networks
+
+#### Learning objectives
+
+* 8.1 Understanding piv4 networking
+* 8.2 Understanding NIC naming 
+* 8.3 Managing runtime configuration with `ip`
+* 8.4 Understanding rhel 8 networking
+* 8.5 Managing persistent networking with `nmcli`
+* 8.6 Managing persistent networking with `nmtui`
+* 8.7 Verifying network configuration files 
+* 8.8 Testing network connections 
+
+**8.1 Understanding ipv4 networking** 
+
+In ipv4, each node needs its own ip address, written in dotted decimal notation (192.168.4.200/24)
+
+Each ip address must be indicated with the subnet mask behind it 
+
+The default router or gateway specifies which server to forward packers that have an external destination 
+
+The DNS `nameserver` is the ip address of a server that helps resolving to ip addresses and the other way around
+
+ipv4 is still the most common ip version, but ipv6 addresses can be used as well
+
+ipv6 addresses are written in hexadecimal notation (fd01::8eba:210)
+
+ipv4 and ipv6 can co-exist on the same network interface 
+
+![image](https://richardbright.me/images/8.1-1.png)
+
+`192.168.2.200/24` the network is expresses as `192.168.4` and the node as `.200/24`
+
+**8.2 Understanding NIC naming**
+
+ip address configuration needs to be connected to a specific network device  
+
+use `ip link show` to see current devices, and `ip addr show` to check their configuration
+
+every system has an `lo` (loopback) device, which is for internal networking 
+
+apart from that, you'll see the name of the real network device in the BIOS name
+
+classical naming is using device names like `eth0`, `eth1`, etc...
+
+these device names don't reveal any information about the physical device location 
+
+BIOS naming is based on hardware properties to give more specific information in the device name 
+
+* `em[1-N]` for embedded NICs
+* `eno[nn]` for embedded NICs
+* `p<slot>p<port>` for NICs on the PCI bus
+
+if the driver doesn't reveal network device properties, classical naming is used
 
 
+**8.3 Managing Runtime Configuration with ip** 
+
+runtime configurations are not persisted across reboots 
+
+the `ip` tool can be used to manage all aspects on ip networking
+
+the only thing it can do is persist across reboots
+
+it replaces the legacy `ifconfig` tool, no **NOT** use `ifconfig` anymore
+
+use `ip addr` to manage address properties 
+
+use `ip link` to show link properties 
+
+use`ip route` to manage rout properties 
+
+`rx` stands for received packets
+
+`tx` stands for transmitted packets
+
+ipv6 inet6 addresses that start with `fe80` means it's a private ipv6 and you cannot get out to the internet 
+
+`scope global` means the ip address is linked to the internet 
+
+`scope link` means the ip is local only, you cannot go out to the internet 
+
+`dynamic` means the ip was assigned via a dhcp server
+
+`valid_lft` valid lifetime is the valid length of time the dhcp server will assign the ip
+
+`ip addr add dev ens33 10.0.0.10/24` to add an ip address 
+
+adding a secondary ip is helpful for container environments, or cloud hosts 
+
+`ifconfig` cannot show secondary ip addresses 
+
+`ip route show` will show the current route table 
+
+`ip route del default via 192.168.4.2` will delete the specified route 
+
+`ip add default via 192.168.4.2` will reset default route 
+
+dns configuration is set in `/etc/resolve.conf`
+
+
+>options
+>* `-s` to show statistics, e.g., `ip -s link show` 
+
+**8.4 Understanding RHEL 8 Networking**
+
+rhel stores the nic configurations in `/etc/sysconfig/networkscripts/ifcfg-ens33`
+
+`nmcli` (network comandline utility) and `nmtui` (network manager text user interface) to interact with the rhel network manager 
+
+![image](https://richardbright.me/images/8.4-1.png)
+
+
+**8.5 Managing Persistent Networking with nmcli**
+
+an `nmcli` connection is a configuration that is added to a network device 
+
+conections are stored in confoguration files 
+
+the network manager service must be running to manage these files 
+
+ensure the bash-completion RPM package is installed when working with `nmcli`
+
+`man nmcli-examples` to see example configurations 
+
+`nmcli con add con-name my-con-em1- iframe em1 type ethernet \`
+`ip4 192,168.100.100/24 gw4 192.168.100.1 ip4 1.2.3.4 ip6 abbe::cafe`
+
+`con` connection
+
+`add` add a connection 
+
+`con-name` connection name 
+
+a connection is just a configuraton file 
+
+`ifname` is the name of the nic you want to configure 
+
+`type ethernet` is the type of nic 
+
+`gw4` gateway 
+
+`ip4 1.2.3.4` secondary ip address 
+
+`ip6 abbe::cafe` apply a ipv6 address as well
+
+**8.6 Managing Persistent Networking with nmtui**
+
+DOS lik einterface, good for use on servers without a GUI
+
+able to set hostname 
+
+**8.7 Verifying Network Configuration Files**
+
+`/etc/sysconfig/network-scripts` is where the network configuration files are stored 
+
+network config files will follow the following naming convention `ifcfg-device`. for example,  `ifcfg-ens33`, `ifcfg-ethernet-ens33` 
+
+>Important parameters
+>* `BOOTPROTO` boot protocol, scan set it to dhcp
+>* `IDADDR`
+>* `GATEWAY`
+>* `DNS1|2`
+>* `ONBOOT` 
+
+you will need to reload the configuration if any chages are made, run `nmcli connection up ens33` will bring connectivity up on device ens33
+
+**8.8 Testing Network Connections** 
+
+`ping` used to test network connectivity 
+
+`ctl+c` to stop 
+
+>options
+>* `-c 1` to send one ping
+>* `-f` flood 
+
+`ip addr show`
+
+`ip route show`
+
+`dig` can test DNS nameserver working 
+
+`NXDOMAIN` the service does not exist 
+
+troubleshooting 
+
+`ping google.com` 
+
+if you get a `Name or service not known error`, this is a DNS error 
+
+then see if you can ping the DNS server
+
+`ping 8.8.8.8` 
+
+if you get `Network unreachable`, then there is a connectivity problem
+
+look at your ip address and the routing 
+
+if the server was previously had conenctivity, look in the network config file 
+
+`/etc/sysconfig/network-scripts/ifcfg-ens33` 
+
+check the `GATEWAY`
+
+## Lesson9 
+
+### Managing Processes
+
+#### Learning objectives
+
+* 9.1 Understanding jobs and processes
+* 9.2 Managing shell jobs
+* 9.3 Getting process information with `ps`
+* 9.4 Understanding memory usage 
+* 9.5 Understanding cpu load
+* 9.6 Monitoring system activity with `top`
+* 9.7 Sending signals to processes
+* 9.8 Managing priorities and niceness 
+* 9.9 Using tuned profiles 
+
+
+**9.1 Understanding jobs and processes** 
+
+all tasks are started as processes 
+
+processes have a PID
+
+common process management tasks include scheduling priority and sending signals 
+
+some processes are starting multi threads, individual threads cannot be managed 
+
+tasks can be started in the foreground and background
+
+**9.2 Managing Shell Jobs**
+
+use `command &` to start a job in the background 
+
+you can move a job to the background
+
+  * first stop the job using `ctrl+z`
+  * Then type `bg` to move it to the background 
+
+ `jobs` to view all running jobs 
+
+  `fg [n]` to move the last job back to the foreground 
+
+`ctrl+c` will stop a job in the foreground 
+
+`dd if=/dev/zero of=/dev/null &` infinite loop
+
+`while true; do true; done` infinite loop 
+
+**9.3 Getting Process Information with ps** 
+
+`ps` process 
+
+`ps` command has two different dialects, BSD and SystemV
+
+therefore `ps -L` and `ps -L` are different commands 
+
+`ps` shows an overview of current processes 
+
+`ps aux` for an overview of all processes 
+
+`ps -fax` shows hierarchical relations between processes 
+
+`ps -fU student` shows all processes owned by student 
+
+`ps -f --forest -C sshd` shows a process tree for a specific process
+
+`ps L` shows format specifiers 
+
+`ps -eo pid,ppid,user,cmd` uses some of these specifiers to show a list of processes 
+
+pid 1 should always belong to systemd
+
+pids between `[]` are kernel processes 
+
+`ps aux` will list processes in order, so the latest processes will be at the end of the document 
+
+**9.4 Understanding Memory Usage**
+
+linux places as many files as possible in cache to guarantee fast access to the files 
+
+for that reason, linux memory often shows as saturated 
+
+`swap` is used as an overflow buffer of emulated RAM on disk 
+
+the inux kernel moves inactive memory to swap first 
+
+`free -m` to get details about current memory 
+
+**9.5 Understanding CPU Load** 
+
+![image](https://richardbright.me/images/9.5-1.png)
+
+`uptime` how long system is up and the load average 
+
+load average is by last `[1 minute], [5 minutes], [15 minutes]`
+
+load average is the average amount of runnable processes, which are processes waiting in the runqueue or processes currently running 
+
+use `watch` to monitor command over time, it refreshes every two seconds 
+
+`lscpu` to check cpu specs to help determine load averages 
+
+**9.6 Monitoring System Activity with top**
+
+`top` is a dashboard that allows you to monitor current system activity 
+
+`line 1:` `uptime` command shows how long the system has been up and the load averages 
+
+`line 2:` `Tasks` how many tasks running on system, `running` how many tasks actively running, `sleeping` how many tasks are sleeping and was not processes by the cpu on the prior cycle, `stopped` tasks that were stopped by `ctrl+z`, `zombie` tasks that can no longer communicate with the parent process 
+
+`line 3:` `CPUs` shows what all the system cpus are doing, `us` load for processes running in the user space, `sy` load for processes running in system space, kernel processes, `ni` processes that have been changes by the  `nice` command, `id` percentage of time the cpu is doing nothing, `wa` waiting for IO, `hi` hardware interrupt, amount of time the system is waiting for a hardware device, `si` software interrupt, `st` stolen time 
+
+`line 4:` displays `free -m` results 
+
+you can display and manage your system using `top`
+
+>option keys
+> * `f` to show and select from available display fields
+> * `M` to filter on memory
+> * `W` to save new display settings 
+> * `1` to see cpu load for each cpu
+> * `k` to send signal to a process 
+> * `r` renice a process 
+
+**9.7 Sending Signals to Processes**
+
+a signal allows the operating system to interupt a process from software and ask it to do something 
+
+interputs are comparable to signals but are generated from hardware
+
+a limited amount of signals can be used and is documented in `man 7` signals 
+
+not all signals work in all cases 
+
+the `kill` command is used to send signals to the PIDs 
+
+you can alo use `k` in `top`
+
+different kill-like commands exits, like `pkill` and `killall` 
+
+`man 7 signal` will give you an overview of signals 
+
+`kill -15 pid` will appropriately shutdown process 
+
+`kill -9 pid` will force kill the process 
+
+signal 9 will just stop everything, avoid using it 
+
+`pkill` you can use patterns 
+
+`killall` can kill processes based on a name 
+
+**9.8 Managing Priorities and Niceness**
+
+by default, all processes are started with the same priority 
+
+in kernel-land, real-time processes can be started, which will always be handeled with highest priority 
+
+to change priorities of non-realtime processes, the `nice` and `renice` commands can be used
+
+nice values range from -20 to 19
+
+the higher the number the nicer the process with exist with other processes, meaning it will use less cpu time
+
+negative numbers will use more cpu time 
+
+uers can set their processes to a lower priority level, meaning set their nice level to a higher number. users cannot lower their priority without root access 
+
+`nice --help | less` to see help information 
+
+`renice --help` to see help information 
+
+
+**9.9 Using tuned profiles**
+
+`tuned` is a service that allows for performance optimization in an easy way
+
+different profiles are provided to match specific server workloads
+
+to use them, ensure the `tuned` service is enabled and started 
+
+`tuned-adm list` will show a list of profiles 
+
+`tuned-adm profile [name]` will set a profile 
+
+`tuned-adm active` will show the current profile 
+
+## Lesson10
+
+### Managing Software
+
+#### Learning objectives
+
+* 10.1 Understanding RPM packages
+* 10.2 Setting up repository access
+* 10.3 Understanding modules and application streams 
+* 10.4 Managing packages with `yum`
+* 10.5 Managing modules and application streams 
+* 10.6 Using `yum` groups
+* 10.7 Managing `yum updates` and `yum history` 
+* 10.8 Using RPM
+* 10.9 Using red had subscription manager 
+
+
+**10.1 Understanding RPM packages** 
+
+`RPM` red hat package manager, is a package format to install software, as well as a database of installed packages on the system 
+
+the package contains an archive of files that is compressed with `cpio`, as well ad metadata and a list of package dependencies 
+
+RPM packages may contain scripts as well
+
+to install, repositories are used 
+
+individual packages may be installed, but this should be avoided 
+
+**10.2 Setting up Repository Access**
+
+create a local repository so that we can install packages from the rhel 8 installation disk 
+
+create an iso image: `dd if=/dev/sr0 of=/rhel8.iso bs=1M` 
+
+create directory `/repo`
+
+exit the `/etc/fsab` 
+
+add `/rhel8.iso    /repo    iso9660   defaults   0 0`
+
+run `systemctl daemon-reload` 
+
+then `mount -a` 
+
+
+create the file `/etc/yum.repos.d/appstream.repo` with the following content 
+
+`[appsream]`
+`name=appstream`
+`baseurl=file:///repo/AppStream`
+`gpgcheck=0`
+
+you also need to create a baseos repo 
+
+`[BaseOS]`
+`name=BaseOS`
+`baseurl=file:///repo/BaseOS`
+`gpgcheck=0`
+
+
+**10.3 Understanding Modules and Application Streams**
+
+rhel 8 introduces application streams and modules 
+
+application streams are used to separate user space packages from core kernel operations 
+
+using application streams allows for working with different versions of packages
+
+base packages are provided through the baseOS repository
+
+AppSteam is provided as a separate repository 
+
+application streams are delivered in two formats, 1) traditional rpms and 2) new modules
+
+modules can contain streams to make multiple versions application available
+
+enabling a module stream gives access to rpm packages in that stream 
+
+modules can also have profiles, a profile is a list of packages that belong to a specific use-case
+
+the package list of a module can contain packages outside the module stream
+
+use the `yum module` commands to manage modules 
+
+**10.4 Managing Packages with yum**
+
+`yum` wa created to be intuitive 
+
+`yum search` 
+
+`yum install`
+
+`yum remove` 
+
+`yum update` 
+
+`yum provides` goes beyond what `yum search` can provide 
+
+`yum info`
+
+`yum list`
+
+**10.5 Managing Modules and Application Streams**
+
+`yum module list` to view all available modules 
+
+`yum module provides httpd` searches the module that provides a specific package 
+
+`yum module info php`
+
+`yum module info --profile php` shows profiles 
+
+`yum module list php` shows which streams are available 
+
+`yum module install php:7.1` or `yum install @php:7.1` will install and enable a specififc module stream 
+
+`yum module install php:7.1/devel` installs a specific profile 
+
+`yum install httpd` will have yum automatically enable the module stream this package is in before installing this package 
+
+`yum module enable php:7.1` enables the module but doesn't install anything yet 
+
+`yum distro-sync` will update or downgrade packages from a previous module stream 
+
+**10.6 Using yum Groups** 
+
+`yum` groups are provided to give access to specific categories of software 
+
+`yum groups list` gives a list of the most common yum groups
+
+`yum groups list hidden` shows all yum groups
+
+`yum groups info [groupname]` shows which packages are in a group 
+
+`yum groups install [groupname]`   will install a specific yum group 
+
+`yum groups install --with-optional "Directory Client"` will install the default and optional packages in a group
+
+**10.7 Managing yum updates and yum history**
+
+`yum history` gives a list of recently issues commands 
+
+`yum history undo` allows you to undo a specific command, based on the history information 
+
+`yum update` will update all packages on your system
+
+`yum update [packagename]` will update one package only, including it's dependencies 
+
+`yum history undo id#` will undo a prior command 
+
+**10.8 Using RPM Queries**
+
+`rpm` is the legacy command to manage packages 
+
+`rpm` does not install package dependencies very well 
+
+good source of information about packages that have already been installed on the system 
+
+`rpm` is useful for package queries 
+
+`rpm` queries by default are against the database of installed packages, add `-p` to query package files 
+
+`rpm -qf /any/file` 
+
+`rpm -ql mypackage` 
+
+`rpm -qc my package`
+
+`rpm -qp --scripts mypackage-file.rpm` 
+
+**10.9 Using Red Hat Subscription Manager**
+
+to work with rhel repos you need a subscription 
+
+`subscription-manager register` will register yur system 
+
+`subscription-manager attach --auto` to connect your subscription 
+
+does not work on CentOS 
+
+
+## Lesson11
+
+### Working with systemd
+
+#### Learning objectives
+
+* 11.1 Understanding systemd
+* 11.2 Managing systemd services
+* 11.3 Modifying systemd service configuration 
+
+**11.1 Understanding systemd** 
+
+Systemd is the manager of everything after the start of the linux kernel 
+
+Managed items ae called units 
+
+Different unit types are available 
+
+* services
+* mounts
+* timers
+* ...
+
+`systemctl` is the management interface to work with systemd
+
+Managing services is the most important systemd related task for an admin 
+
+`systemctl -t help` to see the types of available units of the system 
+
+`systemctl list-unit-files` to see a list of services and their status 
+
+`systemctl list-units` to see a list of units 
+
+
+**11.2 Managing Systemd Services** 
+
+system admins must be able to manage the state of modules
+
+disabled / enabled determine if a module should be automatically started while booting 
+
+start / stop is managing runtime state of a service 
+
+`systemctl status|start|stop|reload [service]` to manage service runtime 
+
+`systemctl enable [service]` will automatically start when the system restarts - a symbolic link is created in `/etc/systemd/*` 
+
+
+**11.3 Modifying Systemd Service Configuration**
+
+default system-provided systemd unit files ar ein `/usr/lib/systemd/system`
+
+custom unit files are in `/etc/systemd/system` 
+
+run-time automatically generated unit files are in `/run/systemd`
+
+while modifying a unit file, do not edit the file in `/usr/lib/systemd/system` but create a custom file in `/etc/systemd/system` that is used as an overlay file 
+
+better, use `systemctl edit unit.service` to edit unit files 
+
+use `systemctl show [service]` to show available parameters 
+
+using `systemcl-reload` may be required 
+
+`systemctl cat httpd` will show the contents of the unit file 
+
+`systemctl edit [service]` to create an over ride file 
+
+`systemctl daemon-reload` will read new settings into the runtime 
