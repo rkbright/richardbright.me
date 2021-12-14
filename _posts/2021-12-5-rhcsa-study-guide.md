@@ -20,6 +20,7 @@ tags:
 
 # Module Table of Contents 
 1. [Module 1: Performing Basic System Management Tasks](#module1)
+2. [Module 2: Operating running systems](#module2)
 
 ## Module1
 
@@ -36,7 +37,9 @@ tags:
 8. [Lesson 8: Configuring networks](#lesson8)
 9. [Lesson 9: Managing Processes](#lesson9)
 10. [Lesson 10: Managing Software](#lesson10)
-11. [Lesson 9: Working with systemd](#lesson11)
+11. [Lesson 11: Working with systemd](#lesson11)
+12. [Lesson 12: Scheduling Tasks](#lesson12)
+13. [Lesson 13: Configuring logging](#lesson13)
 
 ## Lesson1 
 
@@ -1217,6 +1220,8 @@ if the server was previously had conenctivity, look in the network config file
 
 check the `GATEWAY`
 
+## Module2
+
 ## Lesson9 
 
 ### Managing Processes
@@ -1654,3 +1659,216 @@ using `systemcl-reload` may be required
 `systemctl edit [service]` to create an over ride file 
 
 `systemctl daemon-reload` will read new settings into the runtime 
+
+## Lesson12 
+
+### Scheduling Tasks
+
+#### Learning objectives
+
+* 12.1 Understanding `cron` and `at`
+* 12.2 Understanding `cron` scheduling options 
+* 12.3 Understanding `anacron` 
+* 12.4 Scheduling with `cron` 
+* 12.5 Scheduling tasks with systemd timers 
+* 12.6 Using `at`
+* 12.7 Managing temporary files 
+
+
+**12.1 Understanding `cron` and `at`**
+
+`cron` is a daemon that triggers jobs on a regular basis 
+
+It works with different configuration files that specify when a job should be started 
+
+Use it for regular re-occurring jobs, like backup jobs
+
+`at` is used for tasks that need to be started once
+
+systemd timers provide a new alternative to `cron` 
+
+**12.2 Understanding cron Scheduling Options**
+
+`crontab -e` will create a cron job for the current user 
+
+stored in `/etc/cron.d`
+
+scripts, executed on an hourly, daily, weekly, monthly basis -- do not have a specific time indication 
+
+generic time-specific cron jobs in `/etc/crontab` deprecated 
+
+**12.3 Understanding anacron** 
+
+is a service behind cron that takes care of jobs that are executed on a regular basis but do not specify a time 
+
+it takes care of jobs in `/etc/cron.hourly|daily|weekly|monthly` 
+
+configuration is in `/etc/anacron` 
+
+**12.4 Scheduling with cron**
+
+
+`crontab -e` as a specific user 
+
+create a cron tim ein `/etc/cron.d`
+
+>`cron` time specification: `*/10 4 11 12 1-5`
+> * `*/10` minute, every ten minutes 
+> * `4` hour
+> * `11` day of month
+> * `12` month, 
+> * `1-5` day of week, specifies weekdays 
+
+cron does not have stdout, so any command that writes to stdout will fail 
+
+use `*` to specify every instance of the time specification 
+
+>**Exam Tip** 
+> * `man 5 cron` is useful 
+
+**12.5 Scheduling Tasks with Systemd Timers** 
+
+systemd timers also allows for scheduling jobs at a regular basis, cron is still the standard
+
+read `man 7 systemd-timer` for more information about systemd timers 
+
+read `man 7 systemd-time` for specification of the time format to be used 
+
+**12.6 Using at** 
+
+`at` developed to run a job at a specific time 
+
+the `atd` service must be running to run once-only jobs 
+
+use `at [time]` to schedule a job 
+
+* type one or more specifications in the `at` interactive shell
+
+* use `ctrl+d` to close this shell 
+
+use `atq` for a list of jobs currently scheduled
+
+use `atrm` to remove jobs from the list 
+
+**12.7 Managing Temporary Files** 
+
+the `/usr/lib/tmpfiles.d` directory manages settings for creating, deleting and cleaning up of temporaty files 
+
+the `systemd-tmpfiles-clean.timer` unit can be configured to automatically clean up temporary files 
+
+* it triggers the `systemd-tmpfiles-clean.service` 
+
+* this service runs `systemd-tmpfiles --clean` 
+
+the `/usr/lib/tmpfiles.d/tmp.conf` file contains settings for the automatic tmp file cleanup 
+
+when making modifications, copy the file to `/etc/tmpfiles.d` 
+
+after making modifications to the file, use `systemd-tmpfiles --clean /etc/tmpfiles.d/tmp.conf` to ensure the file does not caontain any errors
+
+in `tmp.conf` you'll find lines specifying which directory to monitor, which permissions are set on what directory, which owners, and after how many days of not being used will the tmp file be removed 
+
+different actions can be performed on the directories and files that are managed 
+
+consult `man tmpfiles.d` for more detais
+
+## Lesson13
+
+### Configuring logging
+
+#### Learning objectives
+
+* 13.1 Understanding rhel 8 logging options 
+* 13.2 Configuring rsyslog logging
+* 13.3 Working with `systemd-journald` 
+* 13.4 Preserving the systemd journal 
+* 13.5 Configuring logrotate 
+
+**13.1 Understanding rhel 8 logging options**
+
+`rsyslogd` has been around since the late 1970s
+
+`systemd-journald` is not peristent by default and it's in memory only 
+
+can make it persistent by creating `/var/log/journald` and rebooting systsem 
+
+![image](https://richardbright.me/images/13.1-1.png)
+
+
+**13.2 Configuring Rsyslog Logging**
+
+rsyslogd needs the `rsyslogd` service running 
+
+the main configuration file in `/etc/rsyslog.conf`, specifies the rules for what and where services are logged
+
+snap-in files can be placed in `/etc/rsyslog.d`
+
+each logger line contains three items
+
+* `facility` the specific facility that the log is created for 
+
+* `severity` the severity from which should be logged 
+
+* `destination` the file or other destination the log should be written 
+
+log files normally are in `/var/log`
+
+use the `logger` command to write messages to rsyslog manually 
+
+`rsyslogd` is and must be backward compatible with the archaic syslog service 
+
+in syslog, a fixed number of facilities was defined, like kern, authpriv, crom, and more
+
+to work with services that don't have their own facility, local{0...7} can be used
+
+becasue of the lack of facilities, some services take care of their own logging and don't use rsyslog
+
+**13.3 Working with systemd-journald**
+
+`systemd-journald` is the log service that is part of systemd
+
+logs everyting from the start of the system 
+
+it integrates well with `systemctl status [unit]`
+
+`journalctl` can be used to read log entries 
+
+messages are logged also to rsyslogd using the rsyslogd imjournal module 
+
+to make journal persistent, use `mkdir /var/log/journal` 
+
+**13.4 Preserving the Systemd Journal**
+
+the journal is written to `/run/log/journal` which is automatically cleared on system reboot
+
+edit `/etc/systemd/journald.conf` to make the journal persistent across reboots 
+
+set the storage parameter in the file to one of three values 
+
+* `persistent` will store the journal in the `/var/log/journal` directory. the directory will be created if it doesn't exist 
+
+`volatile` stores the journal only in `/rin/log/journal` 
+
+`auto` will store the journal in `/var/log/journal` if that directory exists, and in `/run/log/journal` if no `/var/log/journal` exists 
+
+built-in log rotation runs monthly 
+
+journal cannot grow beyond 10% of the size of the filesystem it is on 
+
+the journal will also make sure at least 15% of its file system wil remain available as free space 
+
+these settings can be changed through `/etc/systemd/journald.conf`
+
+
+`systemctl status systemd-journald` to check service status 
+
+use `-l` option to show file size 
+
+**13.5 Configuring Logrotate**
+
+logrotate is started through cron.daily to ensure that log files don't grow too big
+
+main configuration is in `/etc/logrotate.conf` snap-in files can be provided through `/etc/logrotate.d/`
+
+deafult logrotate is every 4 weeks 
+
