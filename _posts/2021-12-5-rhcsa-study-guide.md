@@ -40,6 +40,7 @@ tags:
 11. [Lesson 11: Working with systemd](#lesson11)
 12. [Lesson 12: Scheduling Tasks](#lesson12)
 13. [Lesson 13: Configuring logging](#lesson13)
+13. [Lesson 14: Managing storage](#lesson14)
 
 ## Lesson1 
 
@@ -1872,3 +1873,266 @@ main configuration is in `/etc/logrotate.conf` snap-in files can be provided thr
 
 deafult logrotate is every 4 weeks 
 
+## Lesson14
+
+### Managing storage
+
+#### Learning objectives
+
+* 14.1 Understanding disk layout 
+* 14.2 Understanding linux storage options 
+* 14.3 Understanding gpt and mbr partitions 
+* 14.4 Creating partitons with `parted` 
+* 14.5 Creating mbr partitions with `fdisk` 
+* 14.6 Understanding file system differences
+* 14.7 Masking and mounting file systems 
+* 14.8 Mounting partitions through `/etc/fstab`
+* 14.9 Managing persistent naming attributes 
+* 14.10 Managing systemd mounts
+* 14.11 Managing xfs file system
+* 14.12 Creating a swap partition 
+
+**14.1 Understanding disk layout** 
+
+![image](https://richardbright.me/images/14.1-1.png)
+
+`lsblk` lists all disks attached to the computer 
+
+`parted` is the preferred partitioning utility in rhel 
+
+`cat /proc/partitions` to show a list of partitions on the system 
+
+**14.2 Understanding Linux Storage Options**
+
+partitions are the classic solution, us ein all cases
+
+used to allocate dedicated storage to specific types of data 
+
+partitions are used to segment the systems data 
+
+lvm logical volumes
+
+used as the default installation in rhel 
+
+add flexibility to storage (resize, snapshots and more)
+
+stratis is the next generation volume managing filesystem that used thin provisioning by default 
+
+implimented is user space, which makes api access possible 
+
+vdo - virtual data optimizer
+
+focused on storing files in the most efficient way 
+
+manages deduplicated and compresses storage pools
+
+**14.3 Understanding GPT and MBR Partitions**
+
+mbr - master boot record is part of the 1981 pc specification 
+
+* 512 bytes to store boot information 
+* 64 bytes to store partitions 
+* place for 4 partitions only with a max size of 2TB
+* to use more partitions, extended and logical partitions must be used 
+
+gpt - guid partition table 
+
+* more space to store partitions 
+* used to overcome mbr limitations 
+* 128 partitions max 
+* developed to work with uefi - universal extendable firmware interface 
+
+**4.4 Creating Partitions with parted**
+
+while creating a partition, you do not automatically create a filesystem 
+
+the `parted` file system attribute only writes some unimportant file system metadata 
+
+in rhel 8, `parted` is the default utility 
+
+alternatively, use `fdisk` to work with mbr and `gdisk` to use guid partitions 
+
+`parted /dev/sdb` 
+
+`print` wil show isf there is a current partition table 
+
+`mklabel msdos|gpt` 
+
+`mkpart part-type name fs-type start end` 
+
+* `part-type` applies to the mbr only and sets primary, logical, or extended partition
+* `name` arbitrary name, required for gpt
+* `fs-type` does not modify the filesystem but sets some irrelevant system dependent metadata 
+* `start end` specify start and end, counting from the begining of the disk 
+* for example, `mkpart primary 1024 MiB 2048MiB` will create a 1 GiB primary partition 
+* you can use `mkpart` in interactive mode 
+
+rhel defaults to KiB, MiB, GiB, etc.. and not KB, MB, GB
+
+KiB is expressed as 1024 
+KB is expressed as 1000
+
+`print` to verify creation of new partition 
+
+`quit` to exit parted she;; 
+
+`udevadm settle` to ensure that the new partition device is created 
+
+`cat /proc/partitons` to verify the creation of the partition
+
+**14.5 Creating MBR Partitions with fdisk**
+
+`fdisk /dev/nvme0n[n]` to start shell 
+
+`partprobe` recent changes to disk are updated to the kernel partition table 
+
+**14.6 Understanding File System Differences**
+
+you will need to apply a filesystem after making a partition 
+
+`xfs` is the default rhel filesystem 
+
+* fast and scalable 
+* used copy on write (CoW) to guatentee data integrity 
+* size canbe increased but not decreased 
+
+`ext4`
+
+* default in rhel 6 and is still used 
+* backward compatible to ext3
+* uses jornal to guarantee data integrity 
+* size can be increased and decreases 
+
+`btrfs` rhel decided not to move forward with this file sysytem 
+
+
+**14.7 Making and Mounting File Systems**
+
+`mkfs.xfs` creates an xfs file system 
+
+`mkfs.ext4` creates an ext4 file system 
+
+use `nkfs.tab.tab` to show full list 
+
+do not use `mkfs` as it will default to creating an ext2 file system 
+
+after making the files system, you can mount it in runtime using the `mount` command 
+
+use `umount` before disconnecting a device 
+
+`mkfs.xfs /dev/nvme0n1p1` to make an xfs file system on partition one on disk nvmen1
+
+`mount /dev/nvme0n1p1 /mnt` to mount the partition on the /mnt directory 
+
+you can run `mount` to see all the mounted filesystems 
+
+`mount | grep '^/'` to show only mounts that start with a `/`
+
+`umount /dev/nvme0n1p1` to disconnect the partition 
+
+`lsof /mnt ` will show open files that will need to be closed if you ar eunable to `umount` 
+
+can also use `umount /mnt` 
+
+`mkfs.vfat` will create a windows compatible 32 bit filesystem 
+
+**14.8 Mounting Partitions through /etc/fstab**
+
+`/etc/fstab` is the main configuration file to persist mount partitions 
+
+`/etc/fstab` content is used to generate systemd mounts by the `systemd-fstab-generator  utility  
+
+|**name of device** | **mount point** | **file system type**  | **default mount options**  | **dump** | **filesystem check** |
+| --- | --- | --- | --- | --- | --- | --- | 
+| /dev/nvme0n1p1 | /mnt | xfs | defaults | 0 | 0 | 
+| LABEL=mnt | /mnt | xfs | defaults | 0 | 0 | 
+| UUID="856916af-0e43-44d5-a280-090ba8470970" | /mnt | xfs | defaults | 0 | 0 | 
+
+to update systemd, make sure to use `systemd demon-reload` after editing `/etc/fstab`
+
+`mount -a` to mount all file systems specified in /`etc/fstab`
+
+**14.9 Managing Persistent Naming Attributes** 
+
+why do we need persistent nameing? 
+
+in datcenter ebvironments, block device names may chnage. Different solutions exist for persistent naming 
+
+uuid - universal unique id, and is automatically generated for each device that contains a file system or anything similar 
+
+label - while creating the file system, the option `-L` can be used to set an arbitraty name that can be used for mounting the file system 
+
+unique device names are created in `/dev/disk` 
+
+`blkid` block id, provides the uuid 
+
+`tune2fs` to set  label 
+
+`tune2fs -L articles /dev/nvme0n191` to set a label 
+
+`ll /dev/disk/by-uuid/` to also see disk names, uuids, etc...
+
+**14.10 Managing Systemd Mounts**
+
+`/etc/fstab` mounts already are systemd mounts
+
+mounts can be created using systemd .mount files 
+
+using .mount files allows you to be more specific in defining dependecenies 
+
+use `systemctl cat tmp.mount` for an example 
+
+| **what** | **where** | **type** | **options**  | 
+| --- | --- | --- | --- | --- | --- | --- | 
+| tmpfs | /tmp | tmpfs | Options=mode=1777,strictatime,nosuid,nodev |
+
+copy file as a template and chnage settings 
+
+`cp /usr/lib/systemd/system/tmp.mount /etc/systemd/system/example.mount`
+
+run `systemd demon-reload` after configuring the file 
+
+`systemctl enable --now example.mount` 
+
+
+**14.11 Managing XFS File Systems**
+
+utilities for managin gxfs file system 
+
+`xfsdump` used for creating backups of xfs formatted devices and considers specific xfs attributes 
+
+* `xfsdump` only works on a complete xfs device 
+* `xfsdump` can make full backups (-l O) or different levels of incremental backups
+* `xfsdump -l ) -f /backupfiles/data.xfsdump /data` creates a full backup of the contents of the /data directory 
+
+the `xfsrestore` command is used to restore a backup that was made with `xfsdump` 
+
+* `xfsrestore -f /backupfiles/data.xfsdump /data` 
+
+the `xfsrepair` command cna be manually started to repair broken xfs file systems 
+
+**14.12 Creating a Swap Partition**
+
+swap is ram emulated on disk 
+
+linux kernel is smart with dealing with swap 
+
+all linux systems should have at least some swap 
+
+the amount of swap depends on the use of the server 
+
+the amount of swap is related to the amount of ram you have on the server 
+
+264GB of ram, 64gb of swap 
+
+swap can be created on any block device, including swap files 
+
+while creating swap with `parted`, set file system to linux-swap 
+
+after creating the swap partition, use `mkswap` to create the swap file system 
+
+activate using `swapon /dev/nvme0n2p2`
+
+add a line to `/ect/fstab` to make it persistent 
+
+swap is not mounted on a directory, it is mounted on the swap kernel interface 
