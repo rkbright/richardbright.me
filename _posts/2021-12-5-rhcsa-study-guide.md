@@ -40,7 +40,8 @@ tags:
 11. [Lesson 11: Working with systemd](#lesson11)
 12. [Lesson 12: Scheduling Tasks](#lesson12)
 13. [Lesson 13: Configuring logging](#lesson13)
-13. [Lesson 14: Managing storage](#lesson14)
+14. [Lesson 14: Managing storage](#lesson14)
+15. [Lesson 15: Advanced storage](#lesson15)
 
 ## Lesson1 
 
@@ -2136,3 +2137,261 @@ activate using `swapon /dev/nvme0n2p2`
 add a line to `/ect/fstab` to make it persistent 
 
 swap is not mounted on a directory, it is mounted on the swap kernel interface 
+
+## Lesson15
+
+### Advanced storage
+
+#### Learning objectives
+
+* 15.1 Understanding lvm, stratis, and vdo
+* 15.2 Understanding lvm setup 
+* 15.3 Creating an lvm logival volume
+* 15.4 Understanding device mapper and lvm device names
+* 15.5 Resizing lvm logical volumes 
+* 15.6 Understanding stratis setup 
+* 15.7 Creating stratis storage
+* 15.8 Managing stratis storage features 
+* 15.9 Understanding vdo 
+* 15.10 Configuring vdo volumes 
+
+**15.1 Understanding lvm, stratis, and vdo** 
+
+lvm logical volumes 
+
+* used during default installations of rhel 
+* adds flexibility to storage (resize, snapshots, and more) 
+
+stratis 
+
+* next generation volume managing filesystem 
+* implemented in user space, which makes api access possible 
+
+vdo - virtual data optimizer
+
+* focuses on storing files in the most efficient way 
+* manages deduplication and compressed storage pools 
+
+**15.2 Understanding LVM Setup** 
+
+![image](/images/15.2-1.png)
+
+**15.3 Creating an LVM Logical Volume** 
+
+create a partition frm `parted` use `set n lvm on`
+
+use `pvcreate /dev/sdb1` to create the physical volume
+
+use `vgcreate vgdata /dev/sbd1` to create the volume group 
+
+use `lvcreate -n lvdata -L 1G vgdata` to create the locigal volume 
+
+use `mkfs /dev/vgdata/lvdata` to create a file system 
+
+put in /etc/fstab to mount it persistently 
+
+use `pvs` after creating the physical volume to verify creation 
+
+`vgs` will print volume group information 
+
+`lvs` will print logical volume information 
+
+`findmnt` will find existing mounts 
+
+**15.4 Understanding Device Mapper and LVM Device Names**
+
+device mapper is a system that the kernel uses to interface storage devices 
+
+device mapper generates meaningless names like /dev/dm-0 and /dev/dm-1
+
+meaningful makes are provided ads symbolic links through /dev/mapper 
+
+`/dev/mapper/vgdata-lvdata`
+
+alternatively, use the lvm generated symbolic links 
+
+`/dev/vgdata/lvdata` 
+
+never use the /dev/dm-0 names as they change, use the symbolic link names 
+
+**15.5 Resizing LVM Logical Volumes**
+
+`vgs` to verify availability in the volume group
+
+`vgextend` to add new physical volumes to teh volume group
+
+`lvextend -r -L +1GiB` to resize filesystem 
+
+> * `-r` makes sure the file system is resized in the logical volume 
+
+* `e2resize` is an independent resize utility for ext file systems 
+* `xfs_growfs` can be used t grow an xfs file system 
+
+you cannot shrink an xfs file system 
+
+you can shrink an ext4 filesystem 
+
+![image](/images/15.5-1.png)
+
+**15.6 Understanding Stratis Setup** 
+
+volume management file system and red hat's answer to btrfs and zfs 
+
+* on top of stratis a regular file system is needed: xfs
+
+it is built on top of any block device, including lvm devices 
+
+it offers advanced features 
+
+* thin provisioning 
+* snapshots 
+* cache tier 
+* programmatic api
+* monitoring and repair 
+
+staratis architecture 
+
+the stratis pool is created from one or more storage devices (blockdev) 
+
+* stratis creates a /dev/stratis/my-pool directory for each pool 
+* this directory contans links to devices that represent the file systems in the pool 
+* block devices in a pool may not be thin provisioned 
+
+the xfs file system is put in a volume on top of the pool and is an integrated part of it 
+
+* each pool can contain one or more file systems 
+* file systems are thin provisioned and do not have a fixed size 
+* the thin volumewhich is an integrated part of the file system automatically grows as more data is added to the file system 
+
+**15.7 Creating Stratis Volumes** 
+
+part one
+
+* `yum install stratis-cli stratisd` 
+* `systemctl enable --now stratisd`
+* `stratis pool create mypool /dev/nvme0n2`
+
+  * add new block devices later using `stratis blockdev add-data`
+  * partitions are not supported 
+  * note that the block device must be at least 1GiB 
+
+* `stratis pool` to see pool information 
+* `stratis fs create mypool myfs1`
+
+  * note this will create an xfs file system; xfs is the only file system option with startis  
+
+* `stratis fs list mypool` will show all file systems in the pool 
+
+part two 
+
+* `mkdir /myfs1`
+* `mount /dev/stratis/mypool/myfs1 /myfs1`
+* `stratis pool list`
+* `stratis filesystem list` 
+* `stratis blockdev list mypool` 
+* `blkid` to find the stratis volume uuid
+* mount by uuid in /etc/fstab 
+
+**15.8 Managing Stratis Storage Features** 
+
+pools can be extended by adding additional blocks devices 
+
+use `stratis pool add-data mypool /dev/nvme0n3` to add another block device 
+
+standard linux tools don't give accurate sizes as stratis volumes are thin provisioned 
+
+use `stratis blockdev` to show information about all block devices used for stratis 
+
+use `stratis pool` to show information about all pools 
+
+* note that physical used should not come too close to physical size 
+
+use `stratis filesystem` to monitor individual filesystem 
+
+a snapshot is an individual file system that can be mounted 
+
+after creation, snapshots can be mounted 
+
+a snapshot and its origin are not lonked, the snapshotted file system can live longer than the file system it was created from 
+
+each snapshot needs at least half a gigabyte of backing storage for the xfs log 
+
+`stratis fs snapshot mypool myfs1 myfs1-snapshot` 
+
+* changes to the original fs will not be reflected in the snapshot 
+* use `mount /stratis/mypool/my-fs-snapshot /mnt` to mount it 
+
+revert the original volume to the state in the snapshot 
+
+* `umount /myfs1`
+* `stratis fd destroy mypool myfs1`
+* `stratis fs snapshot mypool myfs1-snap myfs` 
+
+Note that this appreach wouldn't work on lvm 
+
+`stratis filesystem destroy mypool mysnapshot` will delete a snapshot
+
+a similar procedure is used for destroying file systems `stratis filesystem destroy mypool myfs` 
+
+when there are no more file systems in a pool, use `stratis pool destroy mypool` to delete the pool 
+
+**15.9 Understanding VDO** 
+
+virtual data optimizer is used to optimize how data is stored on disk 
+
+it is used as a separate volume manager on top of which file systems will be created
+
+provides thin-provisioned storeage 
+
+* use a logical size 10 times the physical size for vms and containers 
+* use a logical size 3 times the physical size for object storage 
+
+used in cloud/container environments
+
+it manages deduplicated and compressed storage pools in rhel 8 
+
+**15.10 Configuring VDO Volumes** 
+
+ensure the the underlying block device are > 4GiB 
+
+`yum install vdo kmod-kvdo` 
+
+`vdo create --name=vdo1 --device=/dev/nvme0n2p1 --vdoLogicalSize=1T`
+
+`mkfs.xfs -K /dev/mapper/vdo1`
+
+`udevadm settle` will wait for the system to register the new device name 
+
+in /etc/fstab, include the `x-systemd.requires=vdo.service` and the `discard` mount options or use the systemd example file 
+
+monitor using `vdostats --human-readable` 
+
+run `systemctl daemon-reload` 
+
+`systemctl enable --now vdo1.mount` 
+
+make sure to reboot to ensure auto remounting 
+
+stop at grub boot menu adn press `e` 
+
+remove `rhgb quiet` 
+
+`ctrl-x` 
+
+**15.11 Understanding LUKS Encrypted Volumes** 
+
+![image](/images/15.11-1.png)
+
+**15.12 Configuring LUKS Encrypted Volumes** 
+
+use `parted` to create the partition 
+
+`cryptsetup luksFormat` will format the luks device 
+
+`cryptsetup luksOpen` will open it and create a device mapper name 
+
+mount the resulting device mapper device 
+
+to automate the `cryptsetup luksOpen`, use /etc/crypttab 
+
+to automate mounting the volumes, use /etc/fstab

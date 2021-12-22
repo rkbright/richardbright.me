@@ -11,7 +11,7 @@ Prior to my current role I supported the General Services Administration (GSA) l
 
 <!--Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}-->
 
-***Interests:*** SAS Programming, TypeScript, Angular, Data Analytics/Engineering, ML & AI, DevSecOps, Linux, Cloud, and general front-end web development. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
+***Interests:*** Linux, SAS Programming, Data Analytics/Engineering, ML & AI, DevSecOps, and Cloud. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
