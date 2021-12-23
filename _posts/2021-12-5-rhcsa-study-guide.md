@@ -7,6 +7,7 @@ permalink: /rhcsa-study-guide/
 toc: true
 tags:
   - rhcsa
+  - linux
 ---
 
 >I decided to take the RHCSA within a few months and decided to prep using Sander's video and books that are available via an [O'Reilly Subscription](https://www.oreilly.com/). I'll provide more details as I go, and how I did on the exam. 
@@ -21,6 +22,7 @@ tags:
 # Module Table of Contents 
 1. [Module 1: Performing Basic System Management Tasks](#module1)
 2. [Module 2: Operating running systems](#module2)
+3. [Module 3: Performing Advanced System Administration Tasks](#module3)
 
 ## Module1
 
@@ -42,6 +44,7 @@ tags:
 13. [Lesson 13: Configuring logging](#lesson13)
 14. [Lesson 14: Managing storage](#lesson14)
 15. [Lesson 15: Advanced storage](#lesson15)
+16. [Lesson 16: Basic kernel management](#lesson16)
 
 ## Lesson1 
 
@@ -2395,3 +2398,83 @@ mount the resulting device mapper device
 to automate the `cryptsetup luksOpen`, use /etc/crypttab 
 
 to automate mounting the volumes, use /etc/fstab
+
+## Module3
+
+### Performing Advanced System Administration Tasks
+
+## Lesson16
+
+### Basic kernel management
+
+#### Learning objectives
+
+* 16.1 Understanding the linux kernel 
+* 16.2 Working with kernel modules
+* 16.3 Using `modprobe`
+* 16.4 Using /proc to tune kernel behavior 
+* 16.5 Updating the kernel 
+
+**16.1 Understanding the linux kernel**
+
+the linux kernel is the heart of the linux operating system 
+
+it needs to address hardware devices 
+
+drivers in linux are called modules 
+
+use `modprobe` to manually load drivers 
+
+![image](/images/16.1-1.png)
+
+**16.2 Working with Kernel Modules**
+
+linux drivers are implemented as kernel modules 
+
+most kernel modules are loaded automatically through `initramfs` or `systemd-udev`
+
+use `modprobe` to manually load kernel module 
+
+use `lsmode` to list currently loaded kernel modules 
+
+`modprobe vfat` to load the vfat module 
+
+`modprobe -r vfat` to unload module 
+
+**16.3 Using modprobe**
+
+use `modprobe` to load a kernel module and al it's dependencies 
+
+`modprobe -r` to remove module 
+
+`modinfo`can show module parameters 
+
+to load, specify kernel module parameters, edit /rtc/modprobe.conf or the files in /etc/modprobe.d
+
+**16.4 Using /proc to Tune Kernel Behavior** 
+
+`/proc` is a file system that provides access to kernel information 
+
+* pid directories - contains information about running processes
+* status files
+* tunables in /proc/sys - change kernel behavior in realtime 
+
+use `echo` to write to any file in /proc/sys to change kernel performance parameters 
+
+write the parameters to /etc/sysctl.conf to make them persistent 
+
+use `sysctl -a` to show a list of all current settings 
+
+`echo 1 > ip_forward` to overwrite current value 
+
+check status with `sysctl -a | grep forward` 
+
+**16.5 Updating the Kernel**
+
+linux kernels are not technically updated, a new kernel is installed besides the old kernel 
+
+this allows admins to boot the old kernel in case anything goes wrong 
+
+use either `yum update kernel` or `yum install kernel` to update kernel 
+
+
