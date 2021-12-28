@@ -23,6 +23,7 @@ tags:
 1. [Module 1: Performing Basic System Management Tasks](#module1)
 2. [Module 2: Operating running systems](#module2)
 3. [Module 3: Performing Advanced System Administration Tasks](#module3)
+4. [Module 4: Managing network services](#module4)
 
 ## Module1
 
@@ -45,6 +46,9 @@ tags:
 14. [Lesson 14: Managing storage](#lesson14)
 15. [Lesson 15: Advanced storage](#lesson15)
 16. [Lesson 16: Basic kernel management](#lesson16)
+17. [Lesson 17: Managing the boot process](#lesson17)
+18. [Lesson 18: Essential troubleshooting skills](#lesson18)
+19. [Lesson 19: Introducing bash shell scripting](#lesson19)
 
 ## Lesson1 
 
@@ -2177,7 +2181,7 @@ vdo - virtual data optimizer
 
 **15.2 Understanding LVM Setup** 
 
-![image](/images/15.2-1.png)
+![image](https://richardbright.me/images/15.2-1.png)
 
 **15.3 Creating an LVM Logical Volume** 
 
@@ -2234,7 +2238,7 @@ you cannot shrink an xfs file system
 
 you can shrink an ext4 filesystem 
 
-![image](/images/15.5-1.png)
+![image](https://richardbright.me/images/15.5-1.png)
 
 **15.6 Understanding Stratis Setup** 
 
@@ -2383,7 +2387,7 @@ remove `rhgb quiet`
 
 **15.11 Understanding LUKS Encrypted Volumes** 
 
-![image](/images/15.11-1.png)
+![image](https://richardbright.me/images/15.11-1.png)
 
 **15.12 Configuring LUKS Encrypted Volumes** 
 
@@ -2425,7 +2429,7 @@ drivers in linux are called modules
 
 use `modprobe` to manually load drivers 
 
-![image](/images/16.1-1.png)
+![image](https://richardbright.me/images/16.1-1.png)
 
 **16.2 Working with Kernel Modules**
 
@@ -2478,3 +2482,323 @@ this allows admins to boot the old kernel in case anything goes wrong
 use either `yum update kernel` or `yum install kernel` to update kernel 
 
 
+## Lesson17
+
+### Managing the boot process
+
+#### Learning objectives
+
+* 17.1 Understanding the boot procedure
+* 17.2 Modifying grub2 runtime parameters 
+* 17.3 Modifying grub 2 persistent parameters 
+* 17.4 Managing systemd targets 
+* 17.5 Setting the default systemd targets 
+* 17.6 Booting into a specific target 
+
+**17.1 Understanding the boot procedure** 
+
+
+| **Boot process** |  |   |   |    |  |  |  |
+| --- | --- | --- | --- |  --- |  --- |  --- |  --- |  
+| **----------->**  | POST| uefi or bios | grub(2) | initramfs | kernel | systemd |
+| |  |  |  |   |
+
+![image](https://richardbright.me/images/17.1-1.png)
+
+**17.2 Modifying grub2 runtime parameters** 
+
+from the grub2 boot menu, press `e` to edit runtime boot options 
+
+press `c` ro enter the grub2 command mode 
+
+* from command line mode, type `help` for an overview of available options 
+
+the rescue kernel boots with limited options and performance - will seldomly be used 
+
+| **grub2 options** |  | 
+| --- | --- |
+| option | description|
+| load video | loading the video driver |
+| set gfx_payload=keep | setting a specific module |
+| insmod gzio | loading a module that provides compression functionality  |
+| linux ($root)/vmlinux-4.18.0-32* | the linux kernel (rhgb quit, remove when rebooting so you can see all boot up dumps) |
+| initrd ($root)/initramfs-4.18.0-32.*  | name of the initrd that will be loaded, will never need to change |
+
+**17.3 Modifying Grub2 Persistent Parameters**
+
+to edit persistent grub2 parameters, edit the configuration fil ein `/etc/default/grub` 
+
+after writing changes, compile changes to `grub.cfg`
+
+* `grub2-mkconfig -o /boot/grub2/grub.cfg`  for bios systems 
+* `grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg` for uefi systems 
+
+never edit the `/boot/grub2/grub.cfg` file directly, the grub.cfg file is recompiled after a new kernel update is installed. Any settings or edits will be lost. 
+
+**17.4 Managing Systemd Targets**
+
+a systemd target is a group of unit files 
+
+some targets are isolatable, which means that they define the final state a system is starting in 
+
+* emergency.target 
+* rescue.target 
+* multi-user.target - no GUI
+* graphical.target 
+
+When enabling a unit, it is added to a specific target 
+
+`systemd enable httpd` will add the httpd service to the systemd directory `/usr/lib/systemd/system.httpd.serve` 
+
+go to `/etc/systemd/system/multi-user.target.wants` to see a list of services that will boot up in the multi-user.target mode
+
+`systemctl list-dependencies` to view dependency relationship 
+
+**17.5 Setting the Default Systemd Target** 
+
+use `systemctl get-default`to see the current default target 
+
+use `systemctl-default` to set a new default target 
+
+
+use `systemctl start [name].target` to switch into the target state 
+
+**17.6 Booting into a Specific Target** 
+
+on the grub2 boot prompt, use `systemd.unit=xxx.target` to boot into a specific target 
+
+to change targets on a running system, use `systemctl isolate xxx.target` - is a better solution because it isolates running services 
+
+## Lesson18
+
+### Essential troubleshooting skills
+
+#### Learning objectives
+
+* 18.1 Understanding troubleshooting modes
+* 18.2 Changing the root password 
+* 18.3 Troubleshooting filesystem issues 
+* 18.4 Troubleshooting networking issues 
+* 18.5 Troubleshooting performance issues 
+* 18.6 Troubleshooting software issues 
+* 18.7 Troubleshooting memory issues
+* 18.8 Consulting red hat website for troubleshooting tips
+
+**18.1 Understanding troubleshooting modes** 
+
+![image](https://richardbright.me/images/18.1-1.png)
+
+`rd.break` is the earliest stage you can ger into your system 
+
+**18.2 Changing the Root Password** 
+
+important for the exam, you do not know the root password of the VM machines 
+
+Process: 
+
+* enter the grub menu while booting 
+* find the line that loads the linux kernel and add `rd.break` to the end of the line 
+* `mount -o remount,rw /sysroot`
+* `chroot /sysroot` 
+* `echo password | password --stdin root`
+* `touch /.autolabel` for selinux, reboot will fail if file is not present
+* `ctrl-d`
+* `ctrl-d` 
+
+root filesystem is in `/sysroot` 
+
+**18.3 Troubleshooting Filesystem Issues**
+
+real file system corruption does occur, but often, and is automatically fixed 
+
+problems occur when making typos in /etc/fstab
+
+to fix, if necessary, remount filesystem in read/write state and edit /etc/fstab
+
+fragmentation can be an issue, different tools exist to fix
+
+* `xfs_fsr` is the xfs file system reorganizer, it optimizes xfs file systems 
+* `e4defrag` can be used to defragment ext4  
+
+if you are presented with a prompt to give the root password during boot up, often times it's because there is something wrong with /etc/fstab
+
+the root mount in /etc/fstab is not critical since the root filesystem is loaded as a kernel argument in grub 
+
+**18.4 Troubleshooting Networking Issues**
+
+common network issues 
+
+* wrong subnet mask 
+* wrong router 
+* dns not working 
+
+troubleshooting tools 
+
+`ping google.com` if you get a Name or service not known` error then there might be a DNS issue 
+
+to get to dns you need a working ip address and proper routing 
+
+`ip a` to show a printout of the system's network configuration 
+
+check that the ip was assigned with a proper subnet mask 
+
+`wrong:` 192.168.4.235/32` 
+`correct:` 192.168.4.235/24
+
+repair in runtime, delete ip address: `ip a d 192.168.4.235/32 dev ens160`
+
+`ip a a dev ens160 192.168.4.235/24` 
+
+rerun `ping`, if you get a network unreachable error then check your routing
+
+run `ip route add default via 192.168.4.2` to add the default gateway 
+
+make sure you make the networking updates persistent with `nmtui` 
+
+you can also use `dhclient` to reset ip
+
+**18.5 Troubleshooting Performance Issues** 
+
+troubleshooting performance is an art on its own 
+
+focus on four key areas of performance 
+
+* memory
+* cpu load
+* disk load
+* network 
+
+best tool to use is `top` 
+
+If there is a process overloading cpu (or one cpu) you can kill the process or renice it to a lover value so that other processes can run 
+
+**18.6 Troubleshooting Software Issues** 
+
+dependency problems in rpms
+
+* should not occur when using repositories 
+
+Library problems 
+
+* run `ldconfig` to update the library cache 
+
+**18.7 Troubleshooting Memory Shortage** 
+
+first, always check that the system has sufficient swap space available 
+
+If there is no swap then add it
+
+you can also kill processes 
+
+last option is to reboot 
+
+**18.8 Consulting Red Hat Websites for Troubleshooting Tips**
+
+use customer portal or the developer portal to search knowledge base for examples and how to guides
+
+use content filters to specify versions and specific information 
+
+## Lesson19
+
+### Introducing bash shell scripting
+
+#### Learning objectives
+
+* 19.1 Understanding bash shell scripts
+* 19.2 Essential shell script components 
+* 19.3 Using loops in shell scripts part 1 
+* 19.4 Using loops in shell scripts part 2 
+
+**19.1 Understanding Bash Shell Scripts** 
+
+a shell scripts can be as simple as a number of commands that are sequentially executed 
+
+scripts normally work with variables to make them react differently in different environments 
+
+conditionals statements such as `for`, `if`, `case`, and `while` can be used 
+
+shell scripts are common as they are easy to learn and implement 
+
+also, a shell will always be available to interpret code from shell scripts 
+
+if scripts use internal commands only, they are very fast as nothing needs t be loaded 
+
+there is no need to compile anything 
+
+there ar eno modules to be used in the bash scripts, which makes them rather static 
+
+bash shell scripts are not idempotent - which means if you run a command more than once then you will get the same results. this is not always the case with bash scripts 
+
+**19.2 Essential Shell Script Components** 
+
+shell scripts have to be executable 
+
+`chmod +x script.sh` 
+
+`./script.sh` to run the script
+
+cannot run the script as a file since linux uses `$PATH` to find binaries 
+
+script layout 
+
+```
+#!/bin/bash -- the shebang line
+# scripts should have comments 
+
+echo which directory do you want to activate? 
+
+read DIR
+
+cd $DIR 
+pwd
+ls
+```
+
+scripts start a sub shell and execute the script. when the script completes you are returned back to the directory where you ran the script - or the parent shell
+
+to persist the script path you will need to run in the current shell by sourcing the script 
+
+`. script.sh`
+
+
+**19.3 Using Loops in Shell Scripts Part 1** 
+
+different conditional statements are available in bash 
+
+* if...then...fi
+* while...do...done
+* until...do...done
+* case...in...esac
+* for...in...do...done
+
+use `man test` to see all the conditional test operators 
+
+```
+#!/bin/bash
+
+if [ -z $1 ]
+then
+    echo you have to provide an argument
+    exit 6
+fi
+
+echo the argument is $1
+```
+
+`$1` is the first argument that can be passed to the script 
+
+`exit` stop the script immediate, if you do not specify an exit code the default is 0 and 1 
+
+0 = script ran 
+1 = script dod not run 
+
+
+**19.4 Using Loops in Shell Scripts Part 2**
+
+you can run calculations with the `echo` command 
+
+`echo $(( 2 + 6 ))`
+
+## Module4  
+
+### Managing network services
