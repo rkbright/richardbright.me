@@ -49,6 +49,8 @@ tags:
 17. [Lesson 17: Managing the boot process](#lesson17)
 18. [Lesson 18: Essential troubleshooting skills](#lesson18)
 19. [Lesson 19: Introducing bash shell scripting](#lesson19)
+20. [Lesson 20: Managing ssh](#lesson20)
+21. [Lesson 21: Managing http services](#lesson21)
 
 ## Lesson1 
 
@@ -2802,3 +2804,111 @@ you can run calculations with the `echo` command
 ## Module4  
 
 ### Managing network services
+
+## Lesson20
+
+### Managing ssh
+
+#### Learning objectives
+
+* 20.1 Understanding ssh key-based login
+* 20.2 Setting up ssh key-based login 
+* 20.3 Changing common ssh server options 
+* 20.4 Securely copying files
+* 20.5 Securely synchronizing files  
+
+**20.1 Understanding ssh key-based login** 
+
+`ssh-keygen` generates a private and public key pair
+
+`ssh-copy-id` to copy public key to target server 
+
+![image](https://richardbright.me/images/20.1-1.png)
+
+**20.2 Setting up SSH Key-based Login** 
+
+`ssh-keygen` creates a public/private key pair for the current user
+
+
+* setting a passphrase for the private key makes it more secure but less convenient 
+
+`ssh-copy-id target.server` copies the public key over to the target server 
+
+`ssh-agent /bin/bash` allocates space in the bash shell to cache the private key phrase 
+
+`ssh-add` adds the current passphrase to the cache 
+
+**20.3 Changing Common SSH Server Options**
+
+server options are set in  /etc/ssh/sshd_config
+
+client options can be set in /etc/ssh/ssh_config
+
+* port 22
+* PermitRootLogin
+* PubkeyAuthentication
+* PasswordAuthentication
+* X11Forwarding 
+
+use `AllowUsers` to further limit access 
+
+**20.4 Securely Copying Files**
+
+`scp` can be used to securely copy files over the network, using the `sshd` process
+
+* `scp file1 file2 student@remoteserver:/home/student`
+* `scp -r root@remoteserver:/tmp/files .`
+
+`sftp` offers an ftp client interface to securely transfer files using ssh
+* use `put /my/file` to upload a file
+* use `get /your/file` to download a file to the current directory 
+* use `exit` to close an `sftp` session 
+
+> options
+> * `lpwd` list local working directory 
+> * `pwd` list remote working directory 
+> * `lcd` to change local directory 
+
+**20.5 Securely Synchronizing Files**
+
+`rsync` is using ssh to synchronize files 
+
+if source and target file already exists, `rsync` will only synchronize their differences 
+
+the `rsync` command can be used with many options, of which the following are most common
+
+> options
+> * `-r` will recursively synchronize the entire directory tree
+> * `-l` synchronizes symbolic links
+> * `-p` preserves symbolic links 
+> * `-n` will do a dtry-run before actually synchronizing 
+> * `-a` uses archive mode, which is equivalent to `-rlptgoD`
+> * `-A` uses archive mode and also synchronizes ACLs
+> * `-X` will synchronize SELinux context as well 
+
+## Lesson21
+
+### Managing http services
+
+#### Learning objectives
+
+* 21.1 Understanding apache configuration
+* 21.2 Creating a basic website
+
+**21.1 Understanding apache configuration** 
+
+apache `httpd` is a leding web server on linux
+
+nginx is another leading web servr
+
+the main httpd configuration file is /etc/httpd/conf/httpd.conf
+
+additional snap-in files can be stored in /etc/httpd/conf.d/
+
+the default DocumentRoot is /var/www/htdocs
+
+apache looks for a file with the name index.html in this directory 
+
+`systemctl enable --now httpd` will ensure the services is started on boot up 
+
+use `curl` to interact with service, it is a command line web client 
