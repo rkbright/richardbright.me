@@ -3149,7 +3149,7 @@ typically, the kickstart file is provided on an installation server
 
 before starting the installation, the client indicates where to get the kickstart file from 
 
-* use `ks=http://somewhere/ks.cfg
+* use `ks=http://somewhere/ks.cfg`
 * or provide interface provided by the installation program (as in virtual machine manager) 
 
 on the install prompt screen, hit tab and enter the url of the ks.cfg file as outlined above
