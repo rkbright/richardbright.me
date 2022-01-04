@@ -51,6 +51,10 @@ tags:
 19. [Lesson 19: Introducing bash shell scripting](#lesson19)
 20. [Lesson 20: Managing ssh](#lesson20)
 21. [Lesson 21: Managing http services](#lesson21)
+22. [Lesson 22: Managing selinux](#lesson22)
+23. [Lesson 23: Managing network security](#lesson23)
+24. [Lesson 24: Automated installations](#lesson24)
+25. [Lesson 25: Configuring time services](#lesson25)
 
 ## Lesson1 
 
@@ -2890,7 +2894,7 @@ the `rsync` command can be used with many options, of which the following are mo
 
 ### Managing http services
 
-#### Learning objectives
+#### Learning objectivesset
 
 * 21.1 Understanding apache configuration
 * 21.2 Creating a basic website
@@ -2912,3 +2916,323 @@ apache looks for a file with the name index.html in this directory
 `systemctl enable --now httpd` will ensure the services is started on boot up 
 
 use `curl` to interact with service, it is a command line web client 
+
+`getsebool -q` will list all selinux booleans 
+
+`setsebool -P [bool name] on` to set rule to on and off
+
+## Lesson22
+
+### Managing selinux
+
+#### Learning objectives
+
+* 22.1 Understanding the need for selinux
+* 22.2 Managing selinux modes
+* 22.3 Understanding selinux context labels and booleans
+* 22.4 Using file context labels 
+* 22.5 Analyzing selinux log messages 
+* 22.6 Resetting the root password and selinux
+* 22.7 Troubleshooting selinux
+
+**22.1 Understanding the need for selinux** 
+
+linux security is built on unit security 
+
+unix security consists of different solutions that were never developed with current IT security needs in mind 
+
+most of these solutions focus on a part of the operating system
+
+selinux provides a complete and mandatory security solution 
+
+the principles is that if it isn't specifically allowed, it will be denied 
+
+as a result, "unknown" services will always need additional configuration to enable them in an environment where selinux is enabled 
+
+
+**22.2 Managing SELinux Modes** 
+
+![image](https://richardbright.me/images/22.1-1.png)
+
+`getenforce` will show the current state
+
+`setenforce 0|1` toggles between enforcing and permissive 
+
+edit /etc/sysconfig/selinux to manage the default state of selinux
+
+never set to disabled if this is meant as a temporary measure only
+
+you have to reboot if switching selinux from enforcing to disabled (and vis versa). selinux is set at the kernel and is why a reboot is required
+
+
+**22.3 Understanding SELinux Context Labels and Booleans** 
+
+every object is labeled with a context label 
+ 
+ * `user:` user specific context 
+ * `role:` role specific context 
+ * `type:` flags which type of operation is allowed on this object 
+
+ many commands support a `-Z` option to show current context information 
+
+ context types are used in the rules in the policy to define which source objects has access to which target object   
+
+a boolean is an /on/off switch 
+
+use it to enable or disable specific categories of functionality altogether 
+
+`ps auxZ` will show a list of processes with selinux context
+
+| **context labels consists of 3 parts** | |  
+| --- | --- |
+| system_u | user |  
+| system_r | role |  
+| service_t | context type |  
+
+
+**22.4 Using File Context Labels**
+
+use `semanage fcontext` to set the file context label 
+
+this will write the context to the selinux policy 
+
+to enforce the policy setting on the file system, use `restorecon`
+
+alternatively, use `touch /.autorelabel` to relabel all files to the context that is specified in the policy 
+
+**22.5 Analyzing SELinux Log Messages**
+
+selinux uses `auditd` to wrote log messages to the audit log
+
+messages in the audit log may be hard to interpret 
+
+ensure that `sealert` is available, it interprets messages from the audit log, applies selinux AI, and writes meaningful messages to /var/log/messages 
+
+run the `sealert` command, including the uuid messages to get advice on how to troubleshoot specific issues 
+
+`grep AVC /var/log/audit/audit.log` to see selinux messages 
+
+* AVC = access vector cache, how selinux logs to the audit log 
+
+**22.6 Resetting the Root Password and SELinux** 
+
+`reboot` system
+
+`-e` on the grub menu
+
+add `rd.break` to the linux kernel line
+
+`mount -o remount,rw /sysroot`
+
+`chroot /sysroot`
+
+`passwd` to update password 
+
+`ls -Z` you will see a `?`
+
+`load_policy -i` 
+
+re-run `ls -Z`, you will see selinux context 
+
+`restorecon -v /etc/shawod` to 
+
+**22.7 Troubleshooting SELinux** 
+
+scenario: changed httpd port to 83
+
+edit /etc/httpd/conf/httpd.conf
+
+update `Listen 83`
+
+`systemctl status httpd`
+
+log message: (13)Permission denied: AH00072: make_sock: could not bind to address [::]:83
+
+httpd will start without error 
+
+now look at the selinux messages 
+
+`grep sealert /var/log/messages`
+
+`sealert -l 5c9596cb-61f8-4253-a848-0ec998bde966 | less`
+
+run `semanage port -a -t http_port_t -p tcp 83` to open and listen on port 83
+
+`setenforce 1` to reset selinux to enforcing mode 
+
+### Lesson 23: Managing network security
+
+#### Learning objectives
+
+* 23.1 Understanding rhel 8 firewalling
+* 23.2 Understanding firewalld components
+* 23.3 Configuring a firewall with `firewall-cmd` 
+* 23.4 Using `firewall-config`
+
+**23.1 Understanding rhel 8 firewalling** 
+
+firewall starts at the kernel 
+
+![image](https://richardbright.me/images/23.1-1.png)
+
+**23.2 Understanding Firewalld Components**
+
+firewalld is using different components to make firewalling easier 
+
+`service:` the main component, contains one or more ports as well as optional kernel modules that should be loaded 
+
+`zone:` a default configuration to which network cards can be assigned to apply specific settings 
+
+`ports:` optional elements to allow access to specific ports 
+
+additional components are available as well, but not frequently used in a base firewall configuration 
+
+`firewall-cmd --list-all` to list firewall settings
+
+`firewall-cmd --get-services` to print list of services
+
+`firewall-cmd --add-service service_name` to add service
+
+`firewall-cmd --reload` to reload firewall service 
+
+**23.3 Configuring a Firewall with firewall-cmd** 
+
+ the `firewall-cmd` command is used to wrote firewall configuration 
+
+ use the option `--permanent` to write to persistent (but not to runtime)
+
+ without `--permanent` the rule is written to runtime (but not to persistent) 
+
+ you have to run both to if you want to test in the current runtime and persist the setting 
+
+**Using firewall-config** 
+
+you need to install before using 
+
+search package name `yum search firewall-config`
+
+`yum install firewall-config -y` 
+
+## Lesson24
+
+### Automated installations
+
+#### Learning objectives
+
+* 24.1 Understanding automated installation solutions
+* 24.2 Creating a kickstart file
+* 24.3 Using the kickstart file for automatic installation 
+* 24.4 Using `kickstart files in fully automated data centers
+* 24.5 Using vagrant to set up virtual machines 
+
+**24.1 Understanding automated installation solutions** 
+
+Several solutions exit for performing automated installation 
+
+* vagrant is used for automatic deployment of virtual machine s- not included in rhcsa
+* cloud-init and other templates can be used in cloud environments 
+* kickstart can be used with the pxe-boot server to provide instructions for the automatic installation of rhel 
+
+A kickstart file contains all the installation instructions to set up a rhel instance. It can be used to easily reproduce installations
+
+**24.2 Creating a kickstart file**
+
+after installation, a file named anaconda.ks.cfg is crated to the root user home directory 
+
+edit this file manually to make changes that are required 
+
+files are `anaconda-ks.cfg` and `initial-setup-ks.cfg`
+
+**24.3 Using the Kickstart File for Automatic Installations**
+
+typically, the kickstart file is provided on an installation server 
+
+before starting the installation, the client indicates where to get the kickstart file from 
+
+* use `ks=http://somewhere/ks.cfg
+* or provide interface provided by the installation program (as in virtual machine manager) 
+
+on the install prompt screen, hit tab and enter the url of the ks.cfg file as outlined above
+
+**24.4 Using Kickstart Files in Fully Automated Datacenters**
+
+![image](https://richardbright.me/images/24.4-1.png)
+
+won't need to setup for the rhcsa exam 
+
+**24.5 Using Vagrant to Set Up Virtual Machines**
+
+vagrant is a solution to automate installing virtual machines 
+
+vagrant works with a box, which is a tar file that contains a vm image 
+
+pre-configured boxes are available at the vagrantcloud.com 
+
+administrators can create their own boxes
+
+provides allow vagrant to interface with the underlying host platform
+
+* supported platforms are virtualbox, vmware, hyper-v and kvm
+
+providers can be used to further configure a vagrant-configured vm
+
+* bash and ansible are common provisioners
+
+the vagrantfile is a text file containing the instructions for creating the vagrant environment 
+
+vagrant is not included in rhel 8 and must be installed from epel 
+
+## Lesson25
+
+### Configuring time services
+
+#### Learning objectives
+
+* 25.1 Understanding linux time
+* 25.2 Setting time with timedatectl
+* 25.3 Setting up an ntp client 
+
+**25.1 Understanding linux time** 
+
+![image](https://richardbright.me/images/25.1-1.png)
+
+
+**25.2 Setting time with timedatectl**
+
+linux time related commands
+
+* `hwclock` set hardware and synchronize with system time 
+* `date` set current time and display format
+* `tzselect` allows to selct the current time zone
+* `timedatectl` new utility to manage all aspects of time
+
+`timedatectl --help` to see list of options and commands 
+
+`timedatectl list-timezones` to printout list of timezones 
+
+`timedatectl set-timezone America/Los_Angeles` to set timezone to LA
+
+`timedatectl show` to see current timezone 
+
+**25.3 Setting up an NTP Client**
+
+ntp is managed by the `chronyd service` 
+
+`/etc/chrony.conf` contains the configuration parameters 
+
+make the following updates to the config file 
+
+`# Serve time even if not synchronized to a time source`
+`local stratum 5` change from 10, the lower the number the more in-sync the time 
+
+comment out `# pool 2.centos.pool.ntp.org iburst` 
+
+restart chrony service `systemctl restart chronyd` 
+
+open firewall `firewall-cmd --add-service ntp` 
+
+and make permanent `firewall-cmd --add-service ntp --permanent` 
+
+`chronyc sources` to view ntp server synchronization 
+
+
