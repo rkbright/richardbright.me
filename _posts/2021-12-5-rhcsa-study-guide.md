@@ -3253,8 +3253,6 @@ and make permanent `firewall-cmd --add-service ntp --permanent`
 
 **26.1 Configuring a base nfs server** 
 
-![image](/images/26.1-1.png)
-
 CONFIGURING NFS
 
 you do not have to configure a base nfs server for the rhcsa
