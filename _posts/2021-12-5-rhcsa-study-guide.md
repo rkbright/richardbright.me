@@ -55,6 +55,8 @@ tags:
 23. [Lesson 23: Managing network security](#lesson23)
 24. [Lesson 24: Automated installations](#lesson24)
 25. [Lesson 25: Configuring time services](#lesson25)
+26. [Lesson 26: Accessing remote file systems](#lesson26)
+27. [Lesson 27: Running containers](#lesson27)
 
 ## Lesson1 
 
@@ -1968,7 +1970,7 @@ alternatively, use `fdisk` to work with mbr and `gdisk` to use guid partitions
 
 `parted /dev/sdb` 
 
-`print` wil show isf there is a current partition table 
+`print` wil show if there is a current partition table 
 
 `mklabel msdos|gpt` 
 
@@ -3235,4 +3237,447 @@ and make permanent `firewall-cmd --add-service ntp --permanent`
 
 `chronyc sources` to view ntp server synchronization 
 
+## Lesson26
 
+### Accessing remote file systems
+
+#### Learning objectives
+
+* 26.1 Configuring a base nfs server
+* 26.2 Mounting nfs shares
+* 26.3 Configuring a base samba server
+* 26.4 Mounting samba shares
+* 26.5 Understanding automount
+* 26.6 Configuring automount
+* 27.7 Configuring automount for home directories 
+
+**26.1 Configuring a base nfs server** 
+
+![image](/images/26.1-1.png)
+
+CONFIGURING NFS
+
+you do not have to configure a base nfs server for the rhcsa
+
+run the nfs-server service 
+
+create a directory you want to share: /data
+
+edit /etc/exports to contain the following line 
+
+* `/data *(rw,no_root_squash)`
+
+configure the firewall 
+
+RUNTIME 
+
+`firewall-cmd --add-service nfs` 
+
+`firewall-cmd --add-service mountd`
+
+`firewall-cmd --add-service rpc-bind`
+
+ADD TO SYSTEMD
+
+`firewall-cmd --add-service nfs --permanent` 
+
+`firewall-cmd --add-service mountd --permanent`
+
+`firewall-cmd --add-service rpc-bind --permanent`
+
+**26.2 Mounting NFS Shares** 
+
+MOUNTING NFS SHARES
+
+use `showmount -e nfs-server` to show exports
+
+use `mount nfsserver:/share /mnt` to mount 
+
+while mounting through /etc/fstab, include the `_netdev` mount option 
+
+| **/etc/fstab** | | | | | |
+| --- | --- | --- | --- | --- | --- |
+| 192.168.4.210:/data | /nfs| nfs | _netdev | 0 | 0 |
+|  |  | |  |  |  |
+
+
+**26.3 Configuring a Base Samba Server**
+
+samba implements the windows sharing file server 
+
+do not need to know how to setup a samba for the rhcsa
+
+CONFIGURING A BASE SAMBA SERVER
+
+install the samba server package 
+
+create a directory to share
+
+create a local linux user
+
+set linux permissions 
+
+use `smbpasswd -a` to add a samba user account 
+
+enable the shared in /etc/samba/smb.conf
+
+use `systemctl start smb` to start the service 
+
+use `firewall-cmd --add-service samba --permanent; firewall-cmd --reload` to open the firewall 
+
+**26.4 Mounting Samba Shares**
+
+MOUNTING SAMBA SHARES
+
+install the cifs-utils and samba-client rpm packages
+
+use `smbclient -L //smbahost` to discover shares 
+
+use `mount -o username=sambauser //smbaserver/share /somewhere` tp mount the share 
+
+make mount persistent through /etc/fstab, using the _netdev, username= and password= mount options 
+
+cifs and samba are the same service 
+
+good idea to reboot to ensure auto remounting once you've completed configuration 
+
+**26.5 Understanding Automount**
+
+mount shares only when you need it 
+
+UNDERSTANDING AUTOMOUNT
+
+in `/etc/auto.master` you'll identify the directory that automount should manage, and the file that is used for additional mount information 
+
+in `/etc/auto/data` you'll identify the subdirectory on which to mount and what to mount exactly 
+
+* `files -rw nfsserver:/data/files`
+
+`/etc/auto.misc` has examples 
+
+ensure autofs service is started 
+
+**26.6 Configuring Automount** 
+
+`showmount -e` to print available mounts 
+
+install `sudo yum install autofs -y`
+
+`/net` and `/misc` directories are managed by automount 
+
+**26.7 Configuring Automount for Home Directories**
+
+ldap user home directories can go on one server 
+
+edit `/etc/exports`
+
+* `/home/ldap *(rw)`
+
+restart nfsserver `systemctl restart nfs-server`
+
+run `showmount -e servername` to print nfs exports list 
+
+edit `/etc/auto.master`
+
+* add `/home/ldap    /etc/auto.ldap` 
+
+edit `/etc/auto.ldap`
+
+* `*     -rw    labipa:/home/ldap/&` to match on any user 
+
+restart `systemctl restart autofs` 
+
+## Lesson27
+
+### Running containers
+
+#### Learning objectives
+
+* 27.1 Understanding containers
+* 27.2 Running a container
+* 27.3 Managing images
+* 27.4 Managing containers
+* 27.5 Attaching storage to containers
+* 27.6 Managing containers as service
+
+**27.1 Understanding containers** 
+
+a container is a complete package to run an application, which contains all application dependencies 
+
+containers make it easy to run different versions of application dependencies side-by-side 
+
+containers run on top of a container engine that is offered by the host operating system 
+
+the operating system kernel is not included in the container, but offered by the host 
+
+by using this approach, containers are more efficient than virtual machines
+
+to start a container, container images are used - a read only instance 
+
+the purpose of a container is to run an isolated process 
+
+to do so, container images are configured to run a standard application
+
+once that application is finished, the container is done
+
+application containers are used to run common applications 
+
+system containers are used as the foundation to build custom images, and son't come with a standard application 
+
+containers are linux and rely heavily on features provided by the linux operating system 
+
+* namespace for isolation between processes - for example, `chroot`  
+* control groups for resource management, aka as `cgroups` 
+* selinux to ensure security 
+
+one container runs one application 
+
+multiple applications can be connected in microservices 
+
+to manage containers at the enterprise level, orchestration is needed 
+
+red hat has Open Shift to provide orchestration 
+
+you can also use kubernetes 
+
+different solutions for managing containers exist
+
+these solutions are highly compatible and interchangeable because of the open container initiative 
+
+on previous versions of rhel, red hat was offering docker support 
+
+in rhel 8, red hat is offering some new utilities 
+
+* `podman` is used to manage containers and container images 
+* `buildah` is used to create new container images 
+* `skopeo` is used to inspect, delete, copy and sign images 
+
+if containers need to run a process on a privileged port, they need to run with root privilege 
+
+rootless containers will run as a non-root user
+
+running containers as root is more dangerous 
+
+running containers is an enterprise environment requires a solution that offers additional features
+
+* ensuring scale container up and down 
+* ensure container availability 
+* offer a developer workflow to make it easy to get source code to running container 
+
+kubernetes is the common orchestration standard that is used to manage containers in a cluster environment 
+
+red hat open shift is the ed hat kubernetes distribution; it offers additional features to kubernetes 
+
+**27.2 Running a Container**
+
+to star with, container management tools need to be installed: `yum module install container-tools` 
+
+after installing, you can immediately start running containers from the docker registry: `podman run -d nginx` 
+
+the red hat registries are registry.redhat.io for official red hat products, and registry.connect.redhat.com for third-party products 
+
+red hat registries require authentication using `podman login`, where the red hat account name and password are provided 
+
+registries are processes in order as in /etc/containers/registries.conf
+
+to get a specific container, use complete name reference: `podman pull registry`.access.redhat.com/ubi8/ubi:latest
+
+use `podman pull` to pre-pull the image from the registry to the local system 
+
+use `podman run` to pull the container, id necessary, and run it 
+
+* will run container in foreground 
+* use `podman run -d` to run in detached mode 
+* use `podman run -it` to run in interactive tty mode 
+* consider using the option `--rm` to remove the container after using it 
+
+detach from the container tty using `ctrl-p, ctrl-q`
+
+exit from the primary container application using `exit`
+
+`podman ps` to list running containers 
+
+`podman ps --all` to see previously running containers 
+
+
+**27.3 Managing Images** 
+
+the image is a read-only runnable instance of a container
+
+images are obtained from registries, which are specified in /etc/containers/registries.conf
+
+additional registries can be added in the `[registries.search]` section in this file 
+
+use `podman info` to see which registries are currently used 
+
+insecure registries are not protected with tls encryption and must be listed on `[registries.insecure]` 
+
+`podman search` searches all registries 
+
+`podman search --no-trunc registry.redhat.oi/rhel8` searches specific registry on the rhel8 string 
+
+use filter to further limit the search result 
+
+* `--limit 5` shows a maximum of 5 images per registry 
+* `--filter starts=5` shows images with 5 stars or more 
+* `--filter is-official=true` shows official images only 
+
+web search is available through https://access.redhat.com/containers or https://hub.docker.io 
+
+use `skopeo` to inspect images before pulling them 
+
+`skopeo inspect docker://registry.redhat.io/ubi8/ubi
+
+use `podman` to inspect images that are locally available 
+
+* `podman images` 
+* `podman inspect registry.redhat.io/uni8/ubi`
+
+notice that some docker images are designed to run as root, they won't run in podman without sudo 
+
+use complete urls to the image you want to install to increase your chnace of being successful
+
+* `podman run -d registry.access.redhat.com/rhscl/httpd-24-rhel-7` 
+
+when newer versions of images become available, the old version will be kept on your syatem as well 
+
+use `podman images` to get a list of all images 
+
+use `podman rmi` to remove images 
+
+for advanced image management the `buildah` utility is provided 
+
+this tool can be used to create your own custom images and ofers different ways to do so
+
+* based on a dockerfile with `buildah bud`
+* by running `buildah` commands directly against an image using `buildah run` 
+
+use `podman info` to see current distribution version information, runtime, and registries 
+
+`podman images` can also allow for house cleaning 
+
+then use `podman rmi` 
+
+
+**27.4 Managing Containers** 
+
+map a host port to the container application port to nake it reachable from the outside 
+
+`podman run -d -p 8000:80 nginx` will map host port 8000 to container port 80 
+
+`podman port -a` will show all current container port mappings 
+
+do not forget to open these ports in the host firewall: `firewall-cmd --add-port=8000/tcp --permanent` 
+
+containers running without root privileges can bind to a non-privileged host port only 
+
+some containers require environment variables to run them 
+
+if a container fails because of this requirement, use `podman logs containername`, it shows the application log telling you why it failed
+
+alternatively, use `podman inspect` and look for a `usage` line 
+
+use `-e VAR=value` while starting the container to pass variable values: 
+
+* `podman run -d --name mydb -e MYSQL_ROOT_PASSWORD=password -e MYSWL_USER=bob -e MYSQL_PASSWORD=password -e MYSQL_DATABASE=books -p 3306:3306 mariadb` 
+
+
+`podman ps` shows currenlty running containers 
+
+`podman ps -a` shows container in a stopped state 
+
+`podman stop mycontainer` stops a container gracefully sending SIGTERM, if that doesn't work after 10 seconds the container receives SIGKILL
+
+`podman kill mycontainer     sends SIGKILL to the container 
+
+`podman rm mycontainer` removes a container, including all file modifications written to the container writable layer 
+
+`podman restart mycontainer` restarts a container that was previously stopped 
+
+`podman exec mycontainer uname -r` runs an additional process inside a running container 
+
+`podman exec -it mycontainer /bin/bash` access an interactive shell
+
+`podman exec -l cal /etc/redhat-release` runs the command on the last container that was used in any command 
+
+by default, podman runs non-root containers 
+
+non-root containers cannot did to a privileges port and do not have a ip address
+
+the only was to access their application is by using port forwarding 
+
+if you need a container that has an ip address, you need to run it as root container: `sudo podman run -d nginx` 
+
+root containers will only show if you use `sudo podman ps` 
+
+after starting a root container, on the host operating system a bridge device is created that works like NAT to make sure the root container can access the external network 
+
+**27.5 Attaching Storage to Containers**
+
+container storage is ephemeral 
+
+modifications are written to the container writable layer and stay around for the container lifetime 
+
+persistent storage keeps files externally 
+
+use bind mounts to connect a directory inside the container to a directory on the host 
+
+ensure that the user account used in the container has access to the host directory, and set the SELinux context type to `container_file_t`
+
+if the container user is owner of the host directory, the `Z:` option can be used: `podman run -d -v /webfiles:/webfiles:Z nginx` 
+
+using selinux is essential, without it all root containers would have full access to the host filesystem 
+
+mounting storage inside the container 
+
+* `sudo mkdir /dbfiles`
+* `sudo chmod o+w /dbfiles`
+* `sudo semanage fcontext -a -t container_file_t "/dbfiles(/.*)?"`
+* `podman run -d --name mydb -v /dbfiles:/var/lib/mysql:Z -e MYSQL_USER=bob -e MYSQL_PASSWORD=password -e MYSQL_DATABASE=books mariabd -e MYSQL_ROOT_PASSWORD=password` 
+
+
+**27.6 Managing Containers as Services** 
+
+AUTOSTARTING CONTAINERS
+
+to automatically start containers in a stand-alone situation, you can create systemd user unit files for the rootless container and manage them with `systemctl`
+
+if kubernetes or openshift is used, containers will be automatically started by default 
+
+RUNNING SYSTEMD SERVICES AS A USER 
+
+systemd user services start when a suer session is opened, and close when the user session stopped 
+
+use `loginctl enable-linger` to change the behavior and start user services for a specif user (requires root privileges)
+
+* `loginctl enable-linger linda`
+* `loginctl show-user linda` 
+* `loginctl disable-linger linda` 
+
+MANAGING CONTAINERS USING SYSTEMD SERVICES 
+
+create a regular user account to manage all containers 
+
+use `podman` to generate a user systemd file for an existing container 
+
+notice the file will be generated in the current direcotry 
+
+* `podman generate systemd --name myweb --files` 
+
+to have systemd create the container when the service starts, and delete it again when the service stops, add `--new` 
+
+* `podman generate systemd --name ephemeral_ellie --files --new`
+
+to generate a service file for a root container, do it from /etc/systemd/system as the current directory 
+
+CREATING USER UNIT FILES 
+
+create user specific unit files in `~/.config/systemd/user`
+
+manage then using `systemctl --user` 
+
+* `systemctl --user daemon-reload`
+* `systemctl --user enable myapp.service` (requires linger)
+* `systemctl --user start myapp.service`
+
+`systemctl --user` commands only work when logging in on console or ssh and do not work in the sudo su session 
