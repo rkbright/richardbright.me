@@ -24,3 +24,5 @@ sas:
   name: SAS Institute
 rhcsa:
   name: Red Hat Certified System Administrator
+cka:
+  name: Certified Kubernetes Administrator
