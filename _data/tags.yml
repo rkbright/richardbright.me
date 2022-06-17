@@ -24,12 +24,7 @@ sas:
   name: SAS Institute
 rhcsa:
   name: Red Hat Certified System Administrator
-<<<<<<< HEAD
 viya4:
   name: SAS Viya 4
 cka:
-name: Kubernetes Certified Administrator 
-=======
-cka:
-  name: Certified Kubernetes Administrator
->>>>>>> cb44d3d554caf3c92320c197f0b936c87527d84f
+name: Kubernetes Certified Administrator

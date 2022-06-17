@@ -128,3 +128,44 @@ Helpful exam links:
 
 
 
+### ETCD for Beginners
+
+**etcd** is a distributed and reliable key value store that simple, secure and fast 
+  - **key value stores** are mainly used to store configuration data that can be saved and retrieved quickly compared to tabular data 
+  - listens on port **2379** by default 
+  - **etcd control client** is the default client; it is the CLI for etcd 
+  - ```./etcdctl set key1 value1``` will add an entry to the database 
+  - ```./etcdctl get key1``` will retrieve the data 
+  - ```./etcdctl``` to see help page(s) 
+
+### ETCD in Kubernetes
+
+**etcd** stores data on the following components 
+  - Nodes
+  - PODs
+  - Configs
+  - Secrets 
+  - Accounts
+  - Roles 
+  - Bindings
+  - Others 
+
+All data retrieved from the ``kubectl get`` command comes from the etcd server 
+
+All changes made to the cluster are stired in the etcd server, e.g., deploying PODs, Replicasets, and adding Nodes
+
+Applied changes are not considered complete until the change is made in the etcd server 
+
+Two methods for deploying a kubernetes cluster 
+
+1) Manual install 
+
+   - required to download, install, and configure etcd yourself as a service 
+   - will need to generate TLS certificates 
+
+2) Using ``kubeadm``
+
+  - will automatically deploy the etcd service via a POD in the kubesystem namespace 
+  - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
+
+  
