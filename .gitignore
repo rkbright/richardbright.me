@@ -3,3 +3,5 @@ _site/
 _site
 _draft/
 _draft
+.DS_Store
+.sass-cache
