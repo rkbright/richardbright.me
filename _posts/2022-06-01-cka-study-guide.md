@@ -152,7 +152,7 @@ Helpful exam links:
 
 All data retrieved from the ``kubectl get`` command comes from the etcd server 
 
-All changes made to the cluster are stired in the etcd server, e.g., deploying PODs, Replicasets, and adding Nodes
+All changes made to the cluster are stored in the etcd server, e.g., deploying PODs, Replicasets, and adding Nodes
 
 Applied changes are not considered complete until the change is made in the etcd server 
 
@@ -168,3 +168,74 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
 
+ ### Kube API Server
+
+ Is the primary management component in kubernetes 
+
+``kubctl`` commands go to the ``kube-apiserver`` where the request is authenticated and validated 
+
+The ``kube-apiserver`` will then query etcd for the information and respond back to the request 
+
+``kube-apiserver`` is the only component that interacts directly with the etcd datastore 
+
+kube-apiserver is responsible for: 
+
+  - authenticating users
+  - validating requests 
+  - retrieving data 
+  - updating etcd
+  - services that depend on kube-apiserver
+    - scheduler 
+    - kubelet 
+
+If using ``kubeadm`` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If settin gup the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
+
+`kubeadm` will deploy the `kube-apiserver` as a pod in the kube system namespace on the master node
+
+`kubectl get pods -n kube-system` 
+
+You can view options at `cat /etc/kubernetes/manifests/kube-apiserver.yaml` 
+
+In a non-kubeadm setup, you can view options in `cat /etc/systemd/system/kube-apiserver.service` 
+
+You can also see the running process and options by running `ps -aux | greg kube-apiserver` 
+
+### Kube Controller Manager
+
+A controller is a process that continuously monitors the state of various components in the system and works toward bringing the whole system to the desired functioning state. 
+
+`Node-Controller` is responsible for monitoring the nodes and taking necessary action to keep the application running. 
+
+  - it does this via the `kube-apiserver` 
+  - the `Node-Controller` checks the status of the nodes every 5 seconds; it monitors the health of the nodes 
+  - if the `Node-Controller` stops receiving a signal from a node, then the `Noe-Controler` marks the node as unreachable after 40 seconds  
+  - after a node is marked unreachable, the `Node-Controller` waits 5 minutes for the node to come back up. If the node does not come online then the pod is removed from the node and provisions the pod on the healthy nodes if it's part of a replicaset
+
+`Replication-Controller ` is responsible for monitoring the status of the replicationset and ensuring the desired number of pods are available at all times within the set. If a pod dies a new one will be created
+
+Controllers are the brains behind kubernetes 
+
+- Deployment-Controller 
+- Namespace-Controller 
+- Endpoint-Controller 
+- CronJob
+- Job-Controller 
+- PV-Protection-Controller 
+- Service-Account-Controller 
+- Stateful-Set 
+- Replicaset
+- Node-Controller
+- PV-Binder-Controller 
+- Replication-Controller 
+
+All of these controllers are packaged into a single process known as the `Kube-Controller-Manager` 
+
+You can download the `kube-controller-manager`, install it and run it as a service 
+
+All controllers are enabled by default, you can elect to list controllers as well 
+
+`kubeadm` install, you can list options by running `cat /etc/kubernetes/manifests/kube-controller-manager.yaml` 
+
+In a non `kubeadm` install, you can list options by running `cat /etc/systemd/system/kube-con troller-manager.service`
+
+View process `ps -aux | greg kube-controller-manager`
