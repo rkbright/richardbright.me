@@ -168,6 +168,7 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
 
+
  ### Kube API Server
 
  Is the primary management component in kubernetes 
@@ -199,6 +200,7 @@ You can view options at `cat /etc/kubernetes/manifests/kube-apiserver.yaml`
 In a non-kubeadm setup, you can view options in `cat /etc/systemd/system/kube-apiserver.service` 
 
 You can also see the running process and options by running `ps -aux | greg kube-apiserver` 
+
 
 ### Kube Controller Manager
 
