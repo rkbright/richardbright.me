@@ -168,8 +168,7 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
 
-
- ### Kube API Server
+ ###  Kube API Server
 
  Is the primary management component in kubernetes 
 
