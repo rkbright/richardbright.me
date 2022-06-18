@@ -12,7 +12,7 @@ tags:
 ![cka](https://richardbright.me/images/cka_logo.png)
 
 
-Helpful pre-requisite skills:
+Helpful prerequisite skills:
 
 - Docker
 - YAML
@@ -168,4 +168,3 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
 
-  
