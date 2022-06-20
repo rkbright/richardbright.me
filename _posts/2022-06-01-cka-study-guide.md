@@ -168,7 +168,7 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
 
- ###  Kube API Server
+  ### Kube API Server 
 
  Is the primary management component in kubernetes 
 
@@ -188,7 +188,7 @@ kube-apiserver is responsible for:
     - scheduler 
     - kubelet 
 
-If using ``kubeadm`` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If settin gup the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
+If using ``kubeadm`` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If setting up the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
 
 `kubeadm` will deploy the `kube-apiserver` as a pod in the kube system namespace on the master node
 
@@ -199,7 +199,6 @@ You can view options at `cat /etc/kubernetes/manifests/kube-apiserver.yaml`
 In a non-kubeadm setup, you can view options in `cat /etc/systemd/system/kube-apiserver.service` 
 
 You can also see the running process and options by running `ps -aux | greg kube-apiserver` 
-
 
 ### Kube Controller Manager
 
@@ -237,6 +236,42 @@ All controllers are enabled by default, you can elect to list controllers as wel
 
 `kubeadm` install, you can list options by running `cat /etc/kubernetes/manifests/kube-controller-manager.yaml` 
 
-In a non `kubeadm` install, you can list options by running `cat /etc/systemd/system/kube-con troller-manager.service`
+In a non `kubeadm` install, you can list options by running `cat /etc/systemd/system/kube-controller-manager.service`
 
 View process `ps -aux | greg kube-controller-manager`
+
+### Kube Scheduler
+
+Responsible for deciding which pods goes on which nodes, it does not actually deploy the pod on the node (that is the job of the kublet)
+
+The scheduler bases it's decision on a few criteria 
+
+Figures out placement in two phases 
+
+The first phase will try filtering put the nodes that do not meet the pod specification, for example, a 10CPU pod will need to be placed on a machine with enough CPU capacity. Other lower spec nodes will be filtered out 
+
+The second phase is based on ranking the nodes. Each node will be given a score between 1-10, the scheduler will assign a pod based on the remaining specs of the node once the pod is placed on the node. 
+
+You can also write your own customized scheduler 
+
+You can install the scheduler by downloading the binary, installing it, and running it as a service. 
+
+`kubeadm` install, you can list options by running `cat /etc/kubernetes/manifests/kube-scheduler.yaml` 
+
+View process `ps -aux | greg kube-scheduler`
+
+### Kubelet
+
+the `kublet` is the master of the node, it is responsible for all tasks on the pod and frequently sends data back to the master node on the status of the environment and the containers on them 
+
+Responsibilities include:
+  - registers node with the kubernetes cluster
+  - initiate container runtime to pull docker image to crete pod
+  - Monitors the state of the pod and the container and reports back to the master node 
+
+**NOTE** `kubeadm` does not deploy `kublet`, you must always install `kubelet` manually on the worker nodes 
+
+You can download the file from the kubernetes site. Install it of the worker node and run it as a service 
+
+View process `ps -aux | greg kubelet`
+
