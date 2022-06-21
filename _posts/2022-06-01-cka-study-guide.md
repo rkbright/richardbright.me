@@ -134,9 +134,9 @@ Helpful exam links:
   - **key value stores** are mainly used to store configuration data that can be saved and retrieved quickly compared to tabular data 
   - listens on port **2379** by default 
   - **etcd control client** is the default client; it is the CLI for etcd 
-  - ```./etcdctl set key1 value1``` will add an entry to the database 
-  - ```./etcdctl get key1``` will retrieve the data 
-  - ```./etcdctl``` to see help page(s) 
+  - `./etcdctl set key1 value1` will add an entry to the database 
+  - `./etcdctl get key1` will retrieve the data 
+  - `./etcdctl` to see help page(s) 
 
 ### ETCD in Kubernetes
 
@@ -150,7 +150,7 @@ Helpful exam links:
   - Bindings
   - Others 
 
-All data retrieved from the ``kubectl get`` command comes from the etcd server 
+All data retrieved from the `kubectl get` command comes from the etcd server 
 
 All changes made to the cluster are stored in the etcd server, e.g., deploying PODs, Replicasets, and adding Nodes
 
@@ -163,20 +163,20 @@ Two methods for deploying a kubernetes cluster
    - required to download, install, and configure etcd yourself as a service 
    - will need to generate TLS certificates 
 
-2) Using ``kubeadm``
+2) Using `kubeadm`
 
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
-  - ``./etcd get / --prefix -keys-only`` to retrieve all keys stored by kubernetes 
+  - `./etcd get / --prefix -keys-only` to retrieve all keys stored by kubernetes 
 
   ### Kube API Server 
 
  Is the primary management component in kubernetes 
 
-``kubctl`` commands go to the ``kube-apiserver`` where the request is authenticated and validated 
+`kubctl` commands go to the `kube-apiserver` where the request is authenticated and validated 
 
-The ``kube-apiserver`` will then query etcd for the information and respond back to the request 
+The `kube-apiserver` will then query etcd for the information and respond back to the request 
 
-``kube-apiserver`` is the only component that interacts directly with the etcd datastore 
+`kube-apiserver` is the only component that interacts directly with the etcd datastore 
 
 kube-apiserver is responsible for: 
 
@@ -188,7 +188,7 @@ kube-apiserver is responsible for:
     - scheduler 
     - kubelet 
 
-If using ``kubeadm`` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If setting up the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
+If using `kubeadm` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If setting up the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
 
 `kubeadm` will deploy the `kube-apiserver` as a pod in the kube system namespace on the master node
 
@@ -274,4 +274,39 @@ Responsibilities include:
 You can download the file from the kubernetes site. Install it of the worker node and run it as a service 
 
 View process `ps -aux | greg kubelet`
+
+### Kube Proxy
+
+In a cluster, all pods are able to communicate with each other, this is accomplished by deploying a pod network solution 
+
+`kube-proxy` runs on each node in the kubernetes cluster 
+
+`kube-proxy` leverages linux `iptables` 
+
+`kubeadm` will install `kube-proxy` on each node as a pods
+
+`kube-proxy` is deployed as a deamonset, so each node in the cluster will have a dedicated `kube-proxy` pod 
+
+You can also download and install `kube-proxy` from the kubernetes homepage 
+
+### PODs
+
+When working with `pods`, there are a few assumptions 
+
+1) the application is available as a docker image in a docker registry 
+2) a kubernetes cluster has already been set up 
+
+Applications are encapsulated by a kubernetes object that is known as a `pod`
+
+`pods` are the smallest object you can create in kubernetes 
+
+`pods` can be deployed and scaled on existing and/or new nodes in the cluster 
+
+`pods` usually have a one-to-one ratio with the containers running the application 
+
+`pods` are npt deployed on existing `pods` to scale the application 
+
+`pods` can run multiple containers but not usually of the same kind. For example, helper containers are usually deployed on pods
+
+running multi-pod containers is a rare use case, typically it should be one pod per docker container 
 
