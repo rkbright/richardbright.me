@@ -11,7 +11,7 @@ Prior to my current role I supported the General Services Administration (GSA) l
 
 <!--Link to my [resume](https://drive.google.com/file/d/1XuHdW7XTG-FyJejgCI-o0zdwKobK_9_a/view?usp=sharing){:target="_blank"}-->
 
-***Interests:*** Linux, SAS Programming, Data Analytics/Engineering, ML & AI, DevSecOps, and Cloud. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
+***Interests:*** Linux, Kubernetes, Data Analytics/Engineering/ML/AI, DevSecOps, and Cloud. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
 
 ***Education:***
 * Masters of Public Administration (MPA), George Mason University
@@ -29,6 +29,7 @@ Prior to my current role I supported the General Services Administration (GSA) l
 
 ***Public engagements:***
 
+* **SAS Ask the Experts Series** [How Can SAS® Intelligence and Investigation Management Support Homelessness?](https://www.sas.com/en_us/webinars/vulnerable-populations.html){:target="_blank"}
 * ***FedScoop:*** [Open source platforms give agency workforce a boost in modernization efforts](https://www.fedscoop.com/radio/open-source-government-agency-workforce/){:target="_blank"}
 * ***MeriTalk:*** [GSA Official Lays Out Benefits of Agency’s Cloud Adoption](https://www.meritalk.com/articles/gsa-official-lays-out-benefits-of-agencys-cloud-adoption/){:target="_blank"}
 * ***Alfresco:*** [Get Cloud Smart](https://alfresco.wistia.com/medias/xk24uv0mpv){:target="_blank"}
