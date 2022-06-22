@@ -345,3 +345,115 @@ spec:
     - image: nginx:alpine
       name: nginx
 ```
+
+### ReplicaSets
+
+the `replication-controller` is responsible for running multiple instances of a pod in the kubernetes cluster and thus providing high availability 
+
+the `replication-controller` can be deployed on a multi node cluster or on a single node. 
+
+`replication-controller` provides load balancing and scalability by deploying more pods within the same node or on additional nodes 
+
+kubernetes has two common terms used for replication 
+
+| `replication-controller` | `replicaset` | 
+|---|---|
+| older technology that is being replaced by `replicaset`  | is the new recommended way to setup replication  | 
+
+Example `replication-controller` definition file `rc-replication.yaml`
+
+```
+apiVersion: v1
+kind: ReplicationController 
+metadata: --> metadata section for the replication controller 
+  name: myapp
+  labels: 
+    app: myapp
+    type: front-end 
+spec: --> spec section for the replication controller 
+  template:
+
+    metadata: --> metadata section for the pod
+      name: myadd-pod
+      labels: 
+        app: myapp
+        type: front-end
+    spec: --> spec section for the pod
+      containers:
+      - name: nginx-container
+        image: nginx  
+
+replicas: 3
+```
+
+run `kubectl create -f rc-replication.yaml` to create 3 replication controller pods of the same type
+
+`kubectl get replicationcontroller` to print out replication controller data within the cluster 
+
+Example `replicaset` definition file `replicaset-definition.yaml`
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet 
+metadata: --> metadata section for the replicaset 
+  name: myapp-replicaset
+  labels: 
+    app: myapp
+    type: front-end 
+spec: --> spec section for the replicaset
+  template:
+
+    metadata: --> metadata section for the pod
+      name: myadd-pod
+      labels: 
+        app: myapp
+        type: front-end
+    spec: --> spec section for the pod
+      containers:
+      - name: nginx-container
+        image: nginx  
+
+replicas: 3
+selector:   --> additional required setting
+  matchLabels:
+    type: front-end 
+```
+
+`replicasets` can be used to manage pods that were not created as part of the initial `replicaset` 
+
+run `kubectl create -f replicaset-definition.yaml` to create 3 replication controller pods of the same type
+
+`kubectl get replicaset` to print out replicaset controller data within the cluster 
+
+Why do we label pods in kubernetes? 
+
+Labels allow for the replicaset controller to monitor only those pods with the same label name 
+
+The templates definition section is required in order for a `replicaset` to maintain a desired number of pods 
+
+How do you scale the `replicaset`?
+
+Given the example configuration above, replace the `replicas` value from 3 to 6 to expand the pods 
+
+Run `kubectl replace -f replicaset-definition.yaml` to update the replicaset` 
+
+You can also use the `kubectl scale` command to apply the update 
+
+`kubectl scale replicas=6 -f replicaset-definition.yaml` to update the replicaset to 6 and update the definition file 
+
+`kubectl scale replicas=6 replicaset myapp-replicaset` will scale the replicaset to 6 but will not persist the change to the definitions file 
+
+Useful commands:
+
+`kubectl create -f replicaset-definition.yaml`
+
+`kubectl get replicaset` 
+
+`kubectl delete replicaset myapp-replicaset` will also delete pods 
+
+`kubectl replace -f replicaset-definition.yaml` to update the `replicaset` and definitions file 
+
+`kubectl scale --replicas=6 -f replicaset-definition.yaml` or `kubectl scale --replicas=6 replicaset myapp-replicaset` to scale the cluster 
+
+`kubectl describe replicaset myapp-replicaset` to see `replicaset` data 
+
