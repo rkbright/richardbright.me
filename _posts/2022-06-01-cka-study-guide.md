@@ -168,7 +168,7 @@ Two methods for deploying a kubernetes cluster
   - will automatically deploy the etcd service via a POD in the kubesystem namespace 
   - `./etcd get / --prefix -keys-only` to retrieve all keys stored by kubernetes 
 
-  ### Kube API Server 
+### Kube API Server 
 
  Is the primary management component in kubernetes 
 
@@ -294,6 +294,7 @@ You can also download and install `kube-proxy` from the kubernetes homepage
 When working with `pods`, there are a few assumptions 
 
 1) the application is available as a docker image in a docker registry 
+
 2) a kubernetes cluster has already been set up 
 
 Applications are encapsulated by a kubernetes object that is known as a `pod`
@@ -310,3 +311,37 @@ Applications are encapsulated by a kubernetes object that is known as a `pod`
 
 running multi-pod containers is a rare use case, typically it should be one pod per docker container 
 
+Helpful commands for managing `pods`:
+
+`kubectl get pods` to generate list of pods 
+
+  * use the `-o wide` option to print additional details 
+
+`kubectl run nginx --image=nginx` to create a pod running an nginx container
+
+`kubectl describe pod nginx` to printout nginx pod information 
+
+`kubectl create -f nginx.yaml` to create the nginx pod from a yaml file 
+
+`kubectl apply -f nginx.yaml` to apply changes to an existing pod 
+
+`kubectl edit pod nginx` can also be used to make edits to a pod's configuration
+
+`kubectl delete pod nginx` to delete a pod 
+
+`kubectl run nginx --image=nginx --dry-run=client -o yaml` to print out yaml specification that you can use to configure the nginx pod
+
+standard pod yaml configuration 
+
+```
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: nginx
+  labels: 
+    app: nginx-webapp
+spec:
+  containers:
+    - image: nginx:alpine
+      name: nginx
+```
