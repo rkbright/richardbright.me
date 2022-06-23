@@ -421,6 +421,8 @@ selector:   --> additional required setting
 
 `replicasets` can be used to manage pods that were not created as part of the initial `replicaset` 
 
+`rs` is the short form for `replicaset`
+
 run `kubectl create -f replicaset-definition.yaml` to create 3 replication controller pods of the same type
 
 `kubectl get replicaset` to print out replicaset controller data within the cluster 
@@ -457,3 +459,87 @@ Useful commands:
 
 `kubectl describe replicaset myapp-replicaset` to see `replicaset` data 
 
+`kubectl explain replicaset` to print an explication of the replicaset definition yaml file
+
+### Deployments
+
+`deployments` are a kubernetes object that is higher in the kubernetes hierarchy
+
+`deployments` allow you to perform: 
+
+- rolling updates 
+- upgrades to container instances 
+- roll back and undo changes if needed
+- pause updates/upgrades 
+
+`deployment-definition.yaml`
+```
+apiVersion: apps/v1
+kind: Deployment 
+metadata: --> metadata section for the deployment 
+  name: myapp-replicaset
+  labels: 
+    app: myapp
+    type: front-end 
+spec: --> spec section for the deployment
+  template:
+
+    metadata: --> metadata section for the pod
+      name: myadd-pod
+      labels: 
+        app: myapp
+        type: front-end
+    spec: --> spec section for the pod
+      containers:
+      - name: nginx-container
+        image: nginx  
+
+replicas: 3
+selector:   --> additional required setting
+  matchLabels:
+    type: front-end 
+```
+
+`kubectl create -f deployment-definition.yaml` to create deployment 
+
+`kubectl get deployment` to view the deployment data 
+
+a `deployment` will automatically create a `replicaset`
+
+`kubectl get replicas` to view replica data 
+
+`kubectl get pods` to view `deployment` `pods`
+
+`kubectl get all` to view all cluster data 
+
+### Useful Certification Tips
+
+Create an NGINX Pod
+
+`kubectl run nginx --image=nginx`
+
+Generate POD Manifest YAML file (-o yaml). Don’t create it(–dry-run)
+
+`kubectl run nginx --image=nginx --dry-run=client -o yaml`
+
+Create a deployment
+
+`kubectl create deployment --image=nginx nginx`
+
+Generate Deployment YAML file (-o yaml). Don’t create it(–dry-run)
+
+`kubectl create deployment --image=nginx nginx --dry-run=client -o yaml`
+
+Generate Deployment YAML file (-o yaml). Don’t create it(–dry-run) with 4 Replicas (–replicas=4)
+
+`kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
+
+Save it to a file, make necessary changes to the file (for example, adding more replicas) and then create the deployment.
+
+`kubectl create -f nginx-deployment.yaml`
+
+OR
+
+In k8s version 1.19+, we can specify the –replicas option to create a deployment with 4 replicas.
+
+`kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml`
