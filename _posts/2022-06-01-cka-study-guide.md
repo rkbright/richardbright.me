@@ -543,3 +543,75 @@ OR
 In k8s version 1.19+, we can specify the –replicas option to create a deployment with 4 replicas.
 
 `kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml`
+
+### Services
+
+kubernetes services enable communication among various components within and outside of the application 
+
+It helps connect applications to each other and/or to users
+
+Services enable connectivity among groups of pods 
+
+Services enables loose coupling among application microservices 
+
+`Node-port service` listens to ports on the node and forwards requests to the mapped port on the pod running the application 
+
+**Service Types**
+
+- **Node-port**: forwards node port requests to the application container 
+- **ClusterIP**: creates a virtual IP within the cluster to enable communication across services 
+- **Loadbalancer**: provisions a loadbalancer for the application of supported CSPs. 
+
+**Ports** 
+
+**Target-port**: port on the pod, where the service forwards the request 
+
+**Port**: port on the service, associated to the clusterIP 
+
+**Node-port**: port on the node, used to access the application externally
+  - has a valid range between 30000 - 32767
+
+`service-definitions.yaml`
+```
+apiVersion: v1
+kind: Service
+metadata: 
+  name: myapp-service
+spec: 
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    app: myapp
+    type: front-end
+
+```
+
+The only mandatory field is port, the target port will get the same number as port and the nodePort will get a port number in the valid range
+
+the `ports` section in the definitions file is an array 
+
+`labels` and `selectors` are used to link services with pods
+
+Use the labels under the pod definition files that was used to create the pod, copy the information in the labels section 
+
+In a production environment there could be multiple pods running the application, the service will recognize if one or more pods are available and assign all three pods as endpoints to forward requests from the user.
+
+Services also acts as a loadbalancer to distribute load across the pods
+
+The service will use a `random` algorithm when forwarding requests 
+
+When an application is deployed on separate nodes on the cluster, kubernetes will create a service tht spans all the nodes in the cluster and will map the `targetPort` to all the `nodePorts` on the cluster 
+
+Services creation is exactly the same no matter if you are working on a: 
+
+- single pod on a single node
+- multiple pods on a single node
+- multiple pods on multiple nodes 
+
+
+
+
+
