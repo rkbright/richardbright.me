@@ -19,7 +19,7 @@ Helpful prerequisite skills:
 
 Official Site:
 
-- [kubernetes](https://kubernetes.io/)
+- [kubernetes](https://kubernetes.io/){:target="_blank"}
 
 # Certification Objectives
 
