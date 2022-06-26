@@ -17,6 +17,10 @@ Helpful prerequisite skills:
 - Docker
 - YAML
 
+Official Site:
+
+- [kubernetes](https://kubernetes.io/)
+
 # Certification Objectives
 
 - [Core concepts](#lesson1) 
