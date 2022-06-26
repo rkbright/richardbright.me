@@ -5,7 +5,7 @@ permalink: /about/
 tags: about
 ---
 
-I am a Sr. Solutions Architect with the [SAS Institute](https://www.sas.com/en_us/home.html) supporting the [Justice and Public Safety](https://www.sas.com/en_us/industry/government/sas-for/public-safety-criminal-justice.html) portfolio. I am passionate about helping public safety and law enforcement organizations leverage data, analytics, and ML/AI in order to better serve citizens and the community. 
+I am a Sr. Solutions Architect with the [SAS Institute](https://www.sas.com/en_us/home.html){:target="_blank"} supporting the [Justice and Public Safety](https://www.sas.com/en_us/industry/government/sas-for/public-safety-criminal-justice.html){:target="_blank"} portfolio. I am passionate about helping public safety and law enforcement organizations leverage data, analytics, and ML/AI in order to better serve citizens and the community. 
 
 Prior to my current role I supported the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
 
