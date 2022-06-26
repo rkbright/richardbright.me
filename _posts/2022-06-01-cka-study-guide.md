@@ -611,7 +611,46 @@ Services creation is exactly the same no matter if you are working on a:
 - multiple pods on a single node
 - multiple pods on multiple nodes 
 
+### Services Cluster IP
+
+provides a single network interface for services that are deployed across various layers within a microservices architecture 
+
+`service-definition.yaml`
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-end
+spec: 
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+  
+  selector: 
+    app: myapp
+    type: back-end
+
+```
 
 
+### Services – Loadbalancer
 
+Can manually configure a load  balancer service 
+
+Can integrate with native CSP load balancer service
+
+`service-definition.yaml`
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-end
+spec: 
+  type: Loadbalancer
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 3008
+```
 
