@@ -558,6 +558,8 @@ Services enable connectivity among groups of pods
 
 Services enables loose coupling among application microservices 
 
+`svc` is short for service when using `kubectl` 
+
 `Node-port service` listens to ports on the node and forwards requests to the mapped port on the pod running the application 
 
 **Service Types**
@@ -657,4 +659,92 @@ spec:
       port: 80
       nodePort: 3008
 ```
+
+### Namespaces
+
+kubernetes creates three `namespaces` by default when creating a cluster
+
+- `kube-system` internal kubernetes resources 
+- `default` the default application namespace 
+- `kube-public` resources that should be available to all the users 
+
+`namespaces` provide isolation between resources 
+
+each `namespace` can have it's own set of policies that defines who can do what 
+
+resource quotas can be applied to each `namespace`
+
+append the `namespace` and service to connect resources across  `namespaces`
+
+for example, `mysql.connect("db-service.dev.svc.cluster.local")`
+
+- service name `db-service`
+- namespace `dev`
+- service `svc`
+- domain `cluster.local` 
+
+`kubectl get pods` only lists pods in the current `namespace` 
+
+to see services in another `namespace` use the `--namespace=` option
+
+`kubectl get pods --namespace=kube-system`
+
+when creating a pod, it is created in the default `namespace`
+
+`kubectl create -f pod-definition.yml`
+
+to create services in another `namespace` use the `--namespace=` option
+
+`kubectl create -f pod-definition.tml --namespace=dev`
+
+you can also add the `namespace` option to the definitions file to create automatically 
+
+`pod-definitions.yml`
+```
+apiVersion: v1
+kind: Namespace 
+metadata:
+  name: myadd-pod
+  namespace: dev
+  labels:
+    app: myapp
+    type: front-end
+  spec: 
+    containers:
+      - name: nginx-container
+        image: nginx
+```
+
+`kubectl create -f namespace-dev.yml`
+
+or 
+
+`kubectl create namespace dev`
+
+you can set the `namespace` in the current context to dev
+
+`kubectl config set-context $(kubectl config current-context) --namespace=dev`
+
+view all pods in all `namespaces` with `kubectl get pods --all-namespaces` 
+
+resource quota definition files are used
+
+`compute-quota.yml`
+```
+apiVersion: va
+kind: ResourceQuota
+metadata:
+  name: computer-quota
+  namespace: dev
+
+spec:
+ hard: 
+   pods: "10"
+   request.cpi "4u
+   request.memory: 5 Gi
+   limits.cpu: 10
+   limits.memory=10Gi
+```
+
+
 
