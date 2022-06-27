@@ -740,9 +740,9 @@ metadata:
 spec:
  hard: 
    pods: "10"
-   request.cpi "4u
+   request.cpu "4"
    request.memory: 5 Gi
-   limits.cpu: 10
+   limits.cpu: "10"
    limits.memory=10Gi
 ```
 
