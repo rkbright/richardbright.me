@@ -128,13 +128,13 @@ Helpful exam links:
 **Worker nodes** host applications as containers 
   - **container runtime engine** is needed to run the application components, e.g., Docker. 
   - **kubelet** is an engine that runs on each node in the cluster and listens for instructions via the kube-apiserver 
-  - **kube-proxy** runs on the worker nodes and ensures the rules ar ein place so containers can communicate 
+  - **kube-proxy** runs on the worker nodes and ensures the rules are in place so containers can communicate 
 
 
 
 ### ETCD for Beginners
 
-**etcd** is a distributed and reliable key value store that simple, secure and fast 
+**etcd** is a distributed and reliable key value store that is simple, secure and fast 
   - **key value stores** are mainly used to store configuration data that can be saved and retrieved quickly compared to tabular data 
   - listens on port **2379** by default 
   - **etcd control client** is the default client; it is the CLI for etcd 
@@ -147,52 +147,52 @@ Helpful exam links:
 **etcd** stores data on the following components 
   - Nodes
   - PODs
-  - Configs
+  - Configurations
   - Secrets 
   - Accounts
   - Roles 
   - Bindings
-  - Others 
+  - Other... 
 
-All data retrieved from the `kubectl get` command comes from the etcd server 
+All data retrieved from the `kubectl get` command comes from the `etcd` server 
 
-All changes made to the cluster are stored in the etcd server, e.g., deploying PODs, Replicasets, and adding Nodes
+All changes made to the cluster are stored in the `etcd` server, e.g., deploying PODs, Replicasets, and adding Nodes
 
-Applied changes are not considered complete until the change is made in the etcd server 
+Applied changes are not considered complete until the change is made in the `etcd` server 
 
-Two methods for deploying a kubernetes cluster 
+There are two methods for deploying `etcd` within a kubernetes cluster: 
 
 1) Manual install 
 
-   - required to download, install, and configure etcd yourself as a service 
+   - required to download, install, and configure `etcd` yourself as a service 
    - will need to generate TLS certificates 
 
 2) Using `kubeadm`
 
-  - will automatically deploy the etcd service via a POD in the kubesystem namespace 
+  - will automatically deploy the `etcd` service via a POD in the kube-system namespace 
   - `./etcd get / --prefix -keys-only` to retrieve all keys stored by kubernetes 
 
 ### Kube API Server 
 
  Is the primary management component in kubernetes 
 
-`kubctl` commands go to the `kube-apiserver` where the request is authenticated and validated 
+`kubectl` commands go to the `kube-apiserver` where the request is authenticated and validated 
 
-The `kube-apiserver` will then query etcd for the information and respond back to the request 
+The `kube-apiserver` will then query `etcd` for the information and respond back to the request 
 
-`kube-apiserver` is the only component that interacts directly with the etcd datastore 
+`kube-apiserver` is the only component that interacts directly with the `etcd` datastore 
 
-kube-apiserver is responsible for: 
+`kube-apiserver` is responsible for: 
 
   - authenticating users
   - validating requests 
   - retrieving data 
-  - updating etcd
-  - services that depend on kube-apiserver
-    - scheduler 
-    - kubelet 
+  - updating `etcd`
+  - services that depend on `kube-apiserver`
+    - `scheduler` 
+    - `kubelet` 
 
-If using `kubeadm` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If setting up the cluster manually, then you can install the `kube-apiservr` from the kubernetes release page. 
+If using `kubeadm` tool to bootsrap cluster, then you do not need to install the `kube-apiserver` manually. If setting up the cluster manually, then you can install the `kube-apiserver` from the kubernetes release page. 
 
 `kubeadm` will deploy the `kube-apiserver` as a pod in the kube system namespace on the master node
 
@@ -212,12 +212,12 @@ A controller is a process that continuously monitors the state of various compon
 
   - it does this via the `kube-apiserver` 
   - the `Node-Controller` checks the status of the nodes every 5 seconds; it monitors the health of the nodes 
-  - if the `Node-Controller` stops receiving a signal from a node, then the `Noe-Controler` marks the node as unreachable after 40 seconds  
+  - if the `Node-Controller` stops receiving a signal from a node, then the `Node-Controller` marks the node as unreachable after 40 seconds  
   - after a node is marked unreachable, the `Node-Controller` waits 5 minutes for the node to come back up. If the node does not come online then the pod is removed from the node and provisions the pod on the healthy nodes if it's part of a replicaset
 
 `Replication-Controller ` is responsible for monitoring the status of the replicationset and ensuring the desired number of pods are available at all times within the set. If a pod dies a new one will be created
 
-Controllers are the brains behind kubernetes 
+Controllers are the brains behind kubernetes: 
 
 - Deployment-Controller 
 - Namespace-Controller 
@@ -246,15 +246,15 @@ View process `ps -aux | greg kube-controller-manager`
 
 ### Kube Scheduler
 
-Responsible for deciding which pods goes on which nodes, it does not actually deploy the pod on the node (that is the job of the kublet)
+Responsible for deciding which pods goes on which nodes, it does not actually deploy the pod on the node (that is the job of the kubelet)
 
-The scheduler bases it's decision on a few criteria 
+The scheduler bases it's decision on a few criteria: 
 
-Figures out placement in two phases 
+- Figures out placement in two phases 
 
-The first phase will try filtering put the nodes that do not meet the pod specification, for example, a 10CPU pod will need to be placed on a machine with enough CPU capacity. Other lower spec nodes will be filtered out 
+    - The first phase will try filtering out the nodes that do not meet the pod specification, for example, a 10 CPU pod will need to be placed on a machine with enough CPU capacity. Other lower spec nodes will be filtered out 
 
-The second phase is based on ranking the nodes. Each node will be given a score between 1-10, the scheduler will assign a pod based on the remaining specs of the node once the pod is placed on the node. 
+    - The second phase is based on ranking the nodes. Each node will be given a score between 1-10, the scheduler will assign a pod based on the remaining specs of the node once the pod is placed on the node. 
 
 You can also write your own customized scheduler 
 
@@ -266,14 +266,14 @@ View process `ps -aux | greg kube-scheduler`
 
 ### Kubelet
 
-the `kublet` is the master of the node, it is responsible for all tasks on the pod and frequently sends data back to the master node on the status of the environment and the containers on them 
+the `kubelet` is the master of the node, it is responsible for all tasks on the pod and frequently sends data back to the master node on the status of the environment and the containers on them 
 
 Responsibilities include:
   - registers node with the kubernetes cluster
   - initiate container runtime to pull docker image to crete pod
   - Monitors the state of the pod and the container and reports back to the master node 
 
-**NOTE** `kubeadm` does not deploy `kublet`, you must always install `kubelet` manually on the worker nodes 
+**NOTE** `kubeadm` does not deploy `kubelet`, you must always install `kubelet` manually on the worker nodes 
 
 You can download the file from the kubernetes site. Install it of the worker node and run it as a service 
 
@@ -287,7 +287,7 @@ In a cluster, all pods are able to communicate with each other, this is accompli
 
 `kube-proxy` leverages linux `iptables` 
 
-`kubeadm` will install `kube-proxy` on each node as a pods
+`kubeadm` will install `kube-proxy` on each node as a pod
 
 `kube-proxy` is deployed as a deamonset, so each node in the cluster will have a dedicated `kube-proxy` pod 
 
@@ -295,7 +295,7 @@ You can also download and install `kube-proxy` from the kubernetes homepage
 
 ### PODs
 
-When working with `pods`, there are a few assumptions 
+When working with `pods`, there are a few assumptions: 
 
 1) the application is available as a docker image in a docker registry 
 
@@ -309,7 +309,7 @@ Applications are encapsulated by a kubernetes object that is known as a `pod`
 
 `pods` usually have a one-to-one ratio with the containers running the application 
 
-`pods` are npt deployed on existing `pods` to scale the application 
+`pods` are not deployed on existing `pods` to scale the application 
 
 `pods` can run multiple containers but not usually of the same kind. For example, helper containers are usually deployed on pods
 
