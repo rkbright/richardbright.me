@@ -746,5 +746,25 @@ spec:
    limits.memory=10Gi
 ```
 
+### Imperative vs Declarative
 
+| `imperative` | `declarative` | 
+|---|---|
+| specifying what to do and how to do it  | specifying what to do | 
+| *`kubectl run --image=nginx nginx` |  `kubectl apply -f nginx.yaml`    |
+|  *`kubectl create deployment --image=nginx nginx   `   | you can specify a directory file if there are multiple files `kubectl apply -f /path/to/folder`  |
+| * `kubectl expose deployment nginx --port=80`| will update the object time and runtime environment |
+| **`kubectl edit deployment nginx`||
+| **`kubectl scale deployment nginx --replicas=5`||
+| **`kubectl set image deployment nginx nginx=nginx:1.18`||
+| **`kubectl create -f nginx.yaml`||
+| **`kubectl replace -f nginx.yaml`||
+| **`kubectl delete -f nginx.yaml`||
+|does not apply updates to the object files, you will need to ensure runtime changes are also made in the configuration file||
+
+> `*` = create objects 
+> `**` = update objects, difficult to work with in a production environment since nobody else knows what command you ran 
+
+<!-- | **IaC Example**  |
+| List of full step-by-step instructions | Declare environment specifications and let the software install | -->
 
