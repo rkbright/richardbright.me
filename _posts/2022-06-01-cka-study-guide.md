@@ -753,7 +753,7 @@ spec:
 | specifying what to do and how to do it  | specifying what to do | 
 | *`kubectl run --image=nginx nginx` |  `kubectl apply -f nginx.yaml`    |
 |  *`kubectl create deployment --image=nginx nginx   `   | you can specify a directory file if there are multiple files `kubectl apply -f /path/to/folder`  |
-| * `kubectl expose deployment nginx --port=80`| will update the object time and runtime environment |
+| * `kubectl expose deployment nginx --port=80`| will update the object and runtime environment |
 | **`kubectl edit deployment nginx`||
 | **`kubectl scale deployment nginx --replicas=5`||
 | **`kubectl set image deployment nginx nginx=nginx:1.18`||
