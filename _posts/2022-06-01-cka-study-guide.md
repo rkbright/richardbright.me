@@ -113,8 +113,7 @@ Helpful exam links:
 
 [Exam Tips](http://training.linuxfoundation.org/go//Important-Tips-CKA-CKAD)
 
-## CertificationTips
-
+[CertificationTips](#certificationtips)
 
 ## Lesson1
 
@@ -784,7 +783,7 @@ spec:
 
 
 
-[CertificationTips](#certificationtips)
+## CertificationTips
 
 **Certification Tips – Imperative Commands with Kubectl**
 
