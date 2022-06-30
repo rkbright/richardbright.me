@@ -29,7 +29,7 @@ Official Site:
   - API primitives
   - Services and other network primitives 
 
-- Scheduling 
+- [Scheduling](#lesson2) 
 
   - Labels and selectors 
   - Daemon sets
@@ -350,6 +350,11 @@ spec:
     - image: nginx:alpine
       name: nginx
 ```
+Examples:
+
+`kubectl run redis --image=redis:alpine --labels="tier=db"`
+
+`kubectl run custom-nginx --image=nginx --port=8080`
 
 ### ReplicaSets
 
@@ -517,6 +522,12 @@ a `deployment` will automatically create a `replicaset`
 
 `kubectl get all` to view all cluster data 
 
+Examples: 
+
+`kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3`
+
+`kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2`
+
 ### Useful Certification Tips
 
 Create an NGINX Pod
@@ -665,6 +676,8 @@ Examples:
 
 `kubectl expose pod redis --port=6379 --name redis-service`
 
+`kubectl expose pod httpd --port=80 --name httpd`
+
 ### Namespaces
 
 kubernetes creates three `namespaces` by default when creating a cluster
@@ -773,6 +786,54 @@ spec:
 <!-- | **IaC Example**  |
 | List of full step-by-step instructions | Declare environment specifications and let the software install | -->
 
+### Kubectl Apply Command
+
+the `kubectl apply` command takes into consideration the
+
+- local configuration file 
+- last applied configuration 
+
+before making a decision on what changes to be made. 
+
+If an object does not exist, the object will be created and a file will be created on the live kubernetes cluster that is also known as the live object configuration 
+
+## Lesson2
+
+### Scheduling 
+
+How scheduling works.
+
+- every definition file has a field called `nodeName` that is not set or specified by default, kubernetes adds it automatically 
+- kubernetes will scan pods and look for pods where the `nodeName` is not set
+- once identified, kubernetes will schedule the pod and bind the pod to the node by adding a value to the `nodeName` field
+- pods will continue to be in a pending state if there is no schedule service on the node
+- you can manually include the node information to the `nodeName` when creating the pod, you cannot update the `nodeName` field once the pod is created 
+- to assign a pod to a node post creation, and where the pod is not being managed by the scheduler, you can create a binding object file and submit a POST API call to the binding api. The api call must be in json format
+
+`pod-bind-definition.yaml`
+```
+apiVersion: v1
+kind: Binding
+metadata: 
+  name: nginx
+target:
+  apiVersion: v1
+  kind: Node
+  name: Node02
+```
+
+`curl --header "Content-Type:application/json" --request POST --data '{"apiVersion":"v1","kind"."Binding",...} http://hostname/api/v1/namespaces/default/pods/$PODNAME/binding`
+
+
+Examples
+
+`kubectl get nodes` will return the node names in the cluster and its status
+
+`kubectl get pods -n kube-system` to print the services running in the kube-system namespace 
+
+`kubectl replace --force -f nginx.yaml` to delete and recreate a pod with the new specifications 
+
+`kubectl get pods --watch` to monitor pod 
 
 
 
@@ -782,6 +843,24 @@ spec:
 
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## CertificationTips
 
