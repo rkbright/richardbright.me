@@ -836,6 +836,38 @@ Examples
 `kubectl get pods --watch` to monitor pod 
 
 
+### Labels and Selectors
+
+labels and selectors are a standard way to group things together 
+
+labels are properties attached to each item 
+
+selectors help you filter items 
+
+labels are added through a definition file under the metadata section 
+
+you can add as many labels as needed
+
+`kubectl get pods --selector app=App1` to select the App1 pod
+
+you can add an `annotations` section in the definition file to add general data 
+
+`kubectl get pods --selector env=prod,bu=finance,tier=frontend`
+
+`kubectl get pods --selector env=prod,bu=finance,tier=frontend --no-headers` will suppress the headers line when printing to stdout 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
