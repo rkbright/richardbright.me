@@ -9,7 +9,7 @@ tags:
   - jps
 ---
 
-## Simple Steps Law Enforcement Organizations can take to Bolster Crime Gun Analysis
+<!-- ## Simple Steps Law Enforcement Organizations can take to Bolster Crime Gun Analysis -->
 
 ![nibin](https://richardbright.me/images/nibin.png)
 
