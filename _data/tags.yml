@@ -28,3 +28,5 @@ viya4:
   name: SAS Viya 4
 cka:
   name: Kubernetes Certified Administrator
+jps:
+  name: Justice and Public Safety
