@@ -856,7 +856,93 @@ you can add an `annotations` section in the definition file to add general data
 
 `kubectl get pods --selector env=prod,bu=finance,tier=frontend --no-headers` will suppress the headers line when printing to stdout 
 
+### Taints and Tolerations
 
+Are used to apply restrictions on what pods can be scheduled on a node 
+
+Used to restrict nodes from accepting certain pods 
+
+On a regular kubernetes deployment the scheduler will try to deploy the pods evenly across the available nodes 
+
+When a taint is applied to a node, the scheduler cannot place a pod on the node because pods by default have no tolerations 
+
+This results in no unwanted pods being places on a node 
+
+To allow a pod to be placed on a tainted node, apply the toleration to the pod so it is tolerant of the taint on the node 
+
+taints are set on nodes 
+
+tolerations are set on pods 
+
+`kubectl taint nodes node-name key=value:taint-effect`
+
+Three options for taint-effect 
+
+- `NoSchedule` will not schedule pods on the node 
+- `PreferNoSchedule` kubernetes will try to avoid placing a pod on the node but it's not guaranteed
+- `Noexecute` new pods will not be scheduled on the node and existing pods will be evicted if the tolerations are not applied to the pods. pods can still be scheduled on untainted nodes. to bind a pod to a node, that can be achieved through node affinity   
+
+Example:
+
+`kubectl taint nodes node01 app=blue:NoSchedule`
+
+values in the pod definition file must be in double quotes `" "`
+`pod-definition.yaml`
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name:myapp-pod
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+tolerations:
+- key:"app"
+  operator:"Equal"
+  value:"blue"
+  effect:"NoSchedule"
+```
+
+the scheduler does not schedule any pods for on the master node, kubernetes applies a taint on the master node when created that prevents the scheduler from placing pods on the master node 
+
+`kubectl get pods kubemaster | grep Taint` to print the taint on the master node
+
+add a `-` to the end of a taint to remove from a node 
+
+`kubectl taint node controlplane node-role.kuberneties.io/master:NoSchedule-`
+
+
+### Node Selectors
+
+used to assign pods with specific workloads to a desired node 
+
+for example, a data processing pod that is memory and I/O intense will need to go on a node that can manage the demand
+
+Implemented through the definitions file via labels - the labels will already need to be defined in the cluster
+
+`pod-definition.yaml`
+```
+apiVerions: v1
+kind: Pod
+metadata:
+  name: myapp
+spec:
+  containers:
+  - name: data-processor 
+    image: data-processor 
+  
+  nodeSelector: 
+    size: Large
+```
+
+`kubectl label nodes node01 size=Large`
+
+it does have it's **limitations**, you cannot use conditional logic to schedule pods, only the single label value 
+
+for example, you cannot schedule a pod on a large or medium size node, and you cannot say do not assign on any small nodes - or not small. 
+
+### Node Affinity
 
 
 
