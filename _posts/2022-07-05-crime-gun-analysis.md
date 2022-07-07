@@ -3,7 +3,7 @@ layout:     post
 title:      Simple Steps Law Enforcement Organizations can take to Bolster Crime Gun Analysis
 date:       2022-07-5
 summary:    
-permalink: /crime-gun-analysis/
+permalink: /jps/
 toc: true
 tags:
   - jps
