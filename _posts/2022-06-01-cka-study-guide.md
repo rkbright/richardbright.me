@@ -856,6 +856,8 @@ you can add an `annotations` section in the definition file to add general data
 
 `kubectl get pods --selector env=prod,bu=finance,tier=frontend --no-headers` will suppress the headers line when printing to stdout 
 
+`kubectl label node node01 color=blue` add a label to existing node
+
 ### Taints and Tolerations
 
 Are used to apply restrictions on what pods can be scheduled on a node 
@@ -944,6 +946,173 @@ for example, you cannot schedule a pod on a large or medium size node, and you c
 
 ### Node Affinity
 
+ensures pods are hosted on particular nodes. for example, a pod that executes a large job should always run on a pod large enough to execute the jobs while also ensuring good performance 
+
+updates are made to the definitions file 
+
+`NodeAffinity.yaml`
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+spec:
+  containers:
+  - name: data-processor
+    image: data-processor 
+  affinity:
+    nodeAffinity: 
+      requiredDuringSchedulingIgnoreDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions: 
+          - key: size
+            operator: In
+            values: 
+            - Large
+            - Medium
+```
+
+nodeAffinity allows you to use conditions. for example, the block above will place the pod on a Large or a Medium node 
+
+```
+        - matchExpressions: 
+          - key: size
+            operator: NotIn
+            values: 
+            - Small
+```
+
+you can also set the operator to NotIn and specify a size that you don't want the pod placed
+
+```
+        - matchExpressions: 
+          - key: size
+            operator: Exits
+```
+
+the `exits` operator does not check the values and just checks that one exists 
+
+node affinity types 
+
+available: 
+
+- `requiredDuringSchedulingIgnoreDuringExecution`
+- `preferredDuringSchedulingIgnoreDuringExecution`
+
+there are an additional 2 types planned 
+
+planned:
+
+- `requiredDuringSchedulingRequiredDuringExecution`
+- `preferredDuringSchedulingRequiredDuringExecution`
+
+|  | `DuringScheduling` | `DuringExecution` | 
+|---|---|---|
+| `Type 1` | Required | Ignored | 
+|` Type 2` | Preferred | Ignored |
+|` Type 3` | Required | Required |
+|` Type 4` | Preferred | Required |
+
+
+### Taints and Tolerations vs Node Affinity
+
+can be used together to ensure only the desired pods are scheduled on specific nodes 
+
+### Resource Limits
+
+the default resource request from the scheduler is set to `0.5 cpu` and `256MiB RAM`. these settings can be updated through the pod definitions file 
+
+```
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+    defaultRequest:
+      memory: 256Mi
+    type: Container
+```
+
+```
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+spec:
+  limits:
+  - default:
+      cpu: 1
+    defaultRequest:
+      cpu: 0.5
+    type: Container
+```
+
+`pod-definition`
+```
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: myapp
+  labels: 
+    app: myapp
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+    ports: 
+    - containterPort: 8080
+  resources: 
+    requests:
+      memory: "1Gi"
+      cpu: 1
+    limit: 
+      memory: "2Gi"
+      cpu: 2
+```
+the default limit set by kubernetes are `1 cpu` and `512Mi` of RAM, if a milit is not specified in the definitions file 
+
+kubernetes will throttle pods that exceed cpu limits, and will allow pods to exceed specified limits but will terminate a pod that constantly exceeds it's limits. 
+
+### DaemonSets
+
+daemonsets are similar to replicasets, however, daemonsets run one instance of a pod on a node. When a node is added to a cluster, the daemonset will ensure one instance of a pos is running. When the node is terminated, the daemonset will also remove the pod
+
+managing a monitoring agent on each pod is a good use case
+
+the `kube-proxy` service is another good use case for daemonsets 
+
+`daemonset-definition.yaml`
+```
+apiVersion: v1
+kind: DaemonSet
+metadata: 
+  name: monitoring-daemon
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-agent
+  template:
+    metadata: 
+      labels:
+        app: monitoring-agent
+    spec:
+      containers:
+      - name: monitoring-agent
+        image: monitoring-agent 
+```
+
+`kubectl create -f daemonset-definition.yaml` to create the daemonset
+
+`kubectl get daemonsets` to print current daemonsets 
+
+`kubectl describe daemonsets monitoring-daemon` to see daemonset details 
+
+`kubectl create deployment myapp -n kube-system --image=nginx --dry-run=client -o yaml > daemonset-template.yaml` to create a shell template for the daemonset
+
+edit the template and run `kubectl create -f daemonset-template.yaml`
 
 
 
