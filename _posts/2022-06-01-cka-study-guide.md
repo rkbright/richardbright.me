@@ -1009,9 +1009,9 @@ planned:
 |  | `DuringScheduling` | `DuringExecution` | 
 |---|---|---|
 | `Type 1` | Required | Ignored | 
-|` Type 2` | Preferred | Ignored |
-|` Type 3` | Required | Required |
-|` Type 4` | Preferred | Required |
+| `Type 2` | Preferred | Ignored |
+| `Type 3` | Required | Required |
+| `Type 4` | Preferred | Required |
 
 
 ### Taints and Tolerations vs Node Affinity
