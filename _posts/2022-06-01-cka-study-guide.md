@@ -1115,8 +1115,47 @@ spec:
 edit the template and run `kubectl create -f daemonset-template.yaml`
 
 
+### Static Pods
+
+the kubelet relies on the kuberneties controlplane to coordinate activities on a node, but what if there was no control plane to instruct the kubelet on what to do?
+
+a kubelet can manage a node independant of the master/controlplane 
+
+you will have to add pod definition files to `/etc/kubernetes/manifest` on the node 
+
+kubelet periodically reads this directory and creates pods on the host 
+
+kubelet will ensure pods are available as specified in the definitions file
+
+if a file is removed from the directory, the kubelet will also delete the pod 
+
+only works for pods since kubelet works at the pod level, deploayments, replicasets, etc.. will not work if added to the directory path 
+
+the path is passed in as a kubelet option 
+
+`--pod-manifest-path=/etc/kubernetes/manifests`
+
+you can also pass in a yaml file that has the directory path defied 
+
+`kubeconfig.yaml`
+```
+staticPodPath: /etc/kubernetes/manifest/
+```
+
+you can use docker commands to check the status of pods since there is no kubeapiserver 
+
+statis pods vs. daemonsets 
+
+| static pods| daemonsets | 
+|---|---|
+| created by kubelet  | created by kube-apiserver (daemonset controller) |
+| deploy controlplane component as static pod  | deploy monitoring & logging agents on nodes |
+| ignored by kube-scheduler | ignored by kube-scheduler |
 
 
+use the `-A` flag to search across all namespaces 
+
+`kubectl get pods -A` 
 
 
 
