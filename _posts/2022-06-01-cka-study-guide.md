@@ -39,7 +39,7 @@ Official Site:
   - Scheduler events
   - Configure kubernetes scheduler 
 
-- Logging and maintenance 
+- [Logging and maintenance](#lesson3) 
 
   - Monitor cluster components 
   - Monitor applications 
@@ -1117,7 +1117,7 @@ edit the template and run `kubectl create -f daemonset-template.yaml`
 
 ### Static Pods
 
-the kubelet relies on the kuberneties controlplane to coordinate activities on a node, but what if there was no control plane to instruct the kubelet on what to do?
+the kubelet relies on the kubernetes controlplane to coordinate activities on a node, but what if there was no control plane to instruct the kubelet on what to do?
 
 a kubelet can manage a node independant of the master/controlplane 
 
@@ -1156,6 +1156,46 @@ statis pods vs. daemonsets
 use the `-A` flag to search across all namespaces 
 
 `kubectl get pods -A` 
+
+
+## Lesson3
+
+### Logging & Monitoring
+
+kubernetes does not have a built-in monitoring solution
+
+you can leverage open source and proprietary monitoring solutions such as 
+
+- prometheus
+- metrics server (formerly heapster)
+  - can have one per cluster
+  - cAdvisor is a process that runs via kubelet to pass metrics information via the kube-apiserver 
+  - `minikube addons enable metrics-server` to add metrics server to a minikube cluster 
+  - `kubectl top node`
+  - `kubectl top pod`
+- elastic stack
+- datadog 
+- dynatrace
+
+### Managing Application Logs
+
+`kubectl logs -f pod container-name` to print container level log messages 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
