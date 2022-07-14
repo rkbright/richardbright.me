@@ -46,7 +46,7 @@ Official Site:
   - Monitor cluster component logs 
   - Application logs
 
-- Application lifecycle manager
+- [Application lifecycle manager](#lesson4)
 
   - Rolling updates and rollbacks in deployments 
   - Configure applications 
@@ -1181,6 +1181,42 @@ you can leverage open source and proprietary monitoring solutions such as
 
 `kubectl logs -f pod container-name` to print container level log messages 
 
+## Lesson4
+
+### Application Lifecycle Management
+
+### Rolling Updates and Rollbacks
+
+when creating a deployment, kubernetes creates a rollout and a corresponding revision version. When an upgrade is applied, a new revision is created, for example, revision 1 and revision 2 that has the most recent changes. This helps track the applications version history and makes it easier to rollback to a prior version, if needed.
+
+`kubectl rollout status deployment/myapp-deployment` to print status 
+
+`kubectl rollout history deployment/myapp-deployment` to see revisions and history of the application 
+
+two types of deployment strategies 
+
+- recreate strategy, will delete existing pods and relaunch pods with new version (results in app downtime)
+- rolling update, will delete and recreate the app one pod at a time (no app downtime and is the default setting)
+
+changes are applied  by running `kubectl apply -f *.yaml` 
+
+you can also use the `kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1.1`. the issue with this is the definition file will no tbe updated with the specified version 
+
+`kubectl rollout undo deployment/myapp-deployment` to rollback to a prior version 
+
+you can check rollout and rollback by running `kubectl get replicasets`
+
+summary controls
+
+| operation | command | 
+|---|---|
+| create| `kubectl create -f deployment.yaml` | 
+| get | `kubectl get deployments` | 
+| update | `kubectl apply -f deployment.yaml` |
+|  | `kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1.1` |
+| status | `kubectl rollout status deployment/myapp-deployment` |
+|  | `kubectl rollout history deployment/myapp-deployment` |
+| rollback | `kubectl rollout undo deployment/myapp-deployment` |
 
 
 
