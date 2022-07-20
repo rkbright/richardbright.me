@@ -1217,6 +1217,98 @@ summary controls
 | status | `kubectl rollout status deployment/myapp-deployment` |
 |  | `kubectl rollout history deployment/myapp-deployment` |
 | rollback | `kubectl rollout undo deployment/myapp-deployment` |
+### Commands and Arguments in Docker
+
+unlike a VM, a container is not intended to host an operating system. Containers are intended to run a specific process and then exits
+
+a container is only suppose to like as long as the process running is active 
+
+`docker run --name ubuntu-sleeper ubuntu-sleeper 10` 
+
+```
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: ubuntu-sleeper-pod
+spec:
+  container:
+  - name: ubuntu-sleeper
+    image: ubuntu-sleeper
+    command: ["sleep"]
+    args: ["10"]
+```
+
+### Setting an environment variable with kubernetes 
+
+`docker run -e APP_COLOR=pink simple-webapp-color` 
+
+```
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: simple-webapp-color
+spec:
+  container:
+  - name: ubuntu-sleeper
+    image: ubuntu-sleeper
+    ports:
+      - ContainerPort: 8080
+    env:
+      - name: APP_COLOR
+        value: pink
+```
+
+`configMaps` are used to pass configuration data in the form of key:value pairs 
+
+a configmap can be created imperatively and declaratively
+
+| type| command | 
+|---|---|
+| imperative | `kubectl create configmap app-config --from-literal=APP_COLOR=blue` | 
+| imperative | `kubectl create configmap app-config --from-file=/path/to/file/configmap.yaml` | 
+| declarative | `kubectl create -f configmap.yaml` | 
+
+`kubectl get configmaps`
+
+`kubectl describe configmaps`
+
+how to set a configMap declaratively
+
+```
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: simple-webapp-color
+spec:
+  container:
+  - name: ubuntu-sleeper
+    image: ubuntu-sleeper
+    ports:
+      - ContainerPort: 8080
+    envFrom:
+      - configMapRef:
+        name: app-config
+```
+
+you can also inject a single environment variable 
+
+```
+    env:
+      - name: APP_COLOR
+        valueFrom:
+          configMapKeyRef:
+          name: app-config
+          key: APP_COLOR
+```
+
+you can also set through a volume
+
+```
+    volumes:
+      - name: app-config-volume
+        configMap:
+          name: app-config
+```
 
 
 
