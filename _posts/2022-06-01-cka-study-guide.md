@@ -1217,6 +1217,8 @@ summary controls
 | status | `kubectl rollout status deployment/myapp-deployment` |
 |  | `kubectl rollout history deployment/myapp-deployment` |
 | rollback | `kubectl rollout undo deployment/myapp-deployment` |
+
+
 ### Commands and Arguments in Docker
 
 unlike a VM, a container is not intended to host an operating system. Containers are intended to run a specific process and then exits
