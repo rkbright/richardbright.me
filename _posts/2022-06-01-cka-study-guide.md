@@ -781,6 +781,7 @@ spec:
 |does not apply updates to the object files, you will need to ensure runtime changes are also made in the configuration file||
 
 > `*` = create objects 
+
 > `**` = update objects, difficult to work with in a production environment since nobody else knows what command you ran 
 
 <!-- | **IaC Example**  |
@@ -889,6 +890,7 @@ Example:
 `kubectl taint nodes node01 app=blue:NoSchedule`
 
 values in the pod definition file must be in double quotes `" "`
+
 `pod-definition.yaml`
 ```
 apiVersion: v1
@@ -1312,7 +1314,146 @@ you can also set through a volume
           name: app-config
 ```
 
+### Secrets
 
+you can create secrets imperatively and declaratively
+
+| imperative | declarative | 
+|---|---|
+| `kubectl create secret generic app-secret --from-literal=key=value` | `kubectl create -f secret.yaml`  |
+| `kubectl create secret generic app-secret --from-file=/path/to/file/secret.properties` |  |
+
+
+`secret.yaml`
+```
+apiVersion: v1
+kind: Secret
+metadata: 
+  name: app-secret
+data:
+  DB_HOST: bXlfc3FsCg==
+  DB_USER: cm9vdAo=
+  DB_PASSWD: cGFzc3dvcmQK
+```
+
+the data section stores the values in a hashed encoded format 
+
+to convert raw text to en encoded format run
+
+`echo 'my_sql' | base64` 
+
+`kubectl get secrets` to view system secrets 
+
+`kubectl describe secrets my-secret`
+
+to see secrets hash values run `kubectl describe secret my-secret -o yaml`
+
+to decode secret run 
+
+`echo 'my_sql' | base64 --decode` 
+
+then add the section to the pod definitions file 
+
+```
+...
+envFrom:
+  - secretRef:
+    name: app-secret
+```
+
+```
+...
+ env:
+  - name: DB_PASSWD
+    valueFrom: 
+      secretKeyRef:
+        name: app-secret
+        key: DB_PASSWD
+```
+
+```
+...
+ volumes: 
+ - name: app-secret-volume
+   secret:
+     secretName: app-secret
+```
+
+### Multi Container PODs
+
+these containers are created together and destroyed together
+
+run using the same resources and can refer to each other as locahost 
+
+```
+...
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+spec:
+  containers:
+  - name: webapp
+    image: webapp
+    ports: 
+      containerPort: 8080
+  - name: log-agent
+    image: log-agent
+```
+execute command on a container 
+
+`kubectl -n elastic-stack exec -it app -- cat /log/app.log`
+
+`kubectl logs app -n elastic-stack`
+
+But at times you may want to run a process that runs to completion in a container. For example a process that pulls a code or binary from a repository that will be used by the main web application. That is a task that will be run only one time when the pod is first created. Or a process that waits for an external service or database to be up before the actual application starts. That’s where `initContainers` comes in.
+
+An initContainer is configured in a pod like all other containers, except that it is specified inside a `initContainers` section, like this:
+
+ 
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox
+    command: ['sh', '-c', 'git clone <some-repository-that-will-be-used-by-application> ;']
+``` 
+
+When a POD is first created the initContainer is run, and the process in the initContainer must run to a completion before the real container hosting the application starts.
+
+
+If any of the initContainers fail to complete, Kubernetes restarts the Pod repeatedly until the Init Container succeeds.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+  - name: init-mydb
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+```
 
 
 
