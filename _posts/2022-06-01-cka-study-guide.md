@@ -53,7 +53,7 @@ Official Site:
   - Scale applications 
   - Self-healing application 
 
-- Cluster maintenance 
+- [Cluster maintenance](#lesson5) 
 
   - Cluster upgrade process
   - Operating system upgrades 
@@ -1455,7 +1455,143 @@ spec:
     command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
 ```
 
+## Lesson5
 
+### Cluster Maintenance
+
+### OS Upgrades
+
+the default pod eviction timeout is 5 minutes 
+
+`kube-controller-manager --pod-eviction-timeout=5m0s`
+
+if you know a node will not be back online, you can drain the node of the workload 
+
+`kubectl drain node-01`
+
+kubernetes will recreate pods on other nodes 
+
+the node is also marked as `unschedulable` so no pods are scheduled on the node 
+
+once the node is back online you can `kubectl uncordon node-01` so the node is not able to host pods 
+
+`kubectl cordon node-01` will mark the pod as unschedulable but will not terminate the workload 
+
+
+### Kubernetes Software Versions
+
+you can get your current kubernetes version by running `kubectl get nodes` 
+
+kubernetes versions are divided into three parts 
+
+for example, v1.11.3
+
+| v1.|11. | 3|
+|---|---|---|
+|major  |  minor | patch|
+|  | features | bug fixes |
+|  | functionality |  |
+
+kubernetes follows a standard software versioning procedure. 
+
+New features and functionalities are released every month through minor releases 
+
+kubernetes supports stable, alpha and beta releases 
+
+other projects maintain separate version numbers 
+
+for example, etcD and CoreDNS have different versioning numbers 
+
+### Cluster Upgrade Introduction
+
+controlplane components can have different versions, it is not mandatory for the versions to be the same for all components 
+
+because the `kube-apiserver` is the core of the control plane, none of the other components should be on a high version 
+
+the `controller-manager` and `kube-scheduler` can be one version below 
+
+the `kubelet` and `kube-proxy` can be up to two versions below 
+
+the `kubectl` utility can be one version above and below the `kube-apiserver` 
+
+when upgrading versions, it is recommended to upgrade one minor version at a time 
+
+upgrading a cluster involves two major steps 
+
+first you upgrade your master node, then the worker nodes 
+
+when the master node goes down momentarily, this does not affect the worker nodes. worker nodes will continue to operate. 
+
+the master functions will not be accessible during the version upgrade process, this also means the scheduler is affected as well. if a node goes down, a new node will not be scheduled 
+
+Two strategies to upgrade worker nodes 
+
+1. you can upgrade all the nodes at once; requires downtime. this will bring worker services down 
+
+2. you can upgrade nodes one at a time; requires no downtime. you can move workloads to other nodes while performing the upgrade. 
+
+3. add new upgraded nodes to the cluster, move workload, and decommission old nodes; requires no downtime 
+
+`kubeadm upgrade plan` provides a printout of useful information for planning your upgrade 
+
+you have to upgrade `kubeadm` prior to upgrading the cluster 
+
+upgrading the controlplane example: 
+
+```
+On the controlplane node, run the command run the following commands:
+
+apt update
+This will update the package lists from the software repository.
+
+apt install kubeadm=1.20.0-00
+This will install the kubeadm version 1.20
+
+kubeadm upgrade apply v1.20.0
+This will upgrade kubernetes controlplane. Note that this can take a few minutes.
+
+apt install kubelet=1.20.0-00 This will update the kubelet with the version 1.20.
+
+You may need to restart kubelet after it has been upgraded.
+Run: systemctl restart kubelet
+```
+
+example upgrading node 
+
+```
+On the node01 node, run the command run the following commands:
+
+If you are on the master node, run ssh node01 to go to node01
+
+
+apt update
+This will update the package lists from the software repository.
+
+
+apt install kubeadm=1.20.0-00
+This will install the kubeadm version 1.20
+
+
+kubeadm upgrade node
+This will upgrade the node01 configuration.
+
+
+apt install kubelet=1.20.0-00 This will update the kubelet with the version 1.20.
+
+
+You may need to restart kubelet after it has been upgraded.
+Run: systemctl restart kubelet
+```
+
+### Backup and Restore Methods
+
+the preferred way to manage a kubernetes cluster is by using declarative definition files and source control 
+
+you can also query the `kube-apiserver`, which stores all configuration information in the cluster 
+
+`kubectl get all --namespaces -o yaml > all-deployment-services.yaml`
+
+etcd data backups can be taken from the data directory that was configured at the time of creation or from the built in `etcdctl` utility 
 
 
 
