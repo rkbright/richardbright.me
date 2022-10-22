@@ -69,7 +69,7 @@ Official Site:
   - Security context 
   - Secure persistent key value store 
 
-- Storage 
+- [Storage](#lesson7) 
 
   - Persistent volumes 
   - Persistent volume claims 
@@ -2336,8 +2336,230 @@ you can also allow traffic from outside servers to access pods by adding the `ip
 ```
 ipBlock:
   cidr: 192.168.5.10/32
+```
 
 
+## Lesson7
+
+### Storage
+
+#### Introduction to Docker Storage
+
+a good understanding of how storage works with containers will help with understanding how storage works in kubernetes 
+
+there are two concepts when it comes to storage in docker 
+
+
+| storage drivers | volume drivers |
+|---|---|---|
+| aufs | local |
+| zfs | azure file storage|
+| btrfs | convoy |
+| device mapper | flocker |
+| overlay | glusterFS |
+| overlay2 | NetApp |
+
+
+#### Storage in Docker
+
+docker creates and stores data in `/var/lib/docker`
+
+```
+/var/lib/docker
+ aufs
+ containers
+ image
+ volumes
+```
+
+you should be familiar with the docker layer architecture - how docker containers are build 
+
+volume mounting - mounts a volume to the `/var/lib/docker/volumes` directory 
+
+bind mounting - mount a folder on the host and make it accessible within the container 
+
+mounting commands 
+
+`docker run -v data_volume:/var/lib/mysql mysql`
+
+`docker run -v data_volume2:/var/lib/mysql mysql`
+
+`docker run -v /data/mysql:/var/lib/mysql mysql`
+
+`docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql`
+
+#### Container Storage Interface
+
+docker used to be the container runtime engine of choice and was thus embedded within the kubernetes source code
+
+however, to enable the use of other container runtime engines, the container runtime interface was created to extend to other container runtime platforms without the need to change source code 
+
+same concept with the container networking interface, or CNI.
+
+the container storage interface, or CSI, as well. You can develop your own storage drivers based on the standards put forth by the interfaces 
+
+CSI Remote Procedure Calls, or RPCs
+
+| csi definition | command | driver |
+|---|---|---|
+| should call to provision a new volume | CreateVolume | should provision a new volume on the storage |
+| should call to delete a volume | DeleteVolume | should decommission a volume |
+| should call to place a workload that used the volume onto a node | ControllerPublishVolume | should make the volume available on a node |
+
+
+#### Volumes
+
+the below definition file mounts an external storage volume from /data to the container filesystem at /opt
+
+volumeMount.yaml
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: number-generator
+spec:
+  containers:
+  - image: alpine
+    name: alpine
+    command: ["/bin/sh","-c"]
+    args: ["shuf -i 0-100 -n 1 >> /opt/number.out"]
+    volumeMounts:
+    - mountPath: /opt
+      name: data-volume
+
+  volumes:
+  - name: data-volume
+    hostPath: 
+    - path: /data
+      type: Directory 
+
+```
+
+#### Persistent Volumes
+
+pv-definition.yaml
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata: 
+  name: pv-vol1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /tmp/data
+```
+
+`kubectl create -f pv-definition.yaml`
+
+`kubectl get persistentvolume`
+
+you can add storage specific definitions as well
+```
+awsElasticBlockStore:
+  volumeID: <vol ID>
+  fsType: ext4
+```
+
+
+#### Persistent Volume Claims
+
+PV and PVC are two different objects int he kubernetes namespace 
+
+an administrator creates a set of PVs and a user creates a PVC to use the storage 
+
+once the PVC is creates, kubernetes binds the PVC to the PV
+
+there is a one-to-one relationship between a PVC and a PV
+
+pvc-definition.yaml
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessMode:
+  - readWriteOnce
+  resources: 
+    requests: 
+      storage: 500Mi
+```
+
+`kubectl create -f pvc-definition.yaml`
+
+
+`kubectl get persistentvolumeclaim`
+
+`kubectl delete persistentvolumecliam myclaim`
+
+the default is set to `persistentVolumeReclaimPolicy: Retain`, which will persist the hold on the storage 
+
+the default is set to `persistentVolumeReclaimPolicy: Delete` will make the volume available for use by users 
+
+
+Once you create a PVC use it in a POD definition file by specifying the PVC Claim name under persistentVolumeClaim section in the volumes section like this:
+
+``` 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: mypd
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: myclaim
+```
+
+helpful commands: 
+
+`kubectl exec webapp -- cat /log/app.log` view logs 
+
+#### Storage Class
+
+supports dynamic provisioning where you do not have to manually create the PV
+
+sc-definition.yaml
+```
+apiVersion: storage.k8s.io/va
+kind: StorageClass
+metadata:
+  name: google-storage
+
+provisioner: kubernetes.io/gce-pd
+
+parameters:
+  type: pd-standard
+  replication-type: none  
+```
+
+add the storage class to the `pvc-definition.yaml` file
+
+pvc-definition.yaml
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessMode:
+  - readWriteOnce
+  storageClass: google-storage
+  resources: 
+    requests: 
+      storage: 500Mi
+```
+
+storage classes allow you to create different classes of service, such as a bronze | silver | gold class with different configurations 
 
 
 
