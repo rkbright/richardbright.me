@@ -77,7 +77,7 @@ Official Site:
   - Access modes for volumes 
   - Kubernetes storage object 
 
-- Networking 
+- [Networking](#lesson8)  
 
   - Network configuration and cluster nodes
   - Service network 
