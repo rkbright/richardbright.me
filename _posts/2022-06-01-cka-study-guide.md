@@ -2636,9 +2636,273 @@ storage classes allow you to create different classes of service, such as a bron
   - a common standard for container run times
   - docker has it's own standard called CNM
 
+
+## Lesson8
+
 #### Cluster Networking
 
+### Networking
 
+#### Networking Introduction
+
+#### Prerequisite Switching, Routing, Gateways CNI in kubernetes
+
+- switching and routing
+
+  - switching
+    - connects two or more networks 
+    - use `ip link` to view the interface 
+    - assign addresses to the compute instances `ip addr add 192.168.1.10/24 dev eth0`
+    - a switch can only enable communication within a network, meaning, it can only receive and pass packets to hosts on the same network 
+
+  - routing
+    - helps connect two or more networks together 
+
+  - default gateway 
+    - is the door to the outside world, to other networks 
+    - run `route` to see the system's routing table 
+    - add a gateway between networks `ip route add 192.168.2.0/24 via 192.168.1.1`
+    - routing has to be setup on all system routing tables 
+    - a host machine can also serve as a gateway to a server on another network 
+    - update packet forwarding `cat /proc/sys/net/ipv4/ip_forward` is set to 0 as default
+    - `echo 1 > /proc/sys/net/ipv4/ip_forward` to set it to 1 to enable packet forwarding 
+    - to persist change update the value in the `/etc/sysctl.conf` file `net.ipv4.ip_forward = 1`
+
+
+- DNS
+  - DNS configurations on linux
+    - use the `/etc/hosts` file to set local host names
+    - no validation is done using this method
+    - this method is called name resolution and works within a small network of systems 
+    - managing this locally became problematic and is why the DNS server came about
+    - the DNS server provides a centralized way to manage all the entries  
+    - `cat /etc/resolve.conf` -> `nameserver    192.168.1.100 [ip of the DNS server]` 
+    - the order of resolution is managed by the `cat /etc/nsswitch.conf` file 
+    - `hosts:    files dns` will search the local hosts file first then dns
+
+  - CoreDNS introduction
+    - serves as a local DNS server 
+    - ip to hostname mappings are stored in the `/etc/hosts` file
+
+- network namespaces
+  - used by containers to implement network isolation 
+  - to create a new namespace on a linux host run `ip netns add red` command 
+  - `ip netns` to list namespaces 
+  - to view an interface within the namespace run `ip netns exec red ip link` or `ip -n red link` 
+  - to connect two namespaces run `ip link add veth-red type veth peer name veth-blue`
+  - now attach the peer to the appropriate namespace `ip link set veth-red netns red` and `ip link set veth-blue netns blue`
+  - then assign an ip to each namespace `ip -n red addr add 192.168.15.1 dev veth-red` and `ip -n blue addr add 192.168.15.2 dev dev veth-blue` 
+  - then bring up each interface `ip -n red link set veth-red up` and `ip -n blue link set veth-blue up`
+  - to enable this for many namespaces you will need to setup a virtual switch, common solutions linux bridge and open vSwitch
+  - add a new interface bridge `ip link add v-net-0 type bridge`
+  - connect all the virtual cables to each namespace and to the new bridge interface 
+  - `ip link set veth-red netns red` and `ip link set veth-red-br master v-net-0`
+  - `ip link set veth-blue netns blue` and `ip link set veth-blue-br master v-net-0`
+  - set ip address and turn them on
+  - `ip -n red addr 192.168.15.1 dev veth-red` and `ip -n red link set veth-red up`
+  - `ip -n blue addr 192.168.15.2 dev veth-blue` and `ip -n blue link set veth-blue up`
+  - the host serves as the gateway for the namespace networks 
+  - add a route to the host `ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5` 
+  - enable NAT so packets can be sent back to the namespace `iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -j MASQUERADE` to send packets to the outside using it's own ip and not the ip of the namespace
+  - point namespace to the host to connect to the outside via the host default gateway `ip netns exec ip route add default via 192.168.15.5`
+  - for outside traffic going to the namespace, use port forwarding `iptables -t nat -A PREROUTING --dport 80 --to-destination 192.168.15.2:80 -j DNAT`
+  - ensure you set the netmask if you are not able to ping one namespace to the other 
+  - also check the firewall table 
+
+- docker namespaces 
+- CNI
+  - a common standard for container run times
+  - docker has it's own standard called CNM
+
+#### Cluster Networking
+
+kubernetes clusters consist of master wnd worker nodes 
+
+each node must have an interface connected to a network
+
+each interface must have an ip address assigned 
+
+each host must have a unique hostname and mac address 
+
+the master node kube-api server accepts calls via port 6443
+
+link to list of [required ports](https://kubernetes.io/docs/reference/networking/ports-and-protocols/)
+
+| helpful network troubleshooting commands | 
+|---|
+| `ip link` |
+| `ip addr` |
+| `ip link show eth0` |
+| `ip addr add 192.168.1.10/24 dev eth0` |
+| `ip route` |
+| `ip route add 192.168.1.0/24 via 192.168.2.1` |
+| `route` |
+| `cat /proc/sys/net/ipv4/ip_forward` |
+| `arp` |
+| `netstat -plnt` |
+
+links to deploy network addons 
+
+https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model
+
+#### Pod Networking
+
+kubernetes pod networking model
+
+- every pod should have an ip address
+- every pod should be able to communicate with every other pod in the same node 
+- every pod should be able to communicate with every other pod on other nodes without NAT
+
+you can solve this problem in a similar way it's solved on a linux server 
+
+
+| description | command |
+|---| ---|
+| create bridge on each node | `ip link add v-net-0 type bridge`  |
+| bring bridge up  | `ip link set dev v-net-0 up`  |
+| assign ip address to the bridge interface  | `ip addr add 10.244.1.1/24 dev v-net-0` |
+| create a virtual cable  |  `ip link add ...` |
+| attach each end of the pair to the interfaces  | `ip link ser ...`  |
+| assign ip address  | `ip -n <namespace> addr add ...`  |
+| add route  | `ip -n ,namespace> route add ...`  |
+| bring up the interface  | `ip -n ,namespace. link set`  |
+| add routing so pods can communicate across nodes  | `ip route add 10.244.2.2 via 192.168.1.12` |
+
+
+use CNI to automate networking when creating a container 
+
+kubelet is responsible to container creation and deletion 
+
+kubelet leverages the following file to find the script location, which is passed as a commandline argument: `--cni-conf-dir=/etc/cni/net.d`
+
+then looks in: `--cni-bin-dir=/etc/cni/bin`
+
+`./net-script.sh add <container> <namespace>`
+
+#### CNI in kubernetes
+
+- container runtime must create network namespace
+- identify network the container must attach to
+- container runtime to invoke network plugin bridge when container is added 
+- container runtime to invoke network plugin bridge when container is deleted 
+- json format of the network configuration 
+
+kubelet is responsible for running the required scripts to enable container/pod networking 
+
+#### CNI weave
+
+uses an agent to facilitate network typology 
+
+deployed as a deamonset on the cluster 
+
+#### ipam weave
+
+the CNI is responsible for assigning ip addresses to containers 
+
+#### Service Networking
+
+when a service is created, the service is able to access other pods across the cluster no matter which node a pod resides or if it's on a different network. these are generally called clusterIPs
+
+you can make a pod accessible outside the cluster through NodePorts
+
+NodePorts also expose applications across all nodes via the same port number 
+
+services are a cluster-wide object 
+
+kube-proxy can use userspace, ipvs or iptables to setup networking rules 
+
+the default method is iptables 
+
+`kube-proxy --proxy-mode userspace | iptables | ipvs` to set mode
+
+default is iptables 
+
+`iptables -L -t nat | grep db-service` to view rules set by kube-proxy 
+
+
+#### Cluster DNS
+
+kubernetes deploys a built in DNS server by default 
+
+kubernetes will generate an entry in the cluster DNS whenever a service is created 
+
+once a cluster DNS record is generated, you can refer to each service within the same namespace by using the service name, i.e., http://web-service
+
+If a service is in a different namespace, you will need to use the service name and namespace, i.e., http://web-service.app (the web-service is in the app namespace)
+
+kubernetes will group all services together in a sub-domain called svc (or service), i.e., http://web-service.app.svc
+
+kubernetes clusters all services and pods into a root domain, cluster.local by default, i.e., http://web-service.app.svc.cluster.local
+
+DNS records for pods are not created by default but can be enabled 
+
+for pod records, kubernetes uses the IP and replaces the . with a - by default, i.e., http://10-244-2-5.apps.pod.cluster.local
+
+
+#### CoreDNS in Kubernetes
+
+you could add an entry into each /etc/hosts file that points to each pod, however, that would be tedious
+
+kubernetes adds an entry into the /etc/resolve.conf file that points to a centralized DNS service within the cluster 
+
+kube-dns was deployed in versions prior to 1.12
+
+CoreDNS is used post version 1.12
+
+CoreDNS is deployed as a pod in the kube-system namespace 
+
+It's deployed as a replicaset for redundancy 
+
+CoreDNS uses a file named CoreFIle located at `/etc/coredns/Corefile`
+
+CoreDNS plug-in allows CoreDNS to work in kubernetes, the top-level domain name for the cluster is set within the Corefile
+
+this is also where you can enable pod hostname creation using the ip with dashes 
+
+the Corefile is passed into the pod as a configmap, that allows for configuration updates 
+
+kubelet is responsible for adding the CoreDNS service to pods 
+
+the resolve.conf file includes a search entry that includes the namespace, service, and detaul cluter domain, i.e., `search default.svc.cluster.local svc.cluster.local cluster.local`
+
+that only to search services, you cannot search for pods the same way
+
+for pods, use the FQDN, i.e., http://10-244-2-5.default.pod.cluster.local
+
+#### Ingress
+
+point DNS server to the IP of the node, so users do not have to remember the IP address of the node
+
+service nodeports are limited to high numbered ports that are greater than 30,000, to get around this you can deploy a proxy web-server 
+
+the proxy will proxy the connection from port 80 to port 38080 
+
+this example is for an on-prem deployment
+
+for a public cloud environment, the CSP will automatically add a load balancer that will routr traffic from common ports to the cluster service ports, i.e., port 80 to the service port 38080
+
+if you add another web service to the application that uses a separate load balancer, you will have to add another load balancer to map the web pages to a specific load balancer, i.e., `/mypage loadbalancer1 /video loadbalancer2`
+
+kubernetes can handle all of these complexities and issue SSL certs using `ingress`
+
+the kubernetes ingress-service is deployed in two steps, deployment tools and configuration 
+
+- tools: nginx, haproxy, traefix, contour, istio, GCE (GCE and nginx are supported by the K8 project)
+- configuration: are called `ingress resources`
+
+NOTE: remember kubernetes does not include an ingress-controller by default 
+
+an ingress-controller required the use of a deployment, service, configmap, and a service account for auth
+
+setup rules to handle url to application routing 
+
+imperative way of creating ingress controller in K8 version 1.12+
+
+`kubectl create ingress <ingress-name> --rule="host/path=service:port"`
+
+`kubectl create ingress ingress-test --rule="wear.my-online-store.com/wear*=wear-service:80"`
 
 
 
