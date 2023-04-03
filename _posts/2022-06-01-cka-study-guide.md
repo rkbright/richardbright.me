@@ -87,7 +87,7 @@ Official Site:
   - Cluster DNS
   - CNI
 
-- Installation, configuration and validation 
+- [Installation, configuration and validation](#lesson9) 
 
   - Design a kubernetes cluster
   - Install kubernetes master and nodes 
@@ -2827,7 +2827,155 @@ imperative way of creating ingress controller in K8 version 1.12+
 `kubectl create ingress ingress-test --rule="wear.my-online-store.com/wear*=wear-service:80"`
 
 
+## Lesson9
 
+### Design a Kubernetes Cluster
+
+#### Ask the following when designing a kluster
+
+purpose 
+
+- education
+  - minikube
+  - single node cluster with kubeadm/gcp/aws
+
+- development and testing 
+  - multi-node cluster with a single master and multiple workers
+  - setup kubeadm tool or quick provision with gcp, aws or azure
+
+- hosting production applications 
+  - high availability multi-node cluster with multiple master nodes 
+  - kubeadm, gcp, kops, aws, azure 
+  - up to 5,000 nodes
+  - up to 150,000 pods
+  - up to 300,000 total containers 
+  - up to 100 pods per node 
+
+| nodes | gcp | instance | aws | instance |
+|---|---|---|---|---|
+| 1-5   |  N1-standard-1   |  1 vCPU 3.75 GB   | M3.medium | 1 vCPU 3.75 GB |
+| 6-10   |  N1-standard-2   |  2 vCPU 7.5 GB   | M3.large | 2 vCPU 7.5 GB |
+| 11-100   |  N1-standard-4   |  4 vCPU 15 GB   | M3.xlarge | 4 vCPU 15 GB |
+| 101-250   |  N1-standard-8   |  8 vCPU 30 GB   | M3.2xlarge | 8 vCPU 30 GB |
+| 251-500   |  N1-standard-16   |  16 vCPU 60 GB   | C4.4xlarge | 16 vCPU 30 GB |
+| >500   |  N1-standard-32   |  32 vCPU 120 GB   | C4.8xlarge | 36 vCPU 60 GB |
+
+cloud or on-prem 
+
+- use kubeadm for on-prem
+- gke for gcp
+- kops for aws
+- aks for azure
+
+workloads
+
+- storage 
+  - high performance: ssd backed storage 
+  - multiple concurrent connections: network based storage 
+  - persistent storage volumes for shared access across pods 
+  - label nodes with specific disk types
+  - use node selectors to assign applications to nodes with specific disk types
+
+- nodes
+  - virtual or physical machines 
+  - minimum of 4 node cluster (size based on workload)
+  - master vs. worker nodes 
+  - linux x86_64 architecture 
+  - all controlplane components should go on the master node 
+
+- how many applications
+- what kind
+  - web
+  - big data/analytics 
+- application resource requirements 
+  - cpu intense 
+  - memory intense 
+- network traffic  
+  - heavy traffic
+  - burst traffic 
+
+
+### Choosing Kubernetes Infrastructure
+
+kubernetes can be deployed on a laptop, in the cloud, or on-prem 
+
+if using you laptop, use minikube 
+
+only linux is supported, for windows you will need to run virtualization 
+
+turnkey solutions 
+- you provision vms
+- you configure vms
+- you use scripts to deploy cluster 
+- you maintain vms yourself 
+- for example
+    - Red Hat's OpenShift
+    - cloud foundry container runtime
+    - VMWare cloud PKS
+    - vagrant 
+
+managed solution 
+- K8-as-a-Service 
+- provider provisions vms 
+- provider installs kubernetes 
+- provider maintains vms
+- for example
+  - gke
+  - aks
+  - eks 
+  - OpenShift Online
+
+  #### Configure High Availability
+
+if your master node goes down the workers will continue to serve the application 
+
+the app will run until things start t beak down, i.e., if a container crashes and it's part of a replicaset, the schedule ron the master cannot instruct the kubelet on what to do
+
+for a production deployment, consider using multiple master nodes to enable HA
+
+you can deploy etcd within the master nodes, which is called a stacked typology 
+
+or you can deploy the etcd service on it's own node 
+
+#### ETCD in HA
+
+what is etcd - it is a distributed reliable key value store that is simple, secure and fast
+
+etcd elects a leader node amongst the cluster, the leader node is responsible for syncing write updates with any other etcd nodes in the cluster 
+
+kubernetes uses distributed consensus through RAFT
+
+write processes are considered complete whenever it can be written to the minimum number of nodes for the quorom
+
+quorom = N/2 + 1 the minimum number of nodes for a HA cluster
+
+quorom of 3 = `3 / 2 + 1 = 2.5 ~= 2`
+
+quorom of 5 = `5 / 2 + 1 = 3.5 ~= 3`
+
+quorom of 7 = `7 / 2 + 1 = 4.5 ~= 4`
+
+you will need a minimum of 3 instances in a HA etcd cluster, 2 instances will not give you HA
+
+use odd number of nodes for HA, to prevent the possibility of not having a quorom if there is a network segmentation error 
+
+### Install “Kubernetes the kubeadm way”
+
+#### Introduction to Deployment with kubeadm
+
+steps:
+
+you need to have multiple vms provisioned 
+
+install containerd on all the nodes
+
+install kubeadm on all the nodes 
+
+initialize the master node 
+
+setup the pod network 
+
+join worker nodes to the master node 
 
 
 
