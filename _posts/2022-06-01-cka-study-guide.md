@@ -95,7 +95,7 @@ Official Site:
   - HA kubernetes cluster 
   - Provision infrastructure 
 
-- Troubleshooting 
+- [Troubleshooting](#lesson10) 
 
   - Application failure 
   - Worker node failure 
@@ -2976,6 +2976,60 @@ initialize the master node
 setup the pod network 
 
 join worker nodes to the master node 
+
+
+## Lesson10
+
+#### Application Failure
+
+check accessibility 
+
+it's helpful to draw a diagram of how your application is setup 
+
+start from one end and work your way though all the nodes and objects until you find the root cause 
+
+
+check if you can access the front-end: `curl https://web-service-ip:node-port`
+
+if you get an error, check the configuration file `kubectl describe service web-service`
+
+check that the selectors in the file match the pod 
+
+next check the state of the pod `kubectl get pod`
+
+check that the pod is running, and how many times it's been restarted 
+
+check events using `kubectl describe pod web`
+
+check the logs `kubectl logs web`
+
+next check the status of any dependent services, in this case the database 
+
+then check the database pod itself 
+
+#### Control Plane Failure
+
+start by checking the nodes in the cluster to ensure they are all healthy 
+
+then check the pods 
+
+you can also check the status of the service via the api server 
+
+check the kubelet components 
+
+check the logs of the control plane components 
+
+control plane manifests are static and usually located in `/etc/kubernetes/manifest`
+
+#### Worker Node Failure
+
+check the status of the nodes 
+
+use the describe command to look deeper into the failing node 
+
+check the memory and disk space on each node
+
+check the status of kubelet 
 
 
 
