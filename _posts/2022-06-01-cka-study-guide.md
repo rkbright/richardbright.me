@@ -95,7 +95,7 @@ Official Site:
   - HA kubernetes cluster 
   - Provision infrastructure 
 
-- [Troubleshooting](#lesson10) 
+- [Troubleshooting](#lesson10)
 
   - Application failure 
   - Worker node failure 
@@ -3032,6 +3032,40 @@ check the memory and disk space on each node
 check the status of kubelet 
 
 
+## Advanced Kubectl Commands
+
+#### how to use json path n kubectl
+
+1. identify kubectl command `kubectl get nodes`
+
+2. familiarize with json output `kubectl get nodes -o json`
+
+3. form the json query `.item[0].spec.containers[0].image`
+
+4. use the json path query with the kubectl command `kubectl get nodes -o=jsonpath='{.item[0].spec.containers[0].image}'`
+
+you can add a newline if submitting multiple queries in the same command `kubectl get nodes -o=jsonpath='{.item[0].spec.containers[0].image}{"\n"}{.item[*].spec.containers[1].image}''`
+
+jasonpath queries support loops
+
+```
+for each node                                 '{range .items[*]}
+
+print node name \t print cpu count \n        {.metadata.name}{"\t"}{.status.capacity.cpu}{"\n"}
+
+end for                                       
+
+```
+
+`kubectl get nodes -o=jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.capacity.cpu}{"\n"}`
+
+you can also use custom columns 
+
+`kubectl get nodes -o=custom-columns=NODE:.metadata.name, CPU:status.capacity.cpu`
+
+you can also sort output
+
+`kubectl get nodes --sort-by= .metadata.name`
 
 
 
