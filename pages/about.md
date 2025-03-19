@@ -9,7 +9,7 @@ I am a Principal Solutions Architect with the [SAS Institute](https://www.sas.co
 
 Prior to my current role I supported the General Services Administration (GSA) leading the Infrastructure Capabilities Division under the Office of Digital Infrastructure Technologies. The division is charged with piloting emerging technology and assessing fit and value for GSA IT as well as managing projects and providing agile coaching support.  
 
-Link to my [resume](https://drive.google.com/file/d/1CoovM_VIwaPCd-BNXm9SstzVCv2Wonye/view?usp=sharing){:target="_blank"}
+Link to my [resume](https://drive.google.com/file/d/1Bx59OGRX41qpsoNHz72Iam5Hx_xB17pT/view?usp=sharing){:target="_blank"}
 
 ***Interests:*** Linux, Kubernetes, Data Analytics/Engineering/ML/AI, DevSecOps, and Cloud. Outside of work, I enjoy spending time with my wife and kids and practicing Gracie Jiu-Jitsu. 
 
